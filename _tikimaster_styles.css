@@ -96,9 +96,89 @@ a img {
   right:145px;
 }
 
+#footer {
+  background: url('img/tk08_bodybg_bottom-968x261.png') repeat-x center top;
+}
+
+#footer-nav {
+  width:976px;
+  position:relative;
+  margin:0 auto;
+}
+
+#footer-nav-left {
+  float:left;
+  margin-top:35px;
+}
+
+#footer-nav-right {
+  float:right;
+  margin-top:20px;
+  background:url('img/tk10_vignette_bg-217x153.png') no-repeat;
+  height:153px;
+  width:217px;
+}
+
+#footer .spacer {
+  clear:both;
+  padding-top:5px;
+}
+
+#footer #copyright {
+  float:left;
+  text-align:left;
+  font-weight:bold;
+}
+
+#footer .zsmall {
+  width:680px;
+  color: #000000; 
+  font-family: verdana, arial, helvetica; 
+  font-size: 7pt;
+}
+
+#footer2 {
+  background:url('img/tk08_bodybg_bottom-968x261.png') repeat-x center top; 
+  padding-top:35px; 
+  margin:0 auto;
+  text-align:center;
+}
+
+
+/* used for 'savings and discounts' section of wrapper */
+.wrapPromoBox {
+  background:#f7c14e;
+  margin-bottom:15px;
+  padding:8px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-radius: 8px 8px 0px 0px;
+  border-radius: 8px 8px 0px 0px; 
+}
+
+.topRound {
+  padding:0 8px; line-height:28px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-radius: 8px 8px 0px 0px;
+  border-radius: 8px 8px 0px 0px; 
+} 
+
+#breadcrumb_onhover .zlink {padding:3px 9px 3px 4px; margin-right:2px; text-decoration:none; font-weight:bold; background-color:#e9dbb9; color:#f1592a; }
+#breadcrumb_onhover .hasSubcats {background:url('img/tm11_downarrow_orange-8x3.gif') no-repeat center right #e9dbb9; }
+#breadcrumb_onhover .zlink:hover {color:#593101;}
+
 /************** Wrapper layout END **************/
 
 
+/************** Main content layout ************/
 
+#mainContentArea { 
+  width:976px; margin:0 auto;
+}
 
-#appPreView1, #appView1 { width:900px; margin:1em auto; }
+/************** Main content layout END ************/
