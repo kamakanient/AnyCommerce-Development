@@ -137,6 +137,51 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 
 <div id='mainContentArea'></div><!-- DO NOT REMOVE - this is where the specific page (ex: homepage, product, category) content is going to go -->
 
+	<!-- /promo banners and social network logos -->
+	<div class='wrapPromoBox'>
+		<table>
+			<tr>
+				<td class='ztxt'>
+					<div><img src='img/tk10_newshead-207x52.png' width='207' height='52' alt='do not miss our savings and discounts' title='Do not miss our savings and discounts' /></div>
+
+					<div style='padding-top:5px;'>Our monthly newsletter will keep you up to date on our new items, special offers and closeouts. Subscribe and you are automatically entered to win our weekly sweepstakes! </div>
+					<div id="footerSubscribeBar">
+						<form action='#' id='footerSubscribeForm' name='footerSubscribeForm' onSubmit="app.ext.store_crm.u.handleSubscribe($(this)); return false">
+							<input class="text" type='email' placeholder="Email Address" maxlength='50' size='23' name='login' id='subscribeLogin' value='' />
+							<input class="text" type='text' placeholder="Full Name" maxlength='50' size='23' name='fullname' id='subscribeFullname' value='' />
+
+							<input type='submit' class='submit' value='Subscribe'>
+						</form>
+					</div>
+				</td>
+	
+				<td id="mobile-link">
+					<div>
+						<a href='http://m.tikimaster.com/'><img src='img/tk10_mobilebanner-181x85.png' width='181' height='85' alt='visit our mobile website at m.tikimaster.com'  /></a>
+					</div>
+				</td>
+	
+				<td id="social-links">
+	
+					<div><img src='img/tk10_socialhead-230x52.png' width='230' height='52' alt='Keep up with our news, values and tidbits' /></div>
+
+					<div id="social-links-content">
+						<a href='http://twitter.com/kamakani' target='twitter'><img src='img/socialb_logos/twitter-32x32.png' width='32' height='32' alt='tweet with us on twitter'  /></a>
+
+						<a href='http://www.facebook.com/pages/Tikimaster-The-Store-Of-Hawaii/79606002155/' target='facebook'><img src='img/socialb_logos/facebook-32x32.png' width='32' height='32' alt='follow us on facebook'  /></a>
+
+						<a href='http://static.zoovy.com/rss/tikimaster/912278.xml' target='rss'><img src='img/socialb_logos/rss-32x32.png' width='32' height='32' alt='subscribe to our rss feed'  /></a>
+
+						<a href='http://pinterest.com/pin/164381455118977153/' target='pinterest'><img src='img/socialb_logos/tm12_pinterest-32x32.png' width='32' height='32' alt='Pinterest'  /></a>
+
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<img id="banner-bottom" src='img/tk10_bannerrow-942x84.png' alt='' width='942' height='84'  usemap="#bannerMap" />
+	<!-- /promo banners and social network logos -->
 
 	<!-- footer -->
 	<div id="footer">

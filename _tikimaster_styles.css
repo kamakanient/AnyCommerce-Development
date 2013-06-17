@@ -97,6 +97,12 @@ a img {
   right:145px;
 }
 
+#banner-bottom {
+  display:block;
+  margin:0 auto;
+  cursor:pointer;
+}
+
 #footer {
   background: url('img/tk08_bodybg_bottom-968x261.png') repeat-x center top;
 }
@@ -150,8 +156,10 @@ a img {
 
 /* used for 'savings and discounts' section of wrapper */
 .wrapPromoBox {
+  width:976px;
+  position:relative;
+  margin:0 auto 15px auto;
   background:#f7c14e;
-  margin-bottom:15px;
   padding:8px;
   -moz-border-radius-topleft: 8px;
   -moz-border-radius-topright: 8px;
@@ -159,6 +167,41 @@ a img {
   -moz-border-radius-bottomleft: 0px;
   -webkit-border-radius: 8px 8px 0px 0px;
   border-radius: 8px 8px 0px 0px; 
+}
+
+.ztxt { color: #000000; font-family: verdana, arial, helvetica; font-size: 9pt; }
+td.ztxt { padding:0 20px 0 0px; }
+
+#footerSubscribeBar input.text {
+  width:175px;
+  font-size:12px;
+}
+
+#footerSubscribeBar input.submit {
+  border:0;
+  background:#491e0b;
+  color:#ffffff;
+  padding:2px 5px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#mobile-link {
+  border-left:1px solid #c38a2f;
+}
+
+#mobile-link div {
+  padding:20px;
+}
+
+#social-links {
+  border-left:1px solid #c38a2f;
+  text-align:center;
+  padding:5px 8px 0 20px;
+}
+
+#social-links-content {
+  padding-top:15px; margin:0 auto;
 }
 
 .topRound {
