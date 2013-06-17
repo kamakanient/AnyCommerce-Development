@@ -96,9 +96,9 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	<!-- HEADER -->
 	<div id="header">
 
-		<img id="custom-carving-link" class="pointer" onclick="return showContent('category',{'navcat':'.002'})" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' />
+		<img id="custom-carving-link" class="pointer" onclick="return showContent('category',{'navcat':'.002'})" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' title='Custom Carving' />
 
-		<div id="carving-emporium-link"><a href='http://www.carvingemporium.com/c=TBB4t99aX93Wk8HLTXgv7LuEy/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' /></a></div>
+		<div id="carving-emporium-link"><a href='http://www.carvingemporium.com/c=TBB4t99aX93Wk8HLTXgv7LuEy/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' title='Carving Emporium' /></a></div>
 
 		<!-- holiday/xmas header = tk08_header_xmas-738x136.png -->
 
@@ -136,7 +136,6 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 </div>
 
 <div id='mainContentArea'></div><!-- DO NOT REMOVE - this is where the specific page (ex: homepage, product, category) content is going to go -->
-
 
 
 	<!-- footer -->
@@ -230,6 +229,18 @@ src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=
 		</table>
 	</div>
 	<!-- /footer2 -->
+	
+	<!-- nav maps -->
+	<map name="headerMap">
+		<area shape="rect" coords="2,1,116,57" onclick="return showContent('category',{'navcat':'.004'})" alt='Tiki Decor' title='Tiki Decor' />
+		<area shape="rect" coords="124,1,270,57" onclick="return showContent('category',{'navcat':'.nautical_signs'})" alt='Nautical Decor' title='Nautical Decor' />
+		<area shape="rect" coords="276,1,394,57" onclick="return showContent('category',{'navcat':'.90'})" alt='Surf Decor' title='Surf Decor' />
+		<area shape="rect" coords="398,1,523,57" onclick="return showContent('category',{'navcat':'.pirate_decor'})" alt='Pirate Decor' title='Pirate Decor' />
+		<area shape="rect" coords="525,1,665,57" onclick="return showContent('category',{'navcat':'.beach_signs'})" alt='Beach Decor' title='Beach Decor' />
+		<area shape="rect" coords="668,1,806,57" onclick="return showContent('category',{'navcat':'.coastal_decor'})" alt='Coastal Decor' title='Coastal Decor' />
+		<area shape="rect" coords="808,1,972,57" onclick="return showContent('category',{'navcat':'.skull_and_bones_decor'})" alt='Skull n Nones Decor' title='Skull n Nones Decor' />
+	</map>
+	<!-- /nav maps -->
 
 <!-- ... your html ends -->
 <!-- /VIEW CONTENT -->
