@@ -326,8 +326,24 @@ td.ztxt { padding:0 20px 0 0px; }
   float:left;
   width:136px;
   height:500px;
-  background:#E9DBB9;
   margin-left:5px;
+}
+
+#mainRight2 .infoBlock {
+  background:#FCF8EF;
+  width:100%;
+  margin:0 0 5px 0;
+  padding:4px;
+  filter:alpha(opacity=85);
+  -moz-opacity:.85;
+  opacity:.85;
+}
+
+#mainRight2 .infoBlock p {
+  color: #333534; 
+  font-family: verdana, arial, helvetica; 
+  font-size: 7pt;
+  padding:0;
 }
 
 /************** Main content layout END ************/
