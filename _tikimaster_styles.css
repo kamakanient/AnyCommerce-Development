@@ -234,6 +234,14 @@ td.ztxt { padding:0 20px 0 0px; }
 
 /************** Main content layout ************/
 
+#bg1 {
+  background:url('img/tk08_bodybg_left-493x552.gif') left top no-repeat;
+}
+
+#bg2 {
+  background:url('img/tk08_bodybg_right-493x552.gif') right top no-repeat;
+}
+
 #appPreView {
   background:#e5e0da;
   border:2px solid #623b25;
