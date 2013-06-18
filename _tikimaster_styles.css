@@ -9,7 +9,18 @@ a img {
   border:none;
 }
 
+.marginTop5 {
+  margin-top:5px;
+}
 
+.block { display:block; }
+
+.minimalMode .searchResultsNewProduct	{
+	overflow:hidden; margin:0;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;
+	}
 
 /************** Wrapper layout **************/
 
@@ -290,9 +301,24 @@ td.ztxt { padding:0 20px 0 0px; }
   position:relative;
   float:left;
   width:149px;
-  height:500px;
-  background:#E9DBB9;
+  background: #E9DBB9 url('img/tk08_h_head_new-149x65.gif') no-repeat 0px -5px;
   margin-left:5px;
+  padding:65px 0 0 0;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-radius: 8px 8px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
+}
+
+#mainRight1 .newProductList li {
+  margin:0;
+  height:185px;
+}
+
+#mainRight1 .searchResultsNewProduct .description {
+  color: #434544; font-family: verdana, arial, helvetica; font-size: 7pt; padding:3px; display:block; height:60px; overflow:hidden;
 }
 
 #mainRight2 {

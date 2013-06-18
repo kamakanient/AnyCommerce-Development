@@ -406,7 +406,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	</div>
 	
 	<div id="mainRight1">
-		New Arrivals
+		<ul id='homeProdSearchNewArrivals' data-bind='var: elastic-native({"size":"3","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNewArrivals;' class='listStyleNone clearfix noPadOrMargin newProductList'></ul>
 	</div>
 	
 	<div id="mainRight2">
@@ -628,6 +628,17 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 		<h6 class='hideInMinimalMode' data-bind='var: product(base_price); format:money; isElastic:1; currencySign: $;  hideZero:true; className:price; pretext: Our Price: ;'></h6>
 	</div>
 	<div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div>
+</li>
+
+<li id='productListTemplateResultsNewArrivals' class='loadingBG searchResultsNewProduct ' >
+	<div onClick="return showContent('product', {'pid' : $(this).parent().attr('data-pid')});" class='pointer'>
+		<div class='prodThumbContainer'>
+		<img src='blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
+		</div>
+
+		<span class='description hideInMinimalMode' data-bind='var: product(description); format:text;'></span>
+	</div>
+	<!--div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div-->
 </li>
 </ul>
 
