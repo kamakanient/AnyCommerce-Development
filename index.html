@@ -406,7 +406,9 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	</div>
 	
 	<div id="mainRight1">
-		<ul id='homeProdSearchNewArrivals' data-bind='var: elastic-native({"size":"3","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNewArrivals;' class='listStyleNone clearfix noPadOrMargin newProductList'></ul>
+		<!--ul id='homeProdSearchNewArrivals' data-bind="var: list($new_arrivals.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplateResultsNewArrivals;" class='listStyleNone clearfix noPadOrMargin newProductList'></ul-->
+		
+		<ul id='homeProdSearchNewArrivals' data-bind='var: elastic-native({"size":"3","mode":"elastic-native","filter":{"term":{"tags":"IS_NEWARRIVAL"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNewArrivals;' class='listStyleNone clearfix noPadOrMargin newProductList'></ul>
 	</div>
 	
 	<div id="mainRight2">
