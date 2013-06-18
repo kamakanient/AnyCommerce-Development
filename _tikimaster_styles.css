@@ -321,6 +321,10 @@ td.ztxt { padding:0 20px 0 0px; }
   font-weight: bold;
 }
 
+#leftNav img.catLink {
+  border:5px solid #9B6B32;
+}
+
 #mainRight1 {
   position:relative;
   float:left;
