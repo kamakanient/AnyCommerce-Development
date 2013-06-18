@@ -437,9 +437,32 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 		
 	</div>
 	
-	<div class="clearfix"></div>
+	<div class="clearfix marginBottom"></div>
 	
+	<div class="prodBlock">
+		<div class="ztitle">
+	 		<div class="zcolor_dark floatLeft topRound">Always Happy Hour</div>
+		</div>
+		<div class="prodBlockContent zcolor_dark">
+		</div>
+	</div>
 	
+	<div class="prodBlock">
+		<div class="ztitle">
+	 		<div class="zcolor floatLeft topRound">Coastal &amp; Nautical</div>
+		</div>
+		<div class="prodBlockContent zcolor">
+		</div>
+	</div>
+	
+	<div class="prodBlock">
+		<div class="ztitle">
+	 		<div class="zcolor_light floatLeft topRound">Gifts Under $25</div>
+		</div>
+		<div class="prodBlockContent zcolor_light">
+		</div>
+	</div>
+		
 	<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul>
 
 	<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; before:<h2>Featured Items</h2>; withReviews:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>

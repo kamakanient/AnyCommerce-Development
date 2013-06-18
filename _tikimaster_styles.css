@@ -20,11 +20,36 @@ ul li {
 .block { display:block; }
 
 .minimalMode .searchResultsNewProduct	{
-	overflow:hidden; margin:0;
-	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-	box-sizing: border-box;
-	}
+  overflow:hidden; margin:0;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;
+}
+
+.topRound   {
+  padding:0 8px; line-height:28px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -moz-border-radius-bottomright: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  -webkit-border-radius: 8px 8px 0px 0px;
+  border-radius: 8px 8px 0px 0px; 
+}
+
+.ztitle {
+  margin-top:8px; 
+  height:28px; 
+  font-weight: bold; 
+  color: #c9bda5; 
+  font-family: verdana, arial, helvetica; 
+  font-size: 11pt;
+  background:url('img/tk08_h_plhead_bg-254x16.jpg') repeat-x bottom;
+}
+
+.zcolor { background-color: #7eb784; color: #ffffff; }
+.zcolor_dark {background-color:#9b6b32; color: #ffffff;}
+.zcolor_contrast { background-color: #EE5E02; color: #ffffff; }
+.zcolor_light { background-color: #EDF2FD; color: #515151; }
 
 /************** Wrapper layout **************/
 
@@ -371,6 +396,12 @@ td.ztxt { padding:0 20px 0 0px; }
   font-family: verdana, arial, helvetica; 
   font-size: 7pt;
   padding:0;
+}
+
+.prodBlockContent {
+  height:242px;
+  clear:both;
+  margin-bottom:12px;
 }
 
 /************** Main content layout END ************/
