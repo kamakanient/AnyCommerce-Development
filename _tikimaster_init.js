@@ -14,6 +14,8 @@ app.rq.push(['extension',0,'store_product','extensions/store_product.js']);
 app.rq.push(['extension',0,'store_cart','extensions/store_cart.js']);
 app.rq.push(['extension',0,'store_crm','extensions/store_crm.js']);
 app.rq.push(['extension',0,'myRIA','app-quickstart.js','startMyProgram']);
+//app.rq.push(['extension',0,'tikimaster','_tikimaster_extension.js','startExtension']);
+
 
 //app.rq.push(['extension',1,'google_analytics','extensions/partner_google_analytics.js','startExtension']);
 app.rq.push(['extension',1,'tools_ABtesting','extensions/tools_ABtesting.js']);
@@ -29,10 +31,23 @@ app.rq.push(['script',0,app.vars.baseURL+'includes.js']); //','validator':functi
 
 app.rq.push(['script',0,app.vars.baseURL+'controller.js']);
 
+//app.rq.push(['script',0,app.vars.baseURL+'jquery.cycle2.min.js']);
+app.rq.push(['script',0,app.vars.baseURL+'cycle-2.9998.js']);
+
 app.rq.push(['script',0,app.vars.baseURL+'resources/jquery.showloading-v1.0.jt.js']); //used pretty early in process..
 app.rq.push(['script',0,app.vars.baseURL+'resources/jquery.ui.anyplugins.js']); //in zero pass in case product page is first page.
 
 
+// homepage slideshow
+app.rq.push(['templateFunction','homepageTemplate','onCompletes',function(P) {
+	$('#slideshowNav').html('');
+	$('#wideSlideshow').unbind().cycle({
+			pager:'#slideshowNav',
+			fx:'fade',
+			speed:'slow',
+			timeout: 2500,
+		});
+}]);
 
 
 //add tabs to product data.

@@ -237,7 +237,71 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 #mainContentArea { 
-  width:976px; margin:0 auto;
+  width:976px; margin:0 auto; padding:1em 0 0 0;
+}
+
+.decoratorHoriz {
+  background:url(img/tk08_h_plhead_bg-254x16.jpg) repeat-x; height:16px;
+}
+
+#mainCenter { position: relative; width:512px; padding:0; margin:0 0 0 5px; overflow: hidden; float:left; }
+#slideshowNav { position: absolute; top: 31px; right: 15px; z-index: 100;}
+#wideSlideshow { padding: 0px; margin: 0px;}
+#slideshowNav a {
+  margin: 0 0 0 5px; font-size:11px; color:#491e0b;
+  font-weight:bold;
+  -webkit-box-shadow: 2px 2px 2px 2px , 50);
+  -moz-box-shadow: 2px 2px 2px 2px , 50);
+  box-shadow: 2px 2px 2px 2px , 50); 
+
+  text-decoration: none;
+  display:inline-block;
+  padding: 3px;
+  border: 2px solid #8e7a47;
+  background: #dbd4c4;
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px; 
+  filter: alpha(opacity=80);
+  opacity:0.8;
+}
+
+#slideshowNav a:hover, #slideshowNav a.cycle-pager-active, #slideshowNav a.activeSlide { color: #FFFFFF; background:#491e0b; border-color:#491e0b; }
+#slideshowNav a:focus { outline: none; }
+
+#dealOfTheWeek {
+  background:#faf3e0; margin-top:5px;
+}
+
+#leftNav {
+  color: #000000; 
+  font-family: verdana, arial, helvetica; 
+  font-size: 9pt;
+  position:relative;
+  width:150px;
+  height:500px;
+  float:left;
+  background:#E9DBB9;
+  margin:0;
+}
+
+#mainRight1 {
+  position:relative;
+  float:left;
+  width:149px;
+  height:500px;
+  background:#E9DBB9;
+  margin-left:5px;
+}
+
+#mainRight2 {
+  position:relative;
+  float:left;
+  width:136px;
+  height:500px;
+  background:#E9DBB9;
+  margin-left:5px;
 }
 
 /************** Main content layout END ************/

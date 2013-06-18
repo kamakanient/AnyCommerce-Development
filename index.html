@@ -20,10 +20,10 @@ var _gaq = _gaq || {'push':function(){}} //here for testing. REPLACE BEFORE DEPL
 var myCreole;
 
 var app = {vars:{
-	"release":"20130617160000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130618134000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
-	"checkoutAuthMode" : "required",//can be passive, active or required
+	"checkoutAuthMode" : "passive",//can be passive, active or required
 	//"testURL":"http://www.ylh.zoovy.com/" //used ONLY if protocol is file: (for testing)
 	"testURL":"http://app.tikimaster.com/"
 	//"testURL":"http://www.sporks.zoovy.com/"
@@ -123,7 +123,12 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 		</div>
 
 		<img id="cart-link" class="pointer" onclick="return showContent('cart',{})" src='img/tk08_btn_cart-129x29.gif' width='129' height='29' alt='view cart' />
-	
+		<!--form id="headerSearchFrm" name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
+			<input type='search' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
+			<button></button>
+		</form>
+		
+		<ul id='tier1categories'></ul-->
 	</div>
 	<!-- /HEADER -->
 
@@ -186,11 +191,11 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	<!-- footer -->
 	<div id="footer">
 		<div id="footer-nav">
-			<span id="BuySafeSealFooter">
+			<!--span id="BuySafeSealFooter">
 				<script type="text/javascript">
 					WriteBuySafeSeal( 'BuySafeSealFooter', 'Small', 'HASH=AXwi%2Fc5sM86Xm%2BRskm5EMnqL1u%2BEuDRKGzUSBrit1%2FZch9%2BixqB61x13xqQScVHdsyqpSu%2B7%2FrSnafkdh2LUfg%3D%3D' );
 				</script>
-			</span>
+			</span-->
 			<div id="footer-nav-left"><img src='img/tk10_footer2-738x139.png' alt='' width='738' height='139' usemap='#zfooter_Map' /></div>
 
 			<div id="footer-nav-right">
@@ -283,7 +288,7 @@ src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=
 		<area shape="rect" coords="398,1,523,57" onclick="return showContent('category',{'navcat':'.pirate_decor'})" alt='Pirate Decor' title='Pirate Decor' />
 		<area shape="rect" coords="525,1,665,57" onclick="return showContent('category',{'navcat':'.beach_signs'})" alt='Beach Decor' title='Beach Decor' />
 		<area shape="rect" coords="668,1,806,57" onclick="return showContent('category',{'navcat':'.coastal_decor'})" alt='Coastal Decor' title='Coastal Decor' />
-		<area shape="rect" coords="808,1,972,57" onclick="return showContent('category',{'navcat':'.skull_and_bones_decor'})" alt='Skull n Nones Decor' title='Skull n Nones Decor' />
+		<area shape="rect" coords="808,1,972,57" onclick="return showContent('category',{'navcat':'.skull_and_bones_decor'})" alt='Skull n Bones Decor' title='Skull n Bones Decor' />
 	</map>
 	
 	<map name='zfooter_Map'>
@@ -372,8 +377,44 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 -->
 <div id='homepageTemplate' class='homeTemplate'>
 	
-
-
+	<div id="leftNav">
+		Navigation
+	</div>
+	
+	
+	<div id="mainCenter">
+		<div class="decoratorHoriz"></div>
+		<div id="slideshowNav"></div>
+		<div id="wideSlideshow" 
+			data-cycle-fx=fade
+			data-cycle-timeout=3000
+			data-cycle-pager="#slideshowNav"
+			data-cycle-pager-template="<a href=#> {{slideNum}} </a>"
+			>
+			<!-- empty element for pager links -->
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.03'});" src='img/homepage/slideshow/tikis_home3.jpg' width='512' height='384' alt="Tiki Signs" title="Tiki Signs" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.05.kim_taylor_reece_collection'});" src='img/homepage/slideshow/kim_taylor_reece_home.jpg' width='512' height='384' alt="Kim Taylor Reece Collection" title="Kim Taylor Reece Collection" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.tiki_bar'});" src='img/homepage/slideshow/tikibar_tikimaster.jpg' width='512' height='384' alt="Tiki Bar" title="Tiki Bar" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.koamaster'});" src='img/homepage/slideshow/hawaiian_koa_mainpic08.jpg' width='512' height='384' alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.americana'});" src='img/homepage/slideshow/americana_decor2.jpg' width='512' height='384' alt="Americana Decor" title="Americana Decor" />
+		</div>
+		<div class="decoratorHoriz"></div>
+		
+		<div id="dealOfTheWeek">
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.temp_deal_of_week'});" src="img/tiki__02172.jpg" width="512" height="241" alt="DEAL OF THE WEEK" title="Deal Of The Week" />
+		</div>
+	</div>
+	
+	<div id="mainRight1">
+		New Arrivals
+	</div>
+	
+	<div id="mainRight2">
+		Info blocks
+	</div>
+	
+	<div class="clearfix"></div>
+	
 	
 	<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul>
 
