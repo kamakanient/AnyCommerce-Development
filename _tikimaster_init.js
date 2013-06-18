@@ -38,8 +38,8 @@ app.rq.push(['script',0,app.vars.baseURL+'resources/jquery.showloading-v1.0.jt.j
 app.rq.push(['script',0,app.vars.baseURL+'resources/jquery.ui.anyplugins.js']); //in zero pass in case product page is first page.
 
 
-// homepage slideshow
 app.rq.push(['templateFunction','homepageTemplate','onCompletes',function(P) {
+	// homepage slideshow
 	$('#slideshowNav').html('');
 	$('#wideSlideshow').unbind().cycle({
 			pager:'#slideshowNav',
@@ -47,6 +47,14 @@ app.rq.push(['templateFunction','homepageTemplate','onCompletes',function(P) {
 			speed:'slow',
 			timeout: 2500,
 		});
+	
+	// homepage leftNav
+	if($('#tier1categories').length)	{
+		app.ext.store_navcats.u.getChildDataOf(zGlobals.appSettings.rootcat,{'parentID':'tier1categories','callback':'addCatToDom','templateID':'categoryListTemplateRootCats','extension':'store_navcats'},'appCategoryDetailMax');  //generate nav for 'browse'. doing a 'max' because the page will use that anway.
+		// we have empty lines in our catlist - let's remove them
+		// some categories have no name? or category(pretty) returns empty line
+		$('#tier1categories > li > div > div > span:empty').parent().parent().parent().remove();
+	}
 }]);
 
 

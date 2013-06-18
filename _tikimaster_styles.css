@@ -9,6 +9,10 @@ a img {
   border:none;
 }
 
+ul li {
+  list-style:none;
+}
+
 .marginTop5 {
   margin-top:5px;
 }
@@ -301,8 +305,20 @@ td.ztxt { padding:0 20px 0 0px; }
   width:150px;
   height:500px;
   float:left;
-  background:#E9DBB9;
   margin:0;
+}
+
+#leftNav ul {
+  margin:0;
+  padding:0;
+}
+
+#leftNav ul li {
+  background: #E9DBB9;
+  color: #593101;
+  padding: 3px 4px;
+  margin-bottom: 2px;
+  font-weight: bold;
 }
 
 #mainRight1 {
