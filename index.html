@@ -587,7 +587,7 @@ remember to NOT put the button inside the 'onclick' container or two events will
 		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='312' height='234' />
 		</div>
 
-		<h5 data-bind='var: product(zoovy:prod_name); format:text;'></h5>
+		<h5 data-bind='var: product(zoovy:prod_name); format:truncText; numCharacters:80;'></h5>
 		<span class='description hideInMinimalMode' data-bind='var: product(zoovy:prod_desc); format:truncText; numCharacters: 100;'></span>
 		<h6 data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; className:price;'></h6>
 		

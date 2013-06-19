@@ -493,7 +493,7 @@ td.ztxt { padding:0 20px 0 0px; }
   padding:2px 0 0 5px;
 }
 
-.productList li {
+.productList > li {
   width:312px;
   height:316px;
   border:1px solid #4F493C;
@@ -502,14 +502,14 @@ td.ztxt { padding:0 20px 0 0px; }
   background:#F9F4D9;
 }
 
-.productList li h5 {
+.productList > li h5 {
   background:#7EB784;
   color:white;
   font-size:8pt;
   padding:3px;
 }
 
-.productList li h6 {
+.productList > li h6 {
   color:#B47E0C;
   font-size:9pt;
   padding:0 4px;
