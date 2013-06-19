@@ -429,11 +429,69 @@ td.ztxt { padding:0 20px 0 0px; }
   background:#F9F4D9;
 }
 
-
-
 .prodBlockContent li p {
   border-top:1px solid #4F493C;
   color: #434544; font-family: verdana, arial, helvetica; font-size: 7pt; padding:3px;
+}
+
+
+.catHeader {
+  position:relative;
+  background:url('img/tk08_c_headerbg_orange-965x118.jpg');
+  /*width:965px; height:118px;*/
+  height:85px; width:755px;
+  padding:33px 0 0 210px;
+  margin:12px auto;
+}
+
+.catHeader p {
+  color:White;
+  font-size:18px;
+  font-weight:bold;
+  text-indent:0;
+  margin-left:20px;
+}
+
+.catHeader ul {
+  color:#434544;
+  margin:17px 0 0 0;
+  padding:0;
+  overflow:hidden; height:13px; font-size:10px;
+}
+
+.catHeader ul li:first-child {
+  list-style:none;
+}
+
+.catHeader ul li {
+  list-style:disc;
+  float:left;
+  margin-left:20px;
+}
+
+.categoryList li {
+  width:229px;
+  height:194px;
+  border:1px solid #4F493C;
+  margin:5px;
+  padding:0;
+}
+
+.categoryList li:nth-child(8n+0) { background:#AA27A9; }
+.categoryList li:nth-child(8n+1) { background:#3B9200; }
+.categoryList li:nth-child(8n+2) { background:#674C0B; }
+.categoryList li:nth-child(8n+3) { background:#283DB0; }
+.categoryList li:nth-child(8n+4) { background:mediumSeaGreen; }
+.categoryList li:nth-child(8n+5) { background:#B47E0C; }
+.categoryList li:nth-child(8n+6) { background:#2D62B5; }
+.categoryList li:nth-child(8n+7) { background:#A4C200; }
+
+.categoryList li .catName {
+  border-top:1px solid #4F493C;
+  font-size:13px;
+  color:White;
+  font-weight:Bold;
+  padding:2px 0 0 5px;
 }
 
 /************** Main content layout END ************/
