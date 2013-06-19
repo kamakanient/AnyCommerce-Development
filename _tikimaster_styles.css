@@ -1,7 +1,8 @@
 body {
   background:#8e7a47 url('img/tk08_bodybg_top-986x160.jpg') repeat-x top center;
   margin:0px; 
-  font-family: Tahoma, Arial, sans-serif; 
+  /*font-family: Tahoma, Arial, sans-serif;*/
+  font-family: verdana, arial, helvetica;
   color:#000000;
 }
 
@@ -50,7 +51,6 @@ ul li {
   height:28px; 
   font-weight: bold; 
   color: #c9bda5; 
-  font-family: verdana, arial, helvetica; 
   font-size: 11pt;
   background:url('img/tk08_h_plhead_bg-254x16.jpg') repeat-x bottom;
 }
@@ -191,7 +191,6 @@ ul li {
 #footer .zsmall {
   width:680px;
   color: #000000; 
-  font-family: verdana, arial, helvetica; 
   font-size: 7pt;
 }
 
@@ -218,7 +217,7 @@ ul li {
   border-radius: 8px 8px 0px 0px; 
 }
 
-.ztxt { color: #000000; font-family: verdana, arial, helvetica; font-size: 9pt; }
+.ztxt { color: #000000; font-size: 9pt; }
 td.ztxt { padding:0 20px 0 0px; }
 
 #footerSubscribeBar input.text {
@@ -333,7 +332,6 @@ td.ztxt { padding:0 20px 0 0px; }
 
 #leftNav {
   color: #000000; 
-  font-family: verdana, arial, helvetica; 
   font-size: 9pt;
   position:relative;
   width:150px;
@@ -379,7 +377,7 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 #mainRight1 .searchResultsNewProduct .description, .productList .description {
-  color: #434544; font-family: verdana, arial, helvetica; font-size: 7pt; padding:3px; display:block;
+  color: #434544; font-size: 7pt; padding:3px; display:block;
 }
 
 #mainRight2 {
@@ -402,7 +400,6 @@ td.ztxt { padding:0 20px 0 0px; }
 
 #mainRight2 .infoBlock p {
   color: #333534; 
-  font-family: verdana, arial, helvetica; 
   font-size: 7pt;
   padding:0;
 }
@@ -433,7 +430,7 @@ td.ztxt { padding:0 20px 0 0px; }
 
 .prodBlockContent li p {
   border-top:1px solid #4F493C;
-  color: #434544; font-family: verdana, arial, helvetica; font-size: 7pt; padding:3px;
+  color: #434544; font-size: 7pt; padding:3px;
 }
 
 
@@ -535,6 +532,38 @@ button.quickView:hover {
   font-weight:bold;
   background:#593101;
   border:1px dotted #4F493C;
+}
+
+.productPage .prodBigImage {
+  border:1px solid #4F493C;
+}
+
+.productPage .prodSummaryContainer {
+  background:#F9F4D9;
+  filter: alpha(opacity=85);
+  -moz-opacity: .85;
+  opacity: .85;
+  padding: 10px 15px;  
+}
+
+.productPage .prodSummaryContainer h1 {
+  font-size: 12pt;
+  color: #3B1B0E;
+  margin: 5px 0px 6px 0px;
+  font-weight: bold;
+}
+
+.productPage .prodSummaryContainer .basePrice {
+  font-weight: bold;
+  color: #3B1B0E;
+  font-size: 9pt;
+  margin-bottom:8px;
+}
+
+.productPage .prodSummaryContainer .stid {
+  color: #5E4119;
+  font-size: 8pt;
+  font-weight:normal;
 }
 
 /************** Main content layout END ************/
