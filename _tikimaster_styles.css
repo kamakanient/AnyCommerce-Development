@@ -406,9 +406,34 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 .prodBlockContent {
-  height:242px;
+  position:relative;
+  height:247px;
   clear:both;
   margin-bottom:12px;
+}
+
+.prodBlockContent ul {
+  padding:0;
+  margin:0;
+}
+.prodBlockContent li:first-child {
+  margin-left:6px;
+}
+
+.prodBlockContent li {
+  width:236px;
+  height:236px;
+  border:1px solid #4F493C;
+  float:left;
+  margin:4px 2px;
+  background:#F9F4D9;
+}
+
+
+
+.prodBlockContent li p {
+  border-top:1px solid #4F493C;
+  color: #434544; font-family: verdana, arial, helvetica; font-size: 7pt; padding:3px;
 }
 
 /************** Main content layout END ************/

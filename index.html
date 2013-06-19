@@ -442,13 +442,13 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	
 	<div class="clearfix marginBottom"></div>
 	
+	
 	<div class="prodBlock">
 		<div class="ztitle">
 	 		<div class="zcolor_dark floatLeft topRound">Always Happy Hour</div>
 		</div>
 		<div class="prodBlockContent zcolor_dark">
-			<!--ul data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"name":"Tiki Bar Decor"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNewArrivals;' class='listStyleNone clearfix noPadOrMargin newProductList'></ul-->
-			<!--ul data-bind="var: list($featured_items.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; before:<div class='titleRed'>Most Popular Items</div>; withInventory:1; withVariations:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList randomList'></ul-->
+			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; items_per_page:4; withReviews:1;"></ul>
 		</div>
 	</div>
 	
@@ -457,6 +457,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor floatLeft topRound">Coastal &amp; Nautical</div>
 		</div>
 		<div class="prodBlockContent zcolor">
+			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; items_per_page:4; withReviews:1;"></ul>
 		</div>
 	</div>
 	
@@ -465,6 +466,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor_light floatLeft topRound">Gifts Under $25</div>
 		</div>
 		<div class="prodBlockContent zcolor_light">
+			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; items_per_page:4; withReviews:1;"></ul>
 		</div>
 	</div>
 	
@@ -487,16 +489,18 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 		
 	<!--ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul-->
 
-	<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; before:<h2>Featured Items</h2>; withReviews:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
+	<!--ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; items_per_page:4; before:<h2>Featured Items</h2>; withReviews:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
 	<!--p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
 
 <!-- a sample of how to format an elastic native search in a data-bind -->
-	<!--ul id='homeProdSearchBestSellers' data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNoPreview; before:<h2>Best Sellers</h2>;' class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
+	<!--ul id='homeProdSearchBestSellers' data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNoPreview; before:<h2>Best Sellers</h2>;' class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
 
-	<a href="#" onClick="return showContent('search',{'TAG':'IS_BESTSELLER'});">See all Best Sellers</a-->
+	<!--a href="#" onClick="return showContent('search',{'TAG':'IS_BESTSELLER'});">See all Best Sellers</a-->
 
 <!-- a sample of how to get a 'list' src onto the page. -->
-	<!--ul data-bind="var: list($models.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
+	<!--ul data-bind="var: list($models.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
+	
+	<ul data-bind="var: list($wishlist.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
 
 
 </div>
@@ -659,6 +663,15 @@ container ul should have lineItemProdlist class on it instead of productList
 </li>
 
 
+<li id='homepageProductListTemplate' class='loadingBG' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
+
+	<div onClick="showContent('product',{'pid':$(this).attr('data-pid')})" data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='pointer'>
+		<div class='prodThumbContainer' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
+		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='236' height='177' />
+		</div>
+		<p data-bind='var: product(zoovy:prod_desc); format:truncText; numCharacters:165;'></p>
+</li>
+
 </ul>
 
 
@@ -709,6 +722,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 	</div>
 	<!--div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div-->
 </li>
+
 </ul>
 
 
