@@ -433,6 +433,7 @@ td.ztxt { padding:0 20px 0 0px; }
   color: #434544; font-size: 7pt; padding:3px;
 }
 
+  /************* Category page layout *****************/
 
 .catHeader {
   position:relative;
@@ -476,6 +477,10 @@ td.ztxt { padding:0 20px 0 0px; }
   padding:0;
 }
 
+/* when displaying list of subcategories with images,
+we set different backgrounds for cat blocks
+an + b - a - size of loop, b - offset
+*/
 .categoryList li:nth-child(8n+0) { background:#AA27A9; }
 .categoryList li:nth-child(8n+1) { background:#3B9200; }
 .categoryList li:nth-child(8n+2) { background:#674C0B; }
@@ -493,6 +498,10 @@ td.ztxt { padding:0 20px 0 0px; }
   padding:2px 0 0 5px;
 }
 
+  /************* END Category page layout *****************/
+
+  /************* Category with products page layout *****************/
+  
 .productList > li {
   width:312px;
   height:316px;
@@ -537,6 +546,10 @@ button.quickView:hover {
   border:1px dotted #4F493C;
 }
 
+  /************* END Category with products page layout *****************/
+  
+  /************* Product page layout *****************/
+  
 .productPage .prodBigImage {
   border:1px solid #4F493C;
 }
@@ -608,5 +621,7 @@ button.quickView:hover {
   color: #3B1B0E;
   margin:7px;
 }
+  
+  /************* END Product page layout *****************/
 
 /************** Main content layout END ************/
