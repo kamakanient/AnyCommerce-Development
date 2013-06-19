@@ -705,7 +705,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 		<img src='blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
 		</div>
 
-		<span class='description hideInMinimalMode' data-bind='var: product(description); format:text;'></span>
+		<span class='description hideInMinimalMode' data-bind='var: product(description); format:truncText; numCharacters: 150;'></span>
 	</div>
 	<!--div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div-->
 </li>
