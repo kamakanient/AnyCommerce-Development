@@ -49,12 +49,12 @@ app.rq.push(['templateFunction','homepageTemplate','onCompletes',function(P) {
 		});
 	
 	// homepage leftNav
-	if($('#tier1categories').length)	{
+	/*if($('#tier1categories').length)	{
 		app.ext.store_navcats.u.getChildDataOf(zGlobals.appSettings.rootcat,{'parentID':'tier1categories','callback':'addCatToDom','templateID':'categoryListTemplateRootCats','extension':'store_navcats'},'appCategoryDetailMax');  //generate nav for 'browse'. doing a 'max' because the page will use that anway.
 		// we have empty lines in our catlist - let's remove them
 		// some categories have no name? or category(pretty) returns empty line
 		$('#tier1categories > li > div > div > span:empty').parent().parent().parent().remove();
-	}
+	}*/
 }]);
 
 

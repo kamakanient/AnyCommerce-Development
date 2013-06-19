@@ -384,7 +384,10 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 <div id='homepageTemplate' class='homeTemplate'>
 	
 	<div id="leftNav">
-		<ul id='tier1categories'></ul>
+		<!--ul id='tier1categories'></ul-->
+		
+		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul>
+		
 		<img class="pointer catLink block center" onClick="return showContent('category',{'navcat':'.thatchandbamboo'});" src='img/logos/2009_logos/thatchandbamboo.jpg' width='140' height='71' alt="Thatch &amp; Bamboo" title="Thatch &amp; Bamboo" />
 	</div>
 	
@@ -444,6 +447,8 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor_dark floatLeft topRound">Always Happy Hour</div>
 		</div>
 		<div class="prodBlockContent zcolor_dark">
+			<!--ul data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"name":"Tiki Bar Decor"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNewArrivals;' class='listStyleNone clearfix noPadOrMargin newProductList'></ul-->
+			<!--ul data-bind="var: list($featured_items.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; before:<div class='titleRed'>Most Popular Items</div>; withInventory:1; withVariations:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList randomList'></ul-->
 		</div>
 	</div>
 	
@@ -480,18 +485,18 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	We have Tiki carvers throughout Hawaii and the different areas of the Pacific who carve tiki statues and Tiki gods, tiki totems and masks, fabricate koa canoe paddles and make other Hawaiian crafts. Our tiki sculptures are all quality woodcarvings, each piece is hand carved and hand rubbed to give a beautiful finish. All finishing and quality control is done in Kailua, Hawaii.
 	</p>
 		
-	<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul>
+	<!--ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul-->
 
 	<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; before:<h2>Featured Items</h2>; withReviews:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
-	<p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;"></p>
+	<!--p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
 
 <!-- a sample of how to format an elastic native search in a data-bind -->
-	<ul id='homeProdSearchBestSellers' data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNoPreview; before:<h2>Best Sellers</h2>;' class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
+	<!--ul id='homeProdSearchBestSellers' data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNoPreview; before:<h2>Best Sellers</h2>;' class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
 
-	<a href="#" onClick="return showContent('search',{'TAG':'IS_BESTSELLER'});">See all Best Sellers</a>
+	<a href="#" onClick="return showContent('search',{'TAG':'IS_BESTSELLER'});">See all Best Sellers</a-->
 
 <!-- a sample of how to get a 'list' src onto the page. -->
-	<ul data-bind="var: list($models.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
+	<!--ul data-bind="var: list($models.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
 
 
 </div>
