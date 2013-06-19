@@ -5,8 +5,9 @@ body {
   color:#000000;
 }
 
-a, {color:#593101;} /* this color should match the color set in zlink */
+a {color:#593101;} /* this color should match the color set in zlink */
 /* .mpControls, .ui-state-default a */
+a:visited { color:#492101; }
 a:hover {color:#c4fbde;}
 
 p { padding:0.2em 0.5em; text-indent:0.5em;}
