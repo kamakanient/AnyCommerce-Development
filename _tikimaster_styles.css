@@ -5,7 +5,8 @@ body {
   color:#000000;
 }
 
-a   {color:#593101;} /* this color should match the color set in zlink */
+a, {color:#593101;} /* this color should match the color set in zlink */
+/* .mpControls, .ui-state-default a */
 a:hover {color:#c4fbde;}
 
 p { padding:0.2em 0.5em; text-indent:0.5em;}
@@ -376,7 +377,7 @@ td.ztxt { padding:0 20px 0 0px; }
   height:185px;
 }
 
-#mainRight1 .searchResultsNewProduct .description {
+#mainRight1 .searchResultsNewProduct .description, .productList .description {
   color: #434544; font-family: verdana, arial, helvetica; font-size: 7pt; padding:3px; display:block;
 }
 
@@ -492,6 +493,47 @@ td.ztxt { padding:0 20px 0 0px; }
   color:White;
   font-weight:Bold;
   padding:2px 0 0 5px;
+}
+
+.productList li {
+  width:312px;
+  height:316px;
+  border:1px solid #4F493C;
+  margin:4px;
+  padding:0;
+  background:#F9F4D9;
+}
+
+.productList li h5 {
+  background:#7EB784;
+  color:white;
+  font-size:8pt;
+  padding:3px;
+}
+
+.productList li h6 {
+  color:#B47E0C;
+  font-size:9pt;
+  padding:0 4px;
+  float:right;
+}
+
+button.quickView {
+  color:#593101;
+  font-size:9pt;
+  padding:4px;
+  font-weight:bold;
+  background:#F9F4D9;
+  border:1px dotted #4F493C;
+}
+
+button.quickView:hover {
+  color:#F9F4D9;
+  font-size:9pt;
+  padding:4px;
+  font-weight:bold;
+  background:#593101;
+  border:1px dotted #4F493C;
 }
 
 /************** Main content layout END ************/
