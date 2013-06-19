@@ -805,20 +805,21 @@ this will likely become more flexible in the future. ###
 	<div class="socialLinks"></div>
 
 
-	<table class='marginBottom fullWidth gridTable' data-app-role='childrenSiblingsContainer'>
+	<!--table class='marginBottom fullWidth gridTable' data-app-role='childrenSiblingsContainer'>
 		<tbody data-bind="var: product(zoovy:grp_children); format:productList; extension:store_prodlist; loadsTemplate:productListTemplateChildren;hide_summary:true; withInventory:1; withVariations:1;"></tbody>
-	</table>
+	</table-->
 
 
-	<div data-bind='var: product(zoovy:ship_latency); format:text;pretext:Normally ships in ;posttext: day(s);' class='latency marginBottom'></div>
+	<div data-bind='var: product(zoovy:ship_latency); format:text; pretext:Normally Ships Within ;posttext: day(s);' class='latency marginBottom'></div>
 	<div data-app-role='timeInTransit' class='displayNone'></div>
 
 	<form data-bind='var: product(pid); format:atcForm; extension:store_product;' class='prodViewerAddToCartForm clearfix' action='#' onSubmit="app.ext.myRIA.u.addItemToCart($(this), {'action':'modal'}); return false;">
 
 		<fieldset data-bind='var: product(pid); format:atcVariations; extension:store_product;' class='borderNone'></fieldset>
-		<fieldset data-bind='useParentData:true; format:atcQuantityInput; extension:store_product; pretext:Quantity: ; defaultValue:1;' class='borderNone'></fieldset>
+		<fieldset data-bind='useParentData:true; format:atcQuantityInput; extension:store_product; pretext:Quantity: ; defaultValue:1;' class='borderNone displayNone'></fieldset>
 
-		<input type='submit' value='Add to Cart' class='ui-button ui-button-text ui-corner-all ui-state-default addToCartButton displayNone' data-bind='var: product(pid); format:addToCartButton; extension:store_product;'  />
+		<!-- add to cart button -->
+		<input type='submit' value='' class='ui-button ui-button-text ui-corner-all ui-state-default addToCartButton displayNone' data-bind='var: product(pid); format:addToCartButton; extension:store_product;'  />
 	</form>
 
 	<div data-bind='var:product(zoovy:prod_cpsiawarning); format:cpsiaWarning; extension:myRIA;'></div>
@@ -836,6 +837,12 @@ this will likely become more flexible in the future. ###
 	<a href='#' onClick="app.ext.myRIA.a.add2BuyerList({sku:$(this).parent().attr('data-pid'),'listid':'wishlist'}); return false;">Add to Wishlist</a>
 
 	</menu>
+	
+	<div class="prodDesc">
+		<div data-bind='var: product(zoovy:prod_desc); format:wiki; wikiFormats:myRIA;'></div>
+		<div data-bind='var: product(zoovy:prod_detail); format:wiki; wikiFormats:myRIA;'></div>
+		<div data-bind='var: product(zoovy:prod_features); format:wiki; wikiFormats:myRIA;'></div>
+	</div>
 
 	</td>
 </tr>
@@ -846,7 +853,7 @@ the tabs are built in an onComplete.  ID's are added based on sku AND index, so 
 or the tab clicked won't open the right content.
 It's done this way because ID's hard coded into template are bad mojo (templates are recycled) and because using data-binds to add id's caused some serious issues
 -->
-<div class='prodTabs tabbedProductContent'>
+<!--div class='prodTabs tabbedProductContent'>
 
 	<ul class='tabs'>
 		<li class='prodDescTab'><a href='#prodDesc'>Description</a></li>
@@ -891,7 +898,7 @@ It's done this way because ID's hard coded into template are bad mojo (templates
 
 
 
-</div>
+</div--><!-- end prodTabs -->
 
 	</td>
 </tr>

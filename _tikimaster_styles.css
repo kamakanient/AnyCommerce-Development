@@ -523,6 +523,9 @@ button.quickView {
   font-weight:bold;
   background:#F9F4D9;
   border:1px dotted #4F493C;
+  /*position:absolute;
+  top:20px;
+  right:13px;*/
 }
 
 button.quickView:hover {
@@ -550,7 +553,6 @@ button.quickView:hover {
   font-size: 12pt;
   color: #3B1B0E;
   margin: 5px 0px 6px 0px;
-  font-weight: bold;
 }
 
 .productPage .prodSummaryContainer .basePrice {
@@ -564,6 +566,47 @@ button.quickView:hover {
   color: #5E4119;
   font-size: 8pt;
   font-weight:normal;
+}
+
+.productPage .prodSummaryContainer .addToCartButton {
+  background:url('img/tk08b_add_to_cart.gif');
+  width:131px;
+  height:31px;
+  border:none;
+  margin:0 0;
+  padding:0;
+}
+
+.productPage .prodSummaryContainer .latency {
+  color: black;
+  font-size: 9pt;
+  margin-bottom:2px;
+}
+
+.productPage .prodSummaryContainer .CRMButtonMenu {
+  font-size: 8pt;
+}
+
+.productPage .prodSummaryContainer .CRMButtonMenu a:hover {
+  color: #7E6139;
+}
+
+.productPage .prodSummaryContainer .prodDesc {
+  color: #5E4119;
+  font-size: 8pt;
+  height:270px;
+  overflow-y:auto;
+}
+
+.productPage .prodlistRelatedContainer {
+  margin-top:20px;
+  border-top:1px dotted #4F493C;
+}
+
+.productPage .prodlistRelatedContainer h2 {
+  font-size: 12pt;
+  color: #3B1B0E;
+  margin:7px;
 }
 
 /************** Main content layout END ************/
