@@ -599,10 +599,10 @@ button.quickView:hover {
   padding:0;
 }
 
-.prodSummaryContainer .latency {
-  color: black;
+.prodSummaryContainer .latency, .notAvailableForPurchase {
+  color: Black;
   font-size: 14px;
-  margin-bottom:2px;
+  margin-bottom:6px;
 }
 
 .prodSummaryContainer .CRMButtonMenu {
