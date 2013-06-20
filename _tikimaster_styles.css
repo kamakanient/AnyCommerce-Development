@@ -271,10 +271,12 @@ td.ztxt { padding:0 20px 0 0px; }
 
 #bg1 {
   background:url('img/tk08_bodybg_left-493x552.gif') left top no-repeat;
+  overflow:hidden;
 }
 
 #bg2 {
   background:url('img/tk08_bodybg_right-493x552.gif') right top no-repeat;
+  overflow:hidden;
 }
 
 #appPreView {
