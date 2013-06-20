@@ -29,9 +29,8 @@ ul li {
 
 .block { display:block; }
 
-.ui-button-text {
-  padding:3px;
-}
+.ui-button-text { padding:3px 5px; }
+h2.ui-widget-header { font-size:1.1em; }
 
 .minimalMode .searchResultsNewProduct	{
   overflow:hidden; margin:0;
