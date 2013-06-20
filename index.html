@@ -46,7 +46,8 @@ all css includes need to be after the js that changes the base url.
 css files should be included before any .js file to ensure they are downloaded in parallel
 -->
 <link rel="stylesheet" type="text/css" href="app-quickstart.css" />
-<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css" />
+<!--link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css" /-->
+<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/pepper-grinder/jquery-ui.css" />
 <link rel="stylesheet" type="text/css" href="_tikimaster_styles.css" />
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -96,33 +97,35 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	<!-- HEADER -->
 	<div id="header">
 
-		<img id="custom-carving-link" class="pointer" onclick="return showContent('category',{'navcat':'.002'})" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' title='Custom Carving' />
+		<img id="customCarvingLink" class="pointer" onclick="return showContent('category',{'navcat':'.002'})" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' title='Custom Carving' />
 
-		<div id="carving-emporium-link"><a href='http://www.carvingemporium.com/c=TBB4t99aX93Wk8HLTXgv7LuEy/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' title='Carving Emporium' /></a></div>
+		<div id="carvingEmporiumLink"><a href='http://www.carvingemporium.com/c=TBB4t99aX93Wk8HLTXgv7LuEy/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' title='Carving Emporium' /></a></div>
 
 		<!-- holiday/xmas header = tk08_header_xmas-738x136.png -->
 
-		<div id="header-logo"><img src='img/tk08_header-738x136.png' width='738' height='136' alt='TikiMaster.com - The Ultimate Tiki Source' /></div>
+		<div id="headerLogo"><img src='img/tk08_header-738x136.png' width='738' height='136' alt='TikiMaster.com - The Ultimate Tiki Source' /></div>
 	
-		<div id="header-logo-bg"><img src='img/tk08_header_bg4-726x122.jpg' width='726' height='122' alt='' /></div>
+		<div id="headerLogoBG"><img src='img/tk08_header_bg4-726x122.jpg' width='726' height='122' alt='' /></div>
 
-		<!-- REPLACE WITH VARIABLES -->
-		<div id="cart-total">
+		<div id="cartTotal">
+			<!--div data-bind="var: cart(sum/items_count); format:text;"></div>
+			<div data-bind='var: cart(sum/order_total); format:money; hideZero:false; currencySign: $;'></div>
+			<div data-bind='var: cart(sum/ship_total); format:money; hideZero:false; currencySign: $;'></div-->
 			<div>0</div>
 			<div>$0.00</div>
 			<div>$0.00</div>
 		</div>
 
-		<img id="homepage-link" class="pointer" onclick="return showContent('homepage',{});" src='img/blank.gif' width='440' height='120' alt='tikimaster.com' title='TikiMaster.com - The Ultimate Tiki Source' />
+		<img id="homepageLink" class="pointer" onclick="return showContent('homepage',{});" src='img/blank.gif' width='440' height='120' alt='tikimaster.com' title='TikiMaster.com - The Ultimate Tiki Source' />
 
 		<div id="livechat"><img src="https://chat.livechatinc.net/licence/1018178/button.cgi?lang=en&amp;groups=0" style="cursor:pointer;cursor:hand" onclick="window.open('https://chat.livechatinc.net/licence/1018178/open_chat.cgi?groups=0'+'&amp;s=1&amp;lang=en&amp;dc='+escape(document.cookie+';l='+document.location+';r='+document.referer+';s='+typeof lc_session),'Czat_1018178','width=604,height=247,resizable=no,scrollbars=no,status=1');" />
 		</div>
 
-		<div id="header-nav">
-			<img src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' />
+		<div id="headerNav">
+			<img class="pointer" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' />
 		</div>
 
-		<img id="cart-link" class="pointer" onclick="return showContent('cart',{})" src='img/tk08_btn_cart-129x29.gif' width='129' height='29' alt='view cart' />
+		<img id="cartLink" class="pointer" onclick="return showContent('cart',{})" src='img/tk08_btn_cart-129x29.gif' width='129' height='29' alt='view cart' />
 		<!--form id="headerSearchFrm" name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
 			<input type='search' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
 			<button></button>
@@ -166,17 +169,17 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 					</div>
 				</td>
 	
-				<td id="mobile-link">
+				<td id="mobileLink">
 					<div>
 						<a href='http://m.tikimaster.com/'><img src='img/tk10_mobilebanner-181x85.png' width='181' height='85' alt='visit our mobile website at m.tikimaster.com'  /></a>
 					</div>
 				</td>
 	
-				<td id="social-links">
+				<td id="socialLinks">
 	
 					<div><img src='img/tk10_socialhead-230x52.png' width='230' height='52' alt='Keep up with our news, values and tidbits' /></div>
 
-					<div id="social-links-content">
+					<div id="socialLinksContent">
 						<a href='http://twitter.com/kamakani' target='twitter'><img src='img/socialb_logos/twitter-32x32.png' width='32' height='32' alt='tweet with us on twitter'  /></a>
 
 						<a href='http://www.facebook.com/pages/Tikimaster-The-Store-Of-Hawaii/79606002155/' target='facebook'><img src='img/socialb_logos/facebook-32x32.png' width='32' height='32' alt='follow us on facebook'  /></a>
@@ -191,21 +194,23 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 		</table>
 	</div>
 
-	<img id="banner-bottom" src='img/tk10_bannerrow-942x84.png' alt='' width='942' height='84'  usemap="#bannerMap" />
+	<img id="bannerBottom" src='img/tk10_bannerrow-942x84.png' alt='' width='942' height='84'  usemap="#bannerMap" />
 	<!-- /promo banners and social network logos -->
 
 	<!-- footer -->
 	<div id="footer">
-		<div id="footer-nav">
+		<div id="footerNav">
 			<!--span id="BuySafeSealFooter">
 				<script type="text/javascript">
 					WriteBuySafeSeal( 'BuySafeSealFooter', 'Small', 'HASH=AXwi%2Fc5sM86Xm%2BRskm5EMnqL1u%2BEuDRKGzUSBrit1%2FZch9%2BixqB61x13xqQScVHdsyqpSu%2B7%2FrSnafkdh2LUfg%3D%3D' );
 				</script>
 			</span-->
-			<div id="footer-nav-left"><img src='img/tk10_footer2-738x139.png' alt='' width='738' height='139' usemap='#zfooter_Map' /></div>
+			<div id="footerNavLeft"><img class="pointer" src='img/tk10_footer2-738x139.png' alt='' width='738' height='139' usemap='#zfooter_Map' /></div>
 
-			<div id="footer-nav-right">
+			<div id="footerNavRight">
 				<!-- FEATURED STORE SELECTED RANDOMLY - NEED TO UPDATE THIS -->
+				
+				<!-- some inline css left from the old website - need to refactor this -->
 				<div style='padding-top:40px;'>
 				<!-- begin vignettes  
 					increment = 20
