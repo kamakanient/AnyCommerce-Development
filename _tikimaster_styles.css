@@ -447,12 +447,13 @@ td.ztxt { padding:0 20px 0 0px; }
   margin:12px auto;
 }
 
-.catHeader p {
+.catHeader h2 {
   color:White;
   font-size:18px;
-  font-weight:bold;
   text-indent:0;
   margin-left:20px;
+  padding-right:1em;
+  height:52px;
 }
 
 .catHeader ul {

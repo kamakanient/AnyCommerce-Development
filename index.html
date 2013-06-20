@@ -529,7 +529,9 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
 
 	<div class="catHeader">
-		<p>Category keywords here<br />%page.keywords or %page.desc ? where are they???</p>
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+		
+		<!--p></p-->
 		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
 	</div>
 
