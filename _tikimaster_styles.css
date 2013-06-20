@@ -23,6 +23,8 @@ ul li {
   list-style:none;
 }
 
+map area { cursor:pointer; }
+
 .marginTop5 {
   margin-top:5px;
 }
