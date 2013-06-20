@@ -550,7 +550,7 @@ button.quickView:hover {
   
   /************* Product page layout *****************/
   
-.productPage .prodBigImage {
+.prodBigImage {
   border:1px solid #4F493C;
 }
 
@@ -563,7 +563,7 @@ button.quickView:hover {
 }
 
 
-.productPage .prodSummaryContainer {
+.prodSummaryContainer {
   background:#F9F4D9;
   filter: alpha(opacity=85);
   -moz-opacity: .85;
@@ -571,26 +571,26 @@ button.quickView:hover {
   padding: 10px 15px;  
 }
 
-.productPage .prodSummaryContainer h1 {
-  font-size: 12pt;
+.prodSummaryContainer h1 {
+  font-size: 18px;
   color: #3B1B0E;
   margin: 5px 0px 6px 0px;
 }
 
-.productPage .prodSummaryContainer .basePrice {
+.prodSummaryContainer .basePrice {
   font-weight: bold;
   color: #3B1B0E;
-  font-size: 9pt;
+  font-size: 14px;
   margin-bottom:8px;
 }
 
-.productPage .prodSummaryContainer .stid {
+.prodSummaryContainer .stid {
   color: #5E4119;
-  font-size: 8pt;
+  font-size: 12px;
   font-weight:normal;
 }
 
-.productPage .prodSummaryContainer .addToCartButton {
+.prodSummaryContainer .addToCartButton {
   background:url('img/tk08b_add_to_cart.gif');
   width:131px;
   height:31px;
@@ -599,23 +599,23 @@ button.quickView:hover {
   padding:0;
 }
 
-.productPage .prodSummaryContainer .latency {
+.prodSummaryContainer .latency {
   color: black;
-  font-size: 9pt;
+  font-size: 14px;
   margin-bottom:2px;
 }
 
-.productPage .prodSummaryContainer .CRMButtonMenu {
-  font-size: 8pt;
+.prodSummaryContainer .CRMButtonMenu {
+  font-size: 12px;
 }
 
-.productPage .prodSummaryContainer .CRMButtonMenu a:hover {
+.prodSummaryContainer .CRMButtonMenu a:hover {
   color: #7E6139;
 }
 
-.productPage .prodSummaryContainer .prodDesc {
+.prodSummaryContainer .prodDesc {
   color: #5E4119;
-  font-size: 8pt;
+  font-size: 12px;
   height:270px;
   overflow-y:auto;
 }
