@@ -148,8 +148,8 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 
 <div id='mainContentArea'></div><!-- DO NOT REMOVE - this is where the specific page (ex: homepage, product, category) content is going to go -->
 
-	</div> <!-- bg1 background div end -->
 	</div> <!-- bg2 background div end -->
+	</div> <!-- bg1 background div end -->
 	
 	<!-- /promo banners and social network logos -->
 	<div class='wrapPromoBox'>
@@ -592,7 +592,7 @@ remember to NOT put the button inside the 'onclick' container or two events will
 		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='312' height='234' />
 		</div>
 
-		<h5 data-bind='var: product(zoovy:prod_name); format:truncText; numCharacters:80;'></h5>
+		<h5 data-bind='var: product(zoovy:prod_name); format:truncText; numCharacters:75;'></h5>
 		<span class='description hideInMinimalMode' data-bind='var: product(zoovy:prod_desc); format:truncText; numCharacters: 100;'></span>
 		<h6 data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; className:price;'></h6>
 		
@@ -779,11 +779,11 @@ this will likely become more flexible in the future. ###
 
 	<div data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='prodThumbs'>
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"2"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image2); format:imageURL;' alt='' width='100' height='100' /></div>
+<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"2"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image2); format:imageURL;' alt='' width='120' height='90' /></div>
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"3"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image3); format:imageURL;' alt=''  width='100' height='100' /></div>
+<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"3"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image3); format:imageURL;' alt=''  width='120' height='90' /></div>
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"4"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image4); format:imageURL;' alt='' width='100' height='100' /></div>
+<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"4"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image4); format:imageURL;' alt='' width='120' height='90' /></div>
 
 	</div>
 

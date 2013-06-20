@@ -554,6 +554,15 @@ button.quickView:hover {
   border:1px solid #4F493C;
 }
 
+.productPage .prodThumbs img {
+  border:1px solid #4F493C;
+}
+
+.imageViewerSoloImage {
+  border:1px solid #4F493C;
+}
+
+
 .productPage .prodSummaryContainer {
   background:#F9F4D9;
   filter: alpha(opacity=85);
