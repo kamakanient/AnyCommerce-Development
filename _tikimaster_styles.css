@@ -29,6 +29,10 @@ ul li {
 
 .block { display:block; }
 
+.ui-button-text {
+  padding:3px;
+}
+
 .minimalMode .searchResultsNewProduct	{
   overflow:hidden; margin:0;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
