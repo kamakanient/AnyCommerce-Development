@@ -140,6 +140,13 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	<div id="bg1"><!-- bg1 empty div for left background -->
 	<div id="bg2"><!-- bg2 empty div for right background -->
 		
+		<div class="searchAndBreadcrumb">
+			<form id="headerSearchFrm" name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
+				<input type='search' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
+				<button></button>
+			</form>
+		</div>
+		
 
 <div id='globalMessaging' class='appMessaging'></div><!-- DO NOT REMOVE - used for some high level error handling (usually appears below breadcrumb nav or top bar) -->
 
@@ -528,7 +535,7 @@ each of the 'sections' are used to load another template. don't change the id.
 don't modify the 'data-templateid' unless you are changing template names and updating everywhere appropriate.
 -->
 <div id='categoryTemplate' class='loadingBG categoryTemplate'>
-
+	
 	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
 
 	<div class="catHeader">
@@ -705,17 +712,20 @@ remember to NOT put the button inside the 'onclick' container or two events will
 
 SANITY -> if you change the height and width of this image, change the .minimalMode .searchResultsProduct in qs_styles.css to match
 -->
-<li id='productListTemplateResults' class='loadingBG searchResultsProduct ' >
-	<div onClick="app.ext.myRIA.a.handleProdPreview($(this).parent().attr('data-pid'));" class='pointer'>
+<li id='productListTemplateResults' class='loadingBG searchResultsProduct ' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
+	<button class='floatRight pointer quickView displayNone' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">Quickview</button>
+	
+	<!--div onClick="app.ext.myRIA.a.handleProdPreview($(this).parent().attr('data-pid'));" class='pointer'-->
+	<div onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')})"  class='pointer'>
 		<div class='prodThumbContainer'>
-		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='120' height='120' />
+		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='312' height='234' />
 		</div>
 
 		<h5 class='hideInMinimalMode' data-bind='var: product(prod_name); format:text;'></h5>
-
+		<span class='description hideInMinimalMode' data-bind='var: product(description); format:truncText; numCharacters: 100;'></span>
 		<h6 class='hideInMinimalMode' data-bind='var: product(base_price); format:money; isElastic:1; currencySign: $;  hideZero:true; className:price; pretext: Our Price: ;'></h6>
 	</div>
-	<div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div>
+
 </li>
 
 <li id='productListTemplateResultsNoPreview' class='loadingBG searchResultsProduct ' >
@@ -724,22 +734,24 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='120' height='120' />
 		</div>
 
-		<h5 class='hideInMinimalMode' data-bind='var: product(prod_name); format:text;'></h5>
+		<h5 class='hideInMinimalMode' data-bind='var: product(prod_name); format:truncText; numCharacters:75;'></h5>
 
-		<h6 class='hideInMinimalMode' data-bind='var: product(base_price); format:money; isElastic:1; currencySign: $;  hideZero:true; className:price; pretext: Our Price: ;'></h6>
+		<h6 class='hideInMinimalMode' data-bind='var: product(base_price); fformat:money; currencySign: $;  hideZero:true; className:price;'></h6>
 	</div>
-	<div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div>
+	<div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details
 </li>
+
 
 <li id='productListTemplateResultsNewArrivals' class='loadingBG searchResultsNewProduct ' >
 	<div onClick="return showContent('product', {'pid' : $(this).parent().attr('data-pid')});" class='pointer'>
 		<div class='prodThumbContainer'>
-		<img src='blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
+			<img src='blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
 		</div>
 
 		<span class='description hideInMinimalMode' data-bind='var: product(description); format:truncText; numCharacters: 150;'></span>
 	</div>
 	<!--div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div-->
+
 </li>
 
 </ul>

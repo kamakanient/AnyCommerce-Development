@@ -276,8 +276,41 @@ td.ztxt { padding:0 20px 0 0px; }
 #breadcrumb_onhover .hasSubcats {background:url('img/tm11_downarrow_orange-8x3.gif') no-repeat center right #e9dbb9; }
 #breadcrumb_onhover .zlink:hover {color:#593101;}*/
 
+.searchAndBreadcrumb {
+  position:relative;
+  height:26px;
+  width:976px;
+  margin:0 auto;
+}
+
+.searchAndBreadcrumb .productSearchForm {
+  margin:0 0.5em 0 0;
+  padding:0;
+  float:right;
+}
+
+.searchAndBreadcrumb  .productSearchKeyword {
+  display:inline-block;
+  margin:0;
+  padding:0;
+  font-size:9pt;
+  border: 1px solid #492E04;
+  background-color: #FAEDCD;
+  font-size: 8pt;
+  height:18px;
+}
+
+.searchAndBreadcrumb .productSearchForm button {
+  display:inline-block;
+  width:96px; height:26px;
+  background:url('img/tk08_btn_search-96x22.gif') left top no-repeat;
+  border:0;
+}
+
 .breadcrumb {
-    margin-bottom: 12px;
+  float:left;
+  position:relative;
+  margin:-40px 0 0 4px;
 }
 
 .breadcrumb li {
@@ -294,7 +327,7 @@ td.ztxt { padding:0 20px 0 0px; }
     padding: 3px 5px;
     margin:0;
     font-weight: bold;
-    font-size:10pt;
+    font-size:9pt;
 }
 
 .breadcrumb li a:hover {
@@ -339,7 +372,7 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 #mainContentArea { 
-  width:976px; margin:0 auto; padding:1em 0 0 0;
+  width:976px; margin:0 auto; padding:0.3em 0 0 0;
 }
 
 .decoratorHoriz {
@@ -494,7 +527,7 @@ td.ztxt { padding:0 20px 0 0px; }
   /*width:965px; height:118px;*/
   height:85px; width:755px;
   padding:33px 0 0 210px;
-  margin:12px auto;
+  margin:7px auto;
 }
 
 .catHeader h2 {
@@ -605,7 +638,11 @@ button.quickView:hover {
   /************* END Category with products page layout *****************/
   
   /************* Product page layout *****************/
-  
+
+.productPage {
+  margin:7px 0;
+}
+
 .prodBigImage {
   border:1px solid #4F493C;
 }
