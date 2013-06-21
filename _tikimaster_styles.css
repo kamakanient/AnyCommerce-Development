@@ -3,7 +3,7 @@ body {
   margin:0px; 
   /*font-family: Tahoma, Arial, sans-serif;*/
   font-family: verdana, arial, helvetica;
-  color:#000000;
+  color:#3B1B0E;
 }
 
 .relative {position:relative;}
@@ -360,7 +360,7 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 #appPreView {
-  background:#e5e0da;
+  background:#E9DBB9;
   border:2px solid #623b25;
   margin:1em auto;
 }
@@ -726,5 +726,26 @@ button.quickView:hover {
 }
   
   /************* END Product page layout *****************/
+  
+  /************* companyTemplate layout ******************/
+#mainContentArea_company { margin:7px 0; font-size:90%; }
+#mainContentArea_company p { margin:3px; }
+#mainContentArea_company a { text-decoration:underline; }
+#mainContentArea_company a:hover { color: #7E6139; }
+
+#mainContentArea_company .sideline, #mainContentArea_company .mainColumn {
+  background:#F9F4D9;
+  filter: alpha(opacity=85);
+  -moz-opacity: .85;
+  opacity: .85;
+  padding: 10px;
+  border:1px solid #4F493C;
+}
+
+#mainContentArea_company .mainColumn { min-height:344px; }
+
+
+  /************* END companyTemplate layout **************/
+  
 
 /************** Main content layout END ************/
