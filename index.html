@@ -20,7 +20,7 @@ var _gaq = _gaq || {'push':function(){}} //here for testing. REPLACE BEFORE DEPL
 var myCreole;
 
 var app = {vars:{
-	"release":"20130621193700",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130621200000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "passive",//can be passive, active or required
@@ -142,7 +142,7 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 		
 		<div class="searchAndBreadcrumb">
 			<form id="headerSearchFrm" name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
-				<input type='search' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
+				<input type='text' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
 				<button></button>
 			</form>
 		</div>
