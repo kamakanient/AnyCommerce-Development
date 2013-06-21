@@ -263,10 +263,10 @@ td.ztxt { padding:0 20px 0 0px; }
   border-radius: 8px 8px 0px 0px; 
 } 
 
-.round4px {
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
-  border-radius: 4px;
+.round2px {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
 }
 
 /*#breadcrumb_onhover .zlink {padding:3px 9px 3px 4px; margin-right:2px; text-decoration:none; font-weight:bold; background-color:#e9dbb9; color:#f1592a; }
@@ -539,6 +539,8 @@ an + b - a - size of loop, b - offset
 .categoryList li:nth-child(8n+5) { background:#B47E0C; }
 .categoryList li:nth-child(8n+6) { background:#2D62B5; }
 .categoryList li:nth-child(8n+7) { background:#A4C200; }
+
+.categoryList li .thumbContainer { width:229px; height:171px; }
 
 .categoryList li .catName {
   border-top:1px solid #4F493C;
