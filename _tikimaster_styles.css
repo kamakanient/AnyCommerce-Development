@@ -263,10 +263,13 @@ td.ztxt { padding:0 20px 0 0px; }
   border-radius: 8px 8px 0px 0px; 
 } 
 
+ /**************** Navigation layout - breadcrumb *********************/
+
 .round2px {
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
+  /*border:1px solid #4F493C;*/
 }
 
 /*#breadcrumb_onhover .zlink {padding:3px 9px 3px 4px; margin-right:2px; text-decoration:none; font-weight:bold; background-color:#e9dbb9; color:#f1592a; }
@@ -305,6 +308,7 @@ td.ztxt { padding:0 20px 0 0px; }
 .breadcrumb li:last-child:after	{content:"";}
 .breadcrumb li:last-child a	{background: #E9DBB9; color: #795121; text-decoration:none; font-weight:bold; cursor:text;}
 .breadcrumb li:last-child a:hover { color:#997141;}
+  /**************** END Navigation layout - breadcrumb *********************/
 
 /************** Wrapper layout END **************/
 

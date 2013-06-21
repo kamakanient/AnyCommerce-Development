@@ -47,7 +47,12 @@ app.rq.push(['templateFunction','homepageTemplate','onCompletes',function(P) {
 			speed:'slow',
 			timeout: 2500,
 		});
-	
+		
+	// breadcrumb '.' rootcat pretty name is 'New UnNamed Category'
+	// change it to 'Tiki Home'
+	if(app.data['appCategoryDetail|.']) {
+		app.data['appCategoryDetail|.'].pretty = 'Tiki Home';
+	}
 	// homepage leftNav
 	/*if($('#tier1categories').length)	{
 		app.ext.store_navcats.u.getChildDataOf(zGlobals.appSettings.rootcat,{'parentID':'tier1categories','callback':'addCatToDom','templateID':'categoryListTemplateRootCats','extension':'store_navcats'},'appCategoryDetailMax');  //generate nav for 'browse'. doing a 'max' because the page will use that anway.
