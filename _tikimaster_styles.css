@@ -301,7 +301,7 @@ td.ztxt { padding:0 20px 0 0px; }
   background:#654B24;*/
 }
 
-.breadcrumb li:after	{content:"\00BB"; padding-left:4px; font-weight:bold; color:#cccccc;}
+.breadcrumb li:after	{content:"\2192"; padding-left:4px; font-size:10pt; font-weight:bold; color:#E9DBB9;}
 .breadcrumb li:last-child:after	{content:"";}
 .breadcrumb li:last-child a	{background: #E9DBB9; color: #795121; text-decoration:none; font-weight:bold; cursor:text;}
 .breadcrumb li:last-child a:hover { color:#997141;}
