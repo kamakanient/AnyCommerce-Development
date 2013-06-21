@@ -305,6 +305,7 @@ td.ztxt { padding:0 20px 0 0px; }
   width:96px; height:26px;
   background:url('img/tk08_btn_search-96x22.gif') left top no-repeat;
   border:0;
+  padding:3px;
 }
 
 .breadcrumb {
