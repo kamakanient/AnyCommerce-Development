@@ -714,6 +714,22 @@ button.quickView:hover {
   overflow-y:auto;
 }
 
+.prodSummaryContainer .variation {
+  color:#5E4119;
+  font-size: 11px;
+}
+
+.prodSummaryContainer .variation .label_radio {
+  display:inline-block;
+  margin:6px 0;
+  font-weight: bold;
+}
+
+.prodSummaryContainer .variation_radio .labelsAsBreaks label {
+  display:block;
+  margin:0 0 2px 0;
+}
+
 .productPage .prodlistRelatedContainer {
   margin-top:20px;
   border-top:1px dotted #4F493C;
