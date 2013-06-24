@@ -14,7 +14,7 @@ app.rq.push(['extension',0,'store_product','extensions/store_product.js']);
 app.rq.push(['extension',0,'store_cart','extensions/store_cart.js']);
 app.rq.push(['extension',0,'store_crm','extensions/store_crm.js']);
 app.rq.push(['extension',0,'myRIA','app-quickstart.js','startMyProgram']);
-//app.rq.push(['extension',0,'tikimaster','_tikimaster_extension.js','startExtension']);
+app.rq.push(['extension',0,'tikimaster','_tikimaster_extension.js','startExtension']);
 
 
 //app.rq.push(['extension',1,'google_analytics','extensions/partner_google_analytics.js','startExtension']);
@@ -39,20 +39,8 @@ app.rq.push(['script',0,app.vars.baseURL+'resources/jquery.ui.anyplugins.js']); 
 
 
 app.rq.push(['templateFunction','homepageTemplate','onCompletes',function(P) {
-	// homepage slideshow
-	$('#slideshowNav').html('');
-	$('#wideSlideshow').unbind().cycle({
-			pager:'#slideshowNav',
-			fx:'fade',
-			speed:'slow',
-			timeout: 2500,
-		});
-		
-	// breadcrumb '.' rootcat pretty name is 'New UnNamed Category'
-	// change it to 'Tiki Home'
-	if(app.data['appCategoryDetail|.']) {
-		app.data['appCategoryDetail|.'].pretty = 'Tiki Home';
-	}
+	
+
 	// homepage leftNav
 	/*if($('#tier1categories').length)	{
 		app.ext.store_navcats.u.getChildDataOf(zGlobals.appSettings.rootcat,{'parentID':'tier1categories','callback':'addCatToDom','templateID':'categoryListTemplateRootCats','extension':'store_navcats'},'appCategoryDetailMax');  //generate nav for 'browse'. doing a 'max' because the page will use that anway.
