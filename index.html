@@ -20,7 +20,7 @@ var _gaq = _gaq || {'push':function(){}} //here for testing. REPLACE BEFORE DEPL
 var myCreole;
 
 var app = {vars:{
-	"release":"20130624170000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130624210000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "passive",//can be passive, active or required
@@ -578,11 +578,15 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </li>
 
 
-<li id='categoryListTemplateRootCats'>
-	<div onClick="showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});" class='pointer'>
+<li id='categoryListTemplateRootCats' onMouseOver="app.ext.tikimaster.a.showDropDown($(this));" onMouseOut="app.ext.tikimaster.a.hideDropDown($(this));" class='pointer'>
+	<div onClick="showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});">
 		<!--div class='thumbContainer'><img src='blank.gif' class='catThumb' alt='' data-bind='var: category(%meta.CAT_THUMB); format:imageURL;' width='35' height='35' /></div-->
 		<div class='catName'><span data-bind='var: category(pretty); format:catText; extension: myRIA;'></span></div>
 	</div>
+	<ul class="displayNone dropdown" data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootSubCats; detail:max;"></ul>
+</li>
+
+<li id='categoryListTemplateRootSubCats' class='subCatName pointer' onClick="app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); return showContent('category',{'navcat':$(this).attr('data-catsafeid')});" data-bind='var: category(pretty); format:catText; extension: myRIA;'>
 </li>
 
 </ul>

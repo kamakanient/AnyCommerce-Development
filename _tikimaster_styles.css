@@ -443,6 +443,23 @@ td.ztxt { padding:0 20px 0 0px; }
   border:5px solid #9B6B32;
 }
 
+#leftNav ul.dropdown {
+  position:absolute;
+  left:155px;
+  width:150px;
+  margin-top:-19px;
+  z-index:300;
+}
+
+#leftNav ul.dropdown li {
+  background:#E0A523;
+}
+
+#leftNav ul.dropdown li:hover {
+  color: #E9DBB9;
+  background: #593101;
+}
+
 #mainRight1 {
   position:relative;
   float:left;
@@ -587,6 +604,7 @@ an + b - a - size of loop, b - offset
   font-weight:Bold;
   padding:2px 0 0 5px;
 }
+
 
   /************* END Category page layout *****************/
 

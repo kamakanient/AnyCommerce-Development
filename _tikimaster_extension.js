@@ -101,12 +101,13 @@ var tikimaster = function() {
 							height += $(this).outerHeight();
 						});
 					}
+					height += 25;
 					if($tag.data('timeout') && $tag.data('timeout')!== "false"){
 						clearTimeout($tag.data('timeout'));
 						$tag.data('timeout','false');
 						
 					}
-					$dropdown.stop().animate({"height":height+"px"}, 500);
+					$dropdown.stop().animate({"height":height+"px"}, 400);
 					return true;
 				}
 				return false;
@@ -124,12 +125,12 @@ var tikimaster = function() {
 			},
 			hideDropDown : function ($tag) {
 				//app.u.dump('hiding');
-				$(".dropdown", $tag).stop().animate({"height":"0px"}, 500);
+				$(".dropdown", $tag).stop().animate({"height":"0px"}, 400);
 				if($tag.data('timeout') && $tag.data('timeout')!== "false"){
 					$tag.data('timeout')
 					$tag.data('timeout','false');
 				}
-				$tag.data('timeout',setTimeout(function(){$(".dropdown", $tag).hide();},500));
+				$tag.data('timeout',setTimeout(function(){$(".dropdown", $tag).hide();},400));
 				return true;
 			},
 			hideDropDownClick : function($tag){
