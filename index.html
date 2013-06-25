@@ -20,7 +20,7 @@ var _gaq = _gaq || {'push':function(){}} //here for testing. REPLACE BEFORE DEPL
 var myCreole;
 
 var app = {vars:{
-	"release":"20130625190000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130625232500",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "passive",//can be passive, active or required
@@ -111,12 +111,9 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 		<div id="headerLogoBG"><img src='img/tk08_header_bg4-726x122.jpg' width='726' height='122' alt='' /></div>
 
 		<div id="cartTotal">
-			<!--div data-bind="var: cart(sum/items_count); format:text;"></div>
-			<div data-bind='var: cart(sum/order_total); format:money; hideZero:false; currencySign: $;'></div>
-			<div data-bind='var: cart(sum/ship_total); format:money; hideZero:false; currencySign: $;'></div-->
-			<div>0</div>
+			<div class="cartItemCount"></div>
 			<div>$0.00</div>
-			<div>$0.00</div>
+			<div class="cartTotal"></div>
 		</div>
 
 		<img id="homepageLink" class="pointer" onclick="return showContent('homepage',{});" src='img/blank.gif' width='440' height='120' alt='tikimaster.com' title='TikiMaster.com - The Ultimate Tiki Source' />
