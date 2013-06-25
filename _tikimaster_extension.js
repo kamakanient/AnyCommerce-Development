@@ -43,16 +43,17 @@ var tikimaster = function() {
 						//var $context = $(app.u.jqSelector('#',P.parentID));
 						app.ext.tikimaster.u.showHomepageSlideshow();
 						
-						// breadcrumb '.' rootcat pretty name is 'New UnNamed Category'
-						// change it to 'Tiki Home'
-						if(app.data['appCategoryDetail|.']) {
-							app.data['appCategoryDetail|.'].pretty = 'Tiki Home';
-						}
-						
 						//$('.randomList', $context).each(function(){
 						//	app.ext.tikimaster.u.randomizeList($(this));
 						//});
 					}]);
+					
+					var breadcrumbTemplates = ["homepageTemplate","categoryTemplate","productTemplate"];
+					for (var i = 0; i < breadcrumbTemplates.length; i++) {
+						app.rq.push(['templateFunction', breadcrumbTemplates[i],'onCompletes',function(P) {
+							app.ext.tikimaster.u.makeDropDownBreadcrumb();
+						}]);
+					}
 					
 					//if there is any functionality required for this extension to load, put it here. such as a check for async google, the FB object, etc. return false if dependencies are not present. don't check for other extensions.
 					r = true;
@@ -194,6 +195,44 @@ var tikimaster = function() {
 					speed:'slow',
 					timeout: 2500,
 				});
+			},
+			makeDropDownBreadcrumb : function(){
+				//app.u.dump("Tikimaser makeDropDownBreadcrumb started");
+				
+				// rootcat '.' has a pretty name 'New UnNamed Category'
+				// our api returns it like that. lets fix
+				$('.breadcrumb > li:first-child a').html(app.ext.tikimaster.vars.breadcrumbRootName);
+				
+				// lets add <ul> with subcats to every breadcrumb item
+				$('.breadcrumb > li').each(function() {
+					var subcats;
+					if($(this).attr('data-catsafeid') && app.data['appCategoryDetail|'+$(this).attr('data-catsafeid')]) {
+						subcats = app.data['appCategoryDetail|'+$(this).attr('data-catsafeid')]['@subcategoryDetail'];
+					}
+					
+					if(subcats) {
+						$(this).addClass('hasSubcats');
+						$(this).append('<ul class="dropdown displayNone"></ul>');
+						var $dropdown = $(this).find('ul.dropdown');
+					
+						for (var i = 0; i < subcats.length; i++) {
+							if(subcats[i].pretty && subcats[i].pretty.search(/^\w/) == 0 && subcats[i].id) {
+								var safeTarget = app.u.makeSafeHTMLId(subcats[i].id) + '_' + app.u.guidGenerator().substring(0,10); //jquery doesn't like special characters in the id's.
+								$dropdown.append('<li id="'+safeTarget+'" data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
+								$dropdown.find('#'+safeTarget).click(function() {
+									app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); 
+									return showContent('category',{'navcat':$(this).attr('data-catsafeid')});
+								})
+							}
+						}
+					}
+				});
+				
+			},
+			addBreadCrumbToProductPage : function() {
+				// if we arrived to the product page directly from search
+				// there's no breadcrumb at all
+				// Jerome asked to add 'Home' dropdown element with root cats
 			},
 			getPPI : function(){
 				
@@ -339,6 +378,7 @@ var tikimaster = function() {
 		
 ////////////////////////////////////   VARS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		vars : {
+			breadcrumbRootName : "Home",
 			customPrompt : "I understand it takes 3-14 business days to customize my item. This item is not returnable / exchangeable as it is considered customized. Once this order is placed, no changes or cancellations are permitted.",
 		} // vars
 		

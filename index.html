@@ -1055,8 +1055,8 @@ if you change these, you should move them above this comment so that when you (o
 
 <!--  used in breadcrumb -->
 <ul>
-	<li id='breadcrumbTemplate'>
-	<a class="round2px" href='#' onClick="return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});" data-bind='var: category(pretty); format:catText; extension: myRIA;'></a>
+	<li id='breadcrumbTemplate' onMouseOver="app.ext.tikimaster.a.showDropDown($(this));" onMouseOut="app.ext.tikimaster.a.hideDropDown($(this));" class='pointer'>
+		<a href='#' onClick="return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});" data-bind='var: category(pretty); format:catText; extension: myRIA;'></a>
 	</li>
 </ul>
 

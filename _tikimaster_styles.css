@@ -311,37 +311,72 @@ td.ztxt { padding:0 20px 0 0px; }
 .breadcrumb {
   float:left;
   position:relative;
-  margin:-40px 0 0 2px;
+  margin:-37px 0 0 2px;
 }
 
-.breadcrumb li {
-  margin:4px;
+.breadcrumb > li {
+  margin:2px 1px;
   padding:0;
+  background: #E9DBB9;
+  cursor: pointer;
+  color: #F1592A;
+  padding: 0px 4px 2px 0;
+  font-weight: bold;
+  font-size:9pt;
 }
 
-.breadcrumb li a {
-    cursor: pointer;
-    color: #593101;
-    background: #E9DBB9;
-/*    color:#654B24;
-    background:#F8F7F6;*/
-    padding: 3px 5px;
-    margin:0;
-    font-weight: bold;
-    font-size:9pt;
+.breadcrumb > li.hasSubcats {
+  background: url('img/tm11_downarrow_orange-8x3.gif') no-repeat center right #E9DBB9;
+  padding: 0px 12px 2px 0;
 }
 
-.breadcrumb li a:hover {
+.breadcrumb > li a {
+  padding-left:4px;
+  color: #F1592A;
+}
+
+.breadcrumb > li a:hover {
+  color: #E9DBB9;
+}
+
+.breadcrumb > li:hover {
   color: #E9DBB9;
   background: #593101;
   /*color:#F8F7F6;
   background:#654B24;*/
 }
 
-.breadcrumb li:after	{content:"\2192"; padding-left:4px; font-size:10pt; font-weight:bold; color:#E9DBB9;}
-.breadcrumb li:last-child:after	{content:"";}
-.breadcrumb li:last-child a	{background: #E9DBB9; color: #795121; text-decoration:none; font-weight:bold; cursor:text;}
-.breadcrumb li:last-child a:hover { color:#997141;}
+/*.breadcrumb > li:after	{content:"\2192"; padding-left:4px; font-size:10pt; font-weight:bold; color:#E9DBB9;}
+.breadcrumb > li:last-child:after	{content:"";}*/
+.breadcrumb > li:after	{content:""; padding-left:0px; font-size:10pt; font-weight:bold; color:#E9DBB9;}
+/*.breadcrumb > li:last-child a	{background: #E9DBB9; color: #795121; text-decoration:none; font-weight:bold; cursor:text;}
+.breadcrumb > li:last-child a:hover { color:#997141;}*/
+
+.breadcrumb ul.dropdown {
+  position:absolute;
+  cursor: pointer;
+  font-weight: bold;
+  font-size:8pt;
+  width:150px;
+  z-index:300;
+  margin:2px 0 0 0;
+  padding:0;
+}
+
+.breadcrumb ul.dropdown li {
+  color: #593101;
+  float:none;
+  display:block;
+  text-align:left;
+  background:#E0A523;
+  padding:3px 4px;
+  margin:0 0 2px 0;
+}
+
+.breadcrumb ul.dropdown li:hover {
+  color: #E9DBB9;
+  background: #593101;
+}
   /**************** END Navigation layout - breadcrumb *********************/
 
 /************** Wrapper layout END **************/
