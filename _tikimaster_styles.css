@@ -320,14 +320,19 @@ td.ztxt { padding:0 20px 0 0px; }
   background: #E9DBB9;
   cursor: pointer;
   color: #F1592A;
-  padding: 1px 4px 2px 0px;
+  padding: 1px 4px 3px 0px;
   font-weight: bold;
   font-size:9pt;
 }
 
 .breadcrumb > li.hasSubcats {
   background: url('img/tm11_downarrow_orange-8x3.gif') no-repeat center right #E9DBB9;
-  padding: 1px 12px 2px 0px;
+  padding-right:12px;
+}
+
+.breadcrumb > li:hover {
+  color: #E9DBB9;
+  background: #593101;
 }
 
 .breadcrumb > li a {
@@ -337,13 +342,6 @@ td.ztxt { padding:0 20px 0 0px; }
 
 .breadcrumb > li a:hover {
   color: #E9DBB9;
-}
-
-.breadcrumb > li:hover {
-  color: #E9DBB9;
-  background: #593101;
-  /*color:#F8F7F6;
-  background:#654B24;*/
 }
 
 /*.breadcrumb > li:after	{content:"\2192"; padding-left:4px; font-size:10pt; font-weight:bold; color:#E9DBB9;}
@@ -359,7 +357,7 @@ td.ztxt { padding:0 20px 0 0px; }
   font-size:8pt;
   width:150px;
   z-index:300;
-  margin:2px 0 0 0;
+  margin:3px 0 0 0;
   padding:0;
 }
 
