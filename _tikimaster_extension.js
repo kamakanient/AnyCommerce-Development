@@ -48,12 +48,15 @@ var tikimaster = function() {
 						//});
 					}]);
 					
-					var breadcrumbTemplates = ["homepageTemplate","categoryTemplate","productTemplate"];
-					for (var i = 0; i < breadcrumbTemplates.length; i++) {
-						app.rq.push(['templateFunction', breadcrumbTemplates[i],'onCompletes',function(P) {
-							app.ext.tikimaster.u.makeDropDownBreadcrumb();
-						}]);
-					}
+					app.rq.push(['templateFunction', 'categoryTemplate','onCompletes',function(P) {
+						app.ext.tikimaster.u.makeDropDownBreadcrumb();
+					}]);
+					
+					app.rq.push(['templateFunction', 'productTemplate','onCompletes',function(P) {
+						app.ext.tikimaster.u.addBreadCrumbToProductPage();
+						app.ext.tikimaster.u.makeDropDownBreadcrumb();
+					}]);
+					
 					
 					//if there is any functionality required for this extension to load, put it here. such as a check for async google, the FB object, etc. return false if dependencies are not present. don't check for other extensions.
 					r = true;
@@ -217,18 +220,13 @@ var tikimaster = function() {
 					
 						for (var i = 0; i < subcats.length; i++) {
 							if(subcats[i].pretty && subcats[i].pretty.search(/^\w/) == 0 && subcats[i].id) {
-								//var safeTarget = app.u.makeSafeHTMLId(subcats[i].id) + '_' + app.u.guidGenerator().substring(0,10); //jquery doesn't like special characters in the id's.
-								//$dropdown.append('<li id="'+safeTarget+'" data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
 								$dropdown.append('<li data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
-								//$dropdown.find('#'+safeTarget).click(function() {
-								//	app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); 
-								//	return showContent('category',{'navcat':$(this).attr('data-catsafeid')});
-								//})
 							}
 						}
 					}
 				});
 				
+				// add onclick events to all dropdown menus
 				$('.breadcrumb > li ul.dropdown li').click(function() {
 					app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); 
 					return showContent('category',{'navcat':$(this).attr('data-catsafeid')});
@@ -239,6 +237,13 @@ var tikimaster = function() {
 				// if we arrived to the product page directly from search
 				// there's no breadcrumb at all
 				// Jerome asked to add 'Home' dropdown element with root cats
+				if(!$('.breadcrumb').children().length) {
+					// fetch root cat with subcats details
+					var tagObj = {'datapointer' : 'appCategoryDetail|.'};
+					app.model.fetchData(tagObj.datapointer);
+					var bc_inner = "<li class='pointer' onmouseout='app.ext.tikimaster.a.hideDropDown($(this));' onmouseover='app.ext.tikimaster.a.showDropDown($(this));' data-catsafeid='.'><a onclick=\"return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});\" href='#'>Home</a></li>";
+					$('.breadcrumb').prepend(bc_inner);
+				}
 			},
 			getPPI : function(){
 				
