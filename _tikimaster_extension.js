@@ -217,16 +217,22 @@ var tikimaster = function() {
 					
 						for (var i = 0; i < subcats.length; i++) {
 							if(subcats[i].pretty && subcats[i].pretty.search(/^\w/) == 0 && subcats[i].id) {
-								var safeTarget = app.u.makeSafeHTMLId(subcats[i].id) + '_' + app.u.guidGenerator().substring(0,10); //jquery doesn't like special characters in the id's.
-								$dropdown.append('<li id="'+safeTarget+'" data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
-								$dropdown.find('#'+safeTarget).click(function() {
-									app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); 
-									return showContent('category',{'navcat':$(this).attr('data-catsafeid')});
-								})
+								//var safeTarget = app.u.makeSafeHTMLId(subcats[i].id) + '_' + app.u.guidGenerator().substring(0,10); //jquery doesn't like special characters in the id's.
+								//$dropdown.append('<li id="'+safeTarget+'" data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
+								$dropdown.append('<li data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
+								//$dropdown.find('#'+safeTarget).click(function() {
+								//	app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); 
+								//	return showContent('category',{'navcat':$(this).attr('data-catsafeid')});
+								//})
 							}
 						}
 					}
 				});
+				
+				$('.breadcrumb > li ul.dropdown li').click(function() {
+					app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); 
+					return showContent('category',{'navcat':$(this).attr('data-catsafeid')});
+				})
 				
 			},
 			addBreadCrumbToProductPage : function() {
