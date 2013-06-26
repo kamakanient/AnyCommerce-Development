@@ -284,8 +284,12 @@ var tikimaster = function() {
 			loadFeaturedStoreBanner : function(){
 				//app.u.dump("loadFeaturedStoreBanner");
 				$.getJSON("_tikimaster_banners.json?_v="+(new Date()).getTime(), function(json){
-					app.ext.tikimaster.vars.homepageBanners = json;
-					app.u.dump(app.ext.tikimaster.vars.homepageBanners);
+					//app.ext.tikimaster.vars.homepageBanners = json;
+					j = Math.floor(Math.random() * json.length);
+					$('.featuredStore').attr('href',json[j].href);
+					$('.featuredStore').attr('title',json[j].title);
+					$('.featuredStore img').attr('src',json[j].src);
+					$('.featuredStore img').attr('alt',json[j].alt);
 				}).fail(function(){
 					app.u.dump("FEATURED STORE BANNERS FAILED TO LOAD");
 				});
