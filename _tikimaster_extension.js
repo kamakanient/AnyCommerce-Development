@@ -38,7 +38,7 @@ var tikimaster = function() {
 				onSuccess : function() {
 					var r = false; //return false if extension won't load for some reason (account config, dependencies, etc).
 					//app.u.dump("Tikimaser extension loaded");
-					
+					app.ext.tikimaster.u.loadFeaturedStoreBanner();
 					app.rq.push(['templateFunction', 'homepageTemplate','onCompletes',function(P) {
 						//var $context = $(app.u.jqSelector('#',P.parentID));
 						app.ext.tikimaster.u.showHomepageSlideshow();
@@ -281,13 +281,14 @@ var tikimaster = function() {
 				
 				document.title = title+" | Sports World Chicago";
 			},
-			loadBanners : function(){
-				app.u.dump("loadbanners");
-				$.getJSON("_banners.json?_v="+(new Date()).getTime(), function(json){
+			loadFeaturedStoreBanner : function(){
+				//app.u.dump("loadFeaturedStoreBanner");
+				$.getJSON("_tikimaster_banners.json?_v="+(new Date()).getTime(), function(json){
 					app.ext.tikimaster.vars.homepageBanners = json;
-					}).fail(function(){
-						app.u.dump("BANNERS FAILED TO LOAD");
-						});
+					app.u.dump(app.ext.tikimaster.vars.homepageBanners);
+				}).fail(function(){
+					app.u.dump("FEATURED STORE BANNERS FAILED TO LOAD");
+				});
 			},
 			makeBanner : function(bannerJSON, w, h, b){
 				var $img = $(app.u.makeImage({
