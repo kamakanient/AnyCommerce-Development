@@ -2855,7 +2855,7 @@ else	{
 
 if(zGlobals.checkoutSettings.amazonCheckoutMerchantId && zGlobals.checkoutSettings.amazonCheckoutEnable)	{
 	//tmp for testing
-	$tag.append("<img id='amazonCheckoutButton' border=0 src='"+(document.location.protocol === 'https:' ? 'https:' : 'http:')+"'//payments.amazon.com/gp/cba/button?ie=UTF8&color=orange&background=white&size=small' \/>").click(function(){
+	$tag.append("<img id='amazonCheckoutButton' border=0 src='"+(document.location.protocol === 'https:' ? 'https:' : 'http:')+"//payments.amazon.com/gp/cba/button?ie=UTF8&color=orange&background=white&size=small' \/>").click(function(){
 	app.ext.store_cart.calls.cartAmazonPaymentURL.init();
 	app.model.dispatchThis('immutable');
 	});		
