@@ -444,8 +444,8 @@ CART
 .cartSummaryTotalsContainer .cartSummaryContainer	{padding:12px;}
 .cartZipCodeContainer, .cartAltButtonsContainer, .cartSummaryContainer	{margin-bottom:12px; padding-bottom:12px; border-bottom:1px dotted #efefef;}
 
-.cartStuffContainer	{width:60%; vertical-align:top; padding-right:12px;}
-.cartSummaryTotalsContainer {width:40%; padding-left:12px; font-size:.8em;} /* by default, this is the right column */
+.cartStuffContainer	{width:56%; vertical-align:top; padding-right:12px;}
+.cartSummaryTotalsContainer {width:44%; padding-left:12px; font-size:.8em;} /* by default, this is the right column */
 
 .checkoutButtonsContainer span	{display:block; float:left; margin:0 12px 12px 0;}
 
