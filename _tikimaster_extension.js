@@ -178,9 +178,16 @@ var tikimaster = function() {
 						
 						$notice.dialog({'modal':'true','title':'Custom Product Agreement', 'width':400});
 						return false;
-						});
-					}
-			}
+					});
+				}
+			},
+			truncHTML : function($tag,data){
+				// removes all html tags from data.value, then truncates to numCharacters
+				// can be useful for truncating prod_desc (mix of wiki/html) - to show in product lists
+				var o = data.value.replace(/<.+?>/g,'');
+				o = app.u.truncate(o,data.bindData.numCharacters);
+				$tag.text(o);
+			} //truncHTML
 		}, //renderFormats
 
 ////////////////////////////////////   UTIL [u]   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
