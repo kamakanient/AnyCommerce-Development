@@ -57,6 +57,36 @@ var tikimaster = function() {
 						app.ext.tikimaster.u.makeDropDownBreadcrumb();
 					}]);
 					
+					// fix page title
+					app.rq.push(['templateFunction', 'categoryTemplate','onCompletes',function(P){
+						var title = app.data["appPageGet|"+P.navcat]['%page'].page_title;
+						app.ext.tikimaster.u.setTitle(title);
+					}]);
+					app.rq.push(['templateFunction', 'productTemplate','onCompletes',function(P){
+						var title = app.data["appProductGet|"+P.pid]['%attribs']['zoovy:prod_name'];
+						app.ext.tikimaster.u.setTitle(title);
+					}]);
+					app.rq.push(['templateFunction', 'companyTemplate','onCompletes',function(P){
+						var title = "SportsWorldChicago Help Desk";
+						app.ext.tikimaster.u.setTitle(title);
+					}]);
+					app.rq.push(['templateFunction', 'customerTemplate','onCompletes',function(P){
+						var title = "Tikimaster - My account";
+						app.ext.tikimaster.u.setTitle(title);
+					}]);
+					app.rq.push(['templateFunction', 'homepageTemplate','onCompletes',function(P){
+						app.ext.tikimaster.u.setTitle();
+					}]);
+					app.rq.push(['templateFunction', 'pageNotFoundTemplate','onCompletes',function(P){
+						app.ext.tikimaster.u.setTitle();
+					}]);
+					app.rq.push(['templateFunction', 'checkoutTemplate','onCompletes',function(P){
+						app.ext.tikimaster.u.setTitle();
+					}]);
+					app.rq.push(['templateFunction', 'searchTemplate','onCompletes',function(P){
+						app.ext.tikimaster.u.setTitle();
+					}]);
+					
 					
 					//if there is any functionality required for this extension to load, put it here. such as a check for async google, the FB object, etc. return false if dependencies are not present. don't check for other extensions.
 					r = true;
@@ -283,10 +313,10 @@ var tikimaster = function() {
 					}
 				else{
 					//Go home title.  You are drunk.
-					title = "Chicago Cubs Apparel & Merchandise"; 
+					title = "Tiki Bar - Tiki Decor - Tiki Totems - Tiki Masks - Outdoor Tikis - Tiki Wood Signs - Custom Tiki Carvings - Tropical Decor"; 
 					}
 				
-				document.title = title+" | Sports World Chicago";
+				document.title = title;
 			},
 			loadFeaturedStoreBanner : function(){
 				//app.u.dump("loadFeaturedStoreBanner");
