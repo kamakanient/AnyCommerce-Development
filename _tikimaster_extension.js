@@ -259,6 +259,7 @@ var tikimaster = function() {
 					
 					if(subcats) {
 						$(this).addClass('hasSubcats');
+						$(this).find('.dropdown').remove();
 						$(this).append('<ul class="dropdown displayNone"></ul>');
 						var $dropdown = $(this).find('ul.dropdown');
 					
