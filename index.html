@@ -31,7 +31,7 @@ _gaq.push(['_trackPageview']);
 var myCreole;
 
 var app = {vars:{
-	"release":"20130628172000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130628181000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -536,7 +536,6 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 
 
 
-
 <!--
 used to organize content when a category is clicked.
 each of the 'sections' are used to load another template. don't change the id.
@@ -571,6 +570,160 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </div>
 
 
+
+<!-- /////////////// AFFILIATES TEMPLATES \\\\\\\\\\\\\\\\\ -->
+<div id='categoryTemplateAffiliates' class='loadingBG categoryTemplateAffiliates'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<table cellspacing='0' cellpadding='0' border='0' width='100%' style='margin:15px 0;'>
+	<tr>
+		<td valign='top' width='50%'>
+
+	<div style='margin-bottom:10px;'><img src='img/tm_c_aff_header-269x39.png' width='269' height='39' alt='tikimaster affiliate program' /></div>
+
+
+	<div style='padding:10px; text-align:left; width:auto;' class='zbox zbox_body'>
+
+		<!-- begin text area --><div style='margin-bottom:10px;'><p>Sell Tikimaster.com from your Web site! As a Tikimaster.com affiliate, you can sell Tikis from all over the Pacific, true Hawaiian weapons made of Koa, Polynesian art and more and
+	<b>earn 15% on all sales made during all user sessions</b>
+	originating from a link on your site! This is a free program that can earn you 
+	money by placing Tikimaster.com banners on your site. When users click on your 
+	Tikimaster.com banner you make a commission on all purchases made by that user. 
+	Join now it's Fast, Free and Easy! 
+	<br>
+	</p>
+	<p><a  class="wikilink wikilink_category bindByAnchor"  title="Click here"  href="#!category?navcat=.affiliates.program-details">Click here</a> for more details.
+	<br>
+	</p>
+	<p>Established in 2000, Tikimaster.com has become a reliable source for Tikis, 
+	Hawaiian and Island Lifestyle Products. Our slogan says it all, "The Ultimate 
+	Tiki Source! Made in Hawaii". 
+	<br>
+	</p>
+	<p>Offer something unique on your site: Sell Tikimaster.com Tiki totems, Tiki 
+	Masks, Koa Outrigger Canoe Paddles, Traditional Tikis and Custom Carvings. 
+	Entice your visitors and spark sales with Tropical Garden Accents, Tiki Interior 
+	Deco, Hawaiian souvenirs, wedding gifts, party supplies...etc. 
+	<br>
+	</p>
+	<p>For more detailed information, please click on the navigation links related to 
+	our affiliation program.
+	<br>
+	</p>
+	<p><a  target="blank"  class="wikilink wikilink_popup"  title="JOIN NOW!"  href="http://www.shareasale.com/newsignup.cfm">JOIN NOW!</a>
+	</p></div><!-- end text area -->	
+
+
+		<div><img src='img/tm_c_aff_newlinks-507x29.png' width='507' height='29' alt='' border='0'  usemap="#affMap" /></div>	
+
+
+	</div>
+
+
+	<map name="affMap">
+		<area shape="rect" coords="1,0,141,25" href="http://www.shareasale.com/newsignup.cfm" alt='click here to join now' title='click here to join now' target='affiliate'>
+		<area shape="rect" coords="181,0,371,26" class="bindByAnchor" href="#!category?navcat=.affiliates.program-details" alt='Click here for program details' title='click here for program details'>
+		<area shape="rect" coords="404,2,505,27" class="bindByAnchor" href="#!category?navcat=.affiliates.contract" alt='Click here for detailed contract' title='click here for detailed contract'>
+	</map>
+
+		</td>
+		<td valign='top' width='50%' class='ztxt'>
+		<div style='margin-left:40px;'>
+	<!-- this is 12 instead of 10 because the other header is 39px tall, not 37 -->
+	<div style='margin-bottom:12px;'><img src='img/tm_c_tmaffs_header-322x37.png' width='322' height='37' alt='' border='0' /></div>
+
+	<div style='padding:10px; text-align:left; width:auto; margin-bottom:10px;' class='zbox zbox_body'>
+
+	<p>If you are already a Tikimaster.com affiliate, login below. Enter your Affiliate Id Number and password to access your administration page. Forgot your password? <a href='https://shareasale.com/a-lostusername.cfm' target='affiliate'>Click here</a> to have your password emailed to you.</p>
+
+
+
+
+	<form id="form1" name="form1" method="post" action="https://shareasale.com/a-login.cfm">
+	<input type='hidden' name='step2' value='True' />
+	<input type="hidden" name="demeaning" value="bourbon" />
+	<input type="hidden" name="lent" value="forging" />
+	<input type="hidden" name="jq1" value="1" />
+
+
+	<div style='margin-bottom:3px;'>
+	<label for='username'>Username: </label>
+	<input type="text" style="width: 250px;" class="loginForms" id="username" name="username" />
+	</div>
+
+
+	<div style='margin-bottom:3px;'>
+	<label for='password'>Password: </label>
+	<input type="password" name="password" id="password" class="loginForms" style="width:250px;" />
+	</div>
+
+	<div><input type='submit' class='zform_button' value='Sign In' /></div>
+	<br />
+
+	<a href='https://shareasale.com/a-login.cfm' target='affiliate'>Secure Login</a> | <a href='https://shareasale.com/a-lostusername.cfm' target='affiliate'>Recover Lost Password</a>
+
+	<!--
+	sign up: 	
+	-->
+
+	</form>
+
+	</div>
+
+
+		</div>
+		</td>
+	</tr>
+	</table>
+
+</div> <!-- End categoryTemplateAffiliates -->
+
+
+<div id='categoryTemplateAffiliatesSignUp' class='loadingBG categoryTemplateAffiliates'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader">
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+	</div>
+
+</div><!-- End categoryTemplateAffiliatesSignUp -->
+
+
+<div id='categoryTemplateAffiliatesLinkExchange' class='loadingBG categoryTemplateAffiliates'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader">
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+	</div>
+
+</div><!-- End categoryTemplateAffiliatesLinkExchange -->
+
+
+<div id='categoryTemplateAffiliatesContract' class='loadingBG categoryTemplateAffiliates'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader">
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+	</div>
+
+</div><!-- End categoryTemplateAffiliatesContract -->
+
+
+<div id='categoryTemplateAffiliatesProgramDetails' class='loadingBG categoryTemplateAffiliates'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader">
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+	</div>
+
+</div><!-- End categoryTemplateAffiliatesProgramDetails -->
+
+<!-- /////////////// END AFFILIATES TEMPLATES \\\\\\\\\\\\\\\\\ -->
 
 
 

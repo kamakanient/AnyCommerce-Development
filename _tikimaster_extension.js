@@ -48,23 +48,27 @@ var tikimaster = function() {
 						//});
 					}]);
 					
-					app.rq.push(['templateFunction', 'categoryTemplate','onCompletes',function(P) {
-						app.ext.tikimaster.u.makeDropDownBreadcrumb();
-					}]);
 					
-					app.rq.push(['templateFunction', 'productTemplate','onCompletes',function(P) {
-						app.ext.tikimaster.u.addBreadCrumbToProductPage();
-						app.ext.tikimaster.u.makeDropDownBreadcrumb();
-					}]);
-					
-					// fix page title
-					app.rq.push(['templateFunction', 'categoryTemplate','onCompletes',function(P){
-						var title = app.data["appPageGet|"+P.navcat]['%page'].page_title;
-						app.ext.tikimaster.u.setTitle(title);
-					}]);
+					var catTemplates = [
+						'categoryTemplate',
+						'categoryTemplateAffiliates',
+						'categoryTemplateAffiliatesSignUp',
+						'categoryTemplateAffiliatesLinkExchange',
+						'categoryTemplateAffiliatesContract',
+						'categoryTemplateAffiliatesProgramDetails'
+					];
+					for(var t in catTemplates){
+						app.rq.push(['templateFunction', catTemplates[t],'onCompletes',function(P){
+							var title = app.data["appPageGet|"+P.navcat]['%page'].page_title;
+							app.ext.tikimaster.u.setTitle(title);
+							app.ext.tikimaster.u.makeDropDownBreadcrumb();
+						}]);
+					}
 					app.rq.push(['templateFunction', 'productTemplate','onCompletes',function(P){
 						var title = app.data["appProductGet|"+P.pid]['%attribs']['zoovy:prod_name'];
 						app.ext.tikimaster.u.setTitle(title);
+						app.ext.tikimaster.u.addBreadCrumbToProductPage();
+						app.ext.tikimaster.u.makeDropDownBreadcrumb();
 					}]);
 					app.rq.push(['templateFunction', 'companyTemplate','onCompletes',function(P){
 						var title = "SportsWorldChicago Help Desk";
@@ -433,6 +437,13 @@ var tikimaster = function() {
 		vars : {
 			breadcrumbRootName : "Home",
 			customPrompt : "I understand it takes 3-14 business days to customize my item. This item is not returnable / exchangeable as it is considered customized. Once this order is placed, no changes or cancellations are permitted.",
+			catTemplates : {
+				'.affiliates' : 'categoryTemplateAffiliates',
+				'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
+				'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
+				'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
+				'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
+			}
 		} // vars
 		
 	} //r object.

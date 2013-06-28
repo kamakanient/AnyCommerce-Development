@@ -15,13 +15,8 @@ a:visited { color:#492101; }
 a:hover {color:#c4fbde;}
 p { padding:0.2em 0.5em; text-indent:0.5em;}
 
-a img {
-  border:none;
-}
-
-ul li {
-  list-style:none;
-}
+a img { border:none; }
+ul li { list-style:none; }
 
 .marginTop5 {
   margin-top:5px;
@@ -62,6 +57,13 @@ h2.ui-widget-header { font-size:1.1em; }
 .zcolor_dark {background-color:#9b6b32; color: #ffffff;}
 .zcolor_contrast { background-color: #EE5E02; color: #ffffff; }
 .zcolor_light { background-color: #EDF2FD; color: #515151; }
+.zbox { border:1px solid #663D27; }
+.zbox_body {
+  background-color: #FCF8EF;
+  color: #5E4119;
+  font-family: verdana, arial, helvetica;
+  font-size: 8pt;
+}
 
 /************** Wrapper layout **************/
 
