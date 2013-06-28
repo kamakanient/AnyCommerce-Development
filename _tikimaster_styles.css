@@ -817,7 +817,8 @@ button.quickView:hover {
 #mainContentArea_company a:hover, #mainContentArea_customer a:hover { color: #7E6139; }
 
 #mainContentArea_company .sideline, #mainContentArea_company .mainColumn,
-#mainContentArea_customer .sideline, #mainContentArea_customer .mainColumn {
+#mainContentArea_customer .sideline, #mainContentArea_customer .mainColumn,
+.checkoutFormContainer {
   background:#F9F4D9;
   filter: alpha(opacity=85);
   -moz-opacity: .85;
@@ -830,6 +831,5 @@ button.quickView:hover {
 
 
   /************* END companyTemplate layout **************/
-  
 
 /************** Main content layout END ************/
