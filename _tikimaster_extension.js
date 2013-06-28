@@ -236,13 +236,16 @@ var tikimaster = function() {
 				//app.u.dump("Tikimaser slideshow started");
 				
 				// homepage slideshow
-				$('#slideshowNav').html('');
-				$('#wideSlideshow').unbind().cycle({
-					pager:'#slideshowNav',
-					fx:'fade',
-					speed:'slow',
-					timeout: 2500,
-				});
+				if(!$('#slideshowNav').children().length) {
+					//$('#slideshowNav').html('');
+					//app.u.dump('!!!!!!!!Slideshow init');
+					$('#wideSlideshow').unbind().cycle({
+						pager:'#slideshowNav',
+						fx:'fade',
+						speed:'slow',
+						timeout: 3500,
+					});
+				}
 			},
 			makeDropDownBreadcrumb : function(){
 				//app.u.dump("Tikimaser makeDropDownBreadcrumb started");
