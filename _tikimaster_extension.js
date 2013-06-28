@@ -51,6 +51,7 @@ var tikimaster = function() {
 					
 					var catTemplates = [
 						'categoryTemplate',
+						'categoryTemplateNoSubcats',
 						'categoryTemplateAffiliates',
 						'categoryTemplateAffiliatesSignUp',
 						'categoryTemplateAffiliatesLinkExchange',
@@ -446,7 +447,7 @@ var tikimaster = function() {
 				'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
 				'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
 				'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
-				'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
+				'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails',
 			}
 		} // vars
 		
