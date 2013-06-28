@@ -31,13 +31,11 @@ _gaq.push(['_trackPageview']);
 var myCreole;
 
 var app = {vars:{
-	"release":"20130628131000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130628161000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
-	//"testURL":"http://www.ylh.zoovy.com/" //used ONLY if protocol is file: (for testing)
 	"testURL":"http://app.tikimaster.com/"
-	//"testURL":"http://www.sporks.zoovy.com/"
 	},u:{},rq:[]};
 
 //set base url so images, css, js, etc all load from appropriate location once deployed.
@@ -350,9 +348,9 @@ src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=
 
 
 	<map name="bannerMap">
-		<area shape="rect" coords="1,1,282,77" onClick="return showContent('product',{'pid':'GIFTCERTIFICATE'});" alt='Gift Cards' title='Gift Cards' />
+		<area shape="rect" coords="1,1,282,77" class="bindByAnchor" href="#!product?pid=GIFTCERTIFICATE" alt='Gift Cards' title='Gift Cards' />
 		<area shape="rect" coords="287,3,544,78" href="http://www.carvingemporium.com/c=t7BKQo9adl3Wk8HLerPU4TG8D/" alt='Home Decor Stores' title='Home Decor Stores' />
-		<area shape="rect" coords="548,2,941,77" onclick="return showContent('category',{'navcat':'.affiliates'})" alt='Business Opportunities' title='Business Opportunities' />
+		<area shape="rect" coords="548,2,941,77" class="bindByAnchor" href="#!category?navcat=.affiliates" alt='Business Opportunities' title='Business Opportunities' />
 	</map>
 	
 	<!-- /nav maps -->
@@ -490,16 +488,16 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	</div>
 	
 	<p class="normal">Your "One-Stop-Tiki Shop" for Tiki Products, 
-		<a title="Tiki bar" onClick="return showContent('category',{'navcat':'.01.tiki_bar'});" href="#">Tiki bar</a>, 
-		<a title="Koa outrigger paddles" onClick="return showContent('category',{'navcat':'.05.2'});" href="#">Koa outrigger paddles</a> 
+		<a class="bindByAnchor" href="#!category?navcat=.01.tiki_bar" title="Tiki bar">Tiki bar</a>, 
+		<a class="bindByAnchor" href="#!category?navcat=.05.2" title="Koa outrigger paddles">Koa outrigger paddles</a> 
 		and Island Lifestyle Decor! As one of Hawaii's finest manufacturer and online gift catalog companies, we offer a large selection of products such as: 
-		<a title="Tikis" onClick="return showContent('category',{'navcat':'.004.bishop_museum_tikis'});" href="#">Tikis</a>, 
+		<a class="bindByAnchor" href="#!category?navcat=.004.bishop_museum_tikis" title="Tikis">Tikis</a>, 
 		Tiki masks, 
-		<a title="Tiki bar" onClick="return showContent('product',{'pid':'ISLANDTIKIBARNA'});"  href="#">Tiki bar</a>, 
-		<a title="Koa art" onClick="return showContent('category',{'navcat':'.05.21'});" href="#">Koa art</a>, 
-		<a title="Polynesian art" onClick="return showContent('category',{'navcat':'.05.3'});" href="#">Polynesian art</a>, 
+		<a class="bindByAnchor" href="#!product?pid=ISLANDTIKIBARNA" title="Tiki bar">Tiki bar</a>, 
+		<a class="bindByAnchor" href="#!category?navcat=.05.21" title="Koa art">Koa art</a>, 
+		<a class="bindByAnchor" href="#!category?navcat=.05.3" title="Polynesian art">Polynesian art</a>, 
 		tropical decor, surf decor products, 
-		<a title="Nautical decor" onClick="return showContent('category',{'navcat':'.nautical_signs'});" href="#">Nautical decor</a>, 
+		<a class="bindByAnchor" href="#!category?navcat=.nautical_signs" title="Nautical decor">Nautical decor</a>, 
 		skull and bones accessories, pirate wall decor, island lifestyle products and more...
 	</p>
 	<p class="normal">
