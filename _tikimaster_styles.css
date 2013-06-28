@@ -64,6 +64,9 @@ h2.ui-widget-header { font-size:1.1em; }
   font-family: verdana, arial, helvetica;
   font-size: 8pt;
 }
+.zbox_body a:hover {
+  color:#997141;
+}
 
 /************** Wrapper layout **************/
 
