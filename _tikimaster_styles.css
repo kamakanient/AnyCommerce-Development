@@ -536,6 +536,11 @@ td.ztxt { padding:0 20px 0 0px; }
   opacity:.85;
 }
 
+#mainRight2 .infoBlock a {
+  text-decoration:none;
+  color:#333534;
+}
+
 #mainRight2 .infoBlock p {
   color: #333534; 
   font-size: 7pt;
