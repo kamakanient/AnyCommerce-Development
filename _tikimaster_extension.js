@@ -59,8 +59,10 @@ var tikimaster = function() {
 					];
 					for(var t in catTemplates){
 						app.rq.push(['templateFunction', catTemplates[t],'onCompletes',function(P){
-							var title = app.data["appPageGet|"+P.navcat]['%page'].page_title;
-							app.ext.tikimaster.u.setTitle(title);
+							if(P.navcat && app.data["appPageGet|"+P.navcat] && app.data["appPageGet|"+P.navcat]['%page']) {
+								var title = app.data["appPageGet|"+P.navcat]['%page'].page_title;
+								app.ext.tikimaster.u.setTitle(title);
+							}
 							app.ext.tikimaster.u.makeDropDownBreadcrumb();
 						}]);
 					}
