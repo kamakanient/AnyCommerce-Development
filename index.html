@@ -1215,6 +1215,10 @@ this will likely become more flexible in the future. ###
 		<div data-bind='var: product(zoovy:prod_features); format:wiki; wikiFormats:myRIA;'></div>
 	</div>
 
+	<div class="prodReviewContainer">
+		<ul class='listStyleNone clearfix productReviewsList' data-bind="var: reviews(reviews.@reviews); format:processList; loadsTemplate:productReviewsTemplateDetailNoTab;"></ul>
+	</div>
+
 	</td>
 </tr>
 <tr>
@@ -1889,6 +1893,17 @@ used on a product layout. Some product have 'children' which may represent the s
 		<h2 data-bind='var:review(SUBJECT); format:text;'></h2>
 		<p data-bind='var:review(MESSAGE); format:text; ;'></p>
 	</blockquote>
+	</li>
+	
+	<li id='productReviewsTemplateDetailNoTab' class='reviewLineItem clearfix'>
+		Review from<br /><span data-bind='var:review(CUSTOMER_NAME); format:text;' class="custName"></span>
+		<span data-bind='var:review(LOCATION); format:text; pretext:of ;' class="custLocation"></span>
+		<div data-bind='var:review(RATING); format:addClass; format:addClass; className:review_;' class='reviewSprite rating'></div>
+		
+		<div class="reviewText">
+			<h4 data-bind='var:review(SUBJECT); format:text;'></h4>
+			<p data-bind='var:review(MESSAGE); format:text; ;'></p>
+		</div>
 	</li>
 </ul>
 

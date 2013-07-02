@@ -796,6 +796,41 @@ button.quickView:hover {
   margin:0 0 2px 0;
 }
 
+.prodReviewContainer {
+  font-size: 12px;
+  color: #5E4119;
+  margin-top:1em;
+  padding:0.5em 0.2em;
+  position:relative;
+}
+
+.prodReviewContainer ul {
+  margin:0;
+  padding:0;
+}
+
+.prodReviewContainer .custName {
+  color:#222;
+  font-weight:bold;
+  display:block;
+}
+
+.prodReviewContainer .custLocation {
+  display:block;
+}
+
+.prodReviewContainer .rating {
+  display:block;
+  position:absolute;
+  right:0;
+  top:0;
+}
+
+.prodReviewContainer .reviewText {
+  margin-top:0.5em;
+}
+
+
 .productPage .prodlistRelatedContainer {
   margin-top:20px;
   border-top:1px dotted #4F493C;
