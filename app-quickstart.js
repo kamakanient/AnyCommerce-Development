@@ -57,6 +57,7 @@ var myRIA = function() {
 			'productListTemplateCart',
 			'productListTemplateChildren',
 			'productReviewsTemplateDetail',
+			'productReviewsTemplateDetailNoTab',
 			'imageViewerTemplate',
 			'reviewFrmTemplate',
 			'subscribeFormTemplate',
