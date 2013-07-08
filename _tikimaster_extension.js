@@ -21,7 +21,9 @@
 		var j;
 		for (var i = 0; i < this.length; i++) {
 			j = Math.floor(Math.random() * this.length);
-			$(this[i]).before($(this[j]));
+			if(i != j){
+				$(this[i]).before($(this[j]));
+			}
 		}
 		return this;
 	};
@@ -47,6 +49,7 @@ var tikimaster = function() {
 							app.ext.tikimaster.u.randomizeList($(this)); // randomizes list
 							app.ext.tikimaster.u.truncList($(this)); // to leave only 3-4 first items after shuffle
 						});
+						app.ext.tikimaster.u.loadFeaturedStoreBanner();
 					}]);
 					
 					
@@ -67,6 +70,7 @@ var tikimaster = function() {
 							}
 							app.ext.tikimaster.u.setTitle(title);
 							app.ext.tikimaster.u.makeDropDownBreadcrumb();
+							app.ext.tikimaster.u.loadFeaturedStoreBanner();
 						}]);
 					}
 					app.rq.push(['templateFunction', 'productTemplate','onCompletes',function(P){
@@ -74,6 +78,7 @@ var tikimaster = function() {
 						app.ext.tikimaster.u.setTitle(title);
 						app.ext.tikimaster.u.addBreadCrumbToProductPage();
 						app.ext.tikimaster.u.makeDropDownBreadcrumb();
+						app.ext.tikimaster.u.loadFeaturedStoreBanner();
 					}]);
 					app.rq.push(['templateFunction', 'companyTemplate','onCompletes',function(P){
 						var title = "SportsWorldChicago Help Desk";
