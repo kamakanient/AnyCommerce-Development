@@ -431,6 +431,8 @@ var tikimaster = function() {
 				$list.children().shuffle();
 			},
 			truncList : function($list){
+				// it looks for 'itemsPerPage3' (itemsPerPage4,5,6,...) css class 
+				// assigned to the list, extracts the number of items to leave and truncs
 				var num = 4;
 				var matches = $list.attr('class').match(/itemsPerPage(\d+)/);
 				if(matches[1]) {
