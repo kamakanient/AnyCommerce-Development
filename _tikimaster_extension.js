@@ -40,12 +40,13 @@ var tikimaster = function() {
 					//app.u.dump("Tikimaser extension loaded");
 					app.ext.tikimaster.u.loadFeaturedStoreBanner();
 					app.rq.push(['templateFunction', 'homepageTemplate','onCompletes',function(P) {
-						//var $context = $(app.u.jqSelector('#',P.parentID));
+						var $context = $(app.u.jqSelector('#',P.parentID));
 						app.ext.tikimaster.u.showHomepageSlideshow();
 						
-						//$('.randomList', $context).each(function(){
-						//	app.ext.tikimaster.u.randomizeList($(this));
-						//});
+						$('.randomList', $context).each(function(){
+							app.ext.tikimaster.u.randomizeList($(this)); // randomizes list
+							app.ext.tikimaster.u.truncList($(this)); // to leave only 3-4 first items after shuffle
+						});
 					}]);
 					
 					
@@ -94,7 +95,6 @@ var tikimaster = function() {
 					app.rq.push(['templateFunction', 'searchTemplate','onCompletes',function(P){
 						app.ext.tikimaster.u.setTitle();
 					}]);
-					
 					
 					//if there is any functionality required for this extension to load, put it here. such as a check for async google, the FB object, etc. return false if dependencies are not present. don't check for other extensions.
 					r = true;
@@ -429,6 +429,14 @@ var tikimaster = function() {
 			},
 			randomizeList : function($list){
 				$list.children().shuffle();
+			},
+			truncList : function($list){
+				var num = 4;
+				var matches = $list.attr('class').match(/itemsPerPage(\d+)/);
+				if(matches[1]) {
+					num = matches[1]-1;
+				}
+				$list.children('li:gt('+num+')').remove();
 			}
 		}, //u [utilities]
 
