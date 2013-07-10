@@ -668,6 +668,8 @@ an + b - a - size of loop, b - offset
   background:#F9F4D9;
 }
 
+.productList > li.loadingBG { background:#f9f3d9 url(images/wait.gif) no-repeat center center; }
+
 .productList > li h5 {
   background:#7EB784;
   color:white;
