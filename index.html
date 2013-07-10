@@ -912,7 +912,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 <ul>
 <li id='categoryListTemplate'>
 	<div onClick="showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});" class='pointer'>
-		<div class='thumbContainer'><img src='blank.gif' class='catThumb' alt='' data-bind='var: category(%meta.CAT_THUMB); format:imageURL;' width='229' height='171' /></div>
+		<div class='thumbContainer'><img src='img/blank-229x171.gif' class='catThumb' alt='' data-bind='var: category(%meta.CAT_THUMB); format:imageURL;' width='229' height='171' /></div>
 		<div class='catName white2LGray'><span data-bind='var: category(pretty); format:catText; extension: myRIA;'></span></div>
 	</div>
 </li>
@@ -939,13 +939,13 @@ Used for the product in a product list (prodlist), usually in the body of a cate
 the loadingBG class is removed (must be that classname) when the template is translated.
 remember to NOT put the button inside the 'onclick' container or two events will occur onclick.
 -->
-<li id='productListTemplate' class='loadingBG  ' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
+<li id='productListTemplate' class='loadingBG' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
 
 	<button class='floatRight pointer quickView displayNone' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">Quickview</button>
 
 	<div onClick="showContent('product',{'pid':$(this).attr('data-pid')})" data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='pointer'>
-		<div class='prodThumbContainer' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
-		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='312' height='234' />
+		<div class='prodThumbContainer w312h234' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
+		<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='312' height='234' />
 		</div>
 
 		<h5 data-bind='var: product(zoovy:prod_name); format:truncText; numCharacters:75;'></h5>
@@ -971,8 +971,8 @@ container ul should have lineItemProdlist class on it instead of productList
 <li id='productListTemplateATC' class='loadingBG  ' >
 	<div data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;'>
 
-		<div class='prodThumbContainer floatLeft'>
-		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='120' height='120' />
+		<div class='prodThumbContainer w120h120 floatLeft'>
+		<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='120' height='120' />
 		</div>
 
 		<h5 data-bind='var: product(zoovy:prod_name); format:text;'></h5>
@@ -998,7 +998,7 @@ container ul should have lineItemProdlist class on it instead of productList
 
 		<div class='prodThumbContainer floatLeft'>
 			<div class='ui-widget ui-widget-content ui-corner-all'>
-				<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='160' height='160' />
+				<img src='img/blank-160x160.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='160' height='160' />
 				<div class='buttonList ui-widget ui-widget-header ui-corner-all alignCenter'>
 
 <button class='ui-state-default ui-corner-all' title='add item to cart' onClick="showContent('product',{'pid':$(this).closest('[data-pid]').attr('data-pid')});">
@@ -1036,8 +1036,8 @@ container ul should have lineItemProdlist class on it instead of productList
 	<button class='pointer quickView displayNone' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">Quickview</button>
 
 	<div onClick="showContent('product',{'pid':$(this).attr('data-pid')})" data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='pointer'>
-		<div class='prodThumbContainer' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
-		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='236' height='177' />
+		<div class='prodThumbContainer w236h177' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
+		<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='236' height='177' />
 		</div>
 		<!--p data-bind='var: product(zoovy:prod_desc); format:truncWiki; numCharacters:165; extension:tikimaster; wikiFormats:myRIA;'></p-->
 		<!--p data-bind='var: product(zoovy:prod_desc); format:truncText; numCharacters:165;'></p-->
@@ -1091,8 +1091,8 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 
 <li id='productListTemplateResultsNewArrivals' class='loadingBG searchResultsNewProduct ' >
 	<div onClick="return showContent('product', {'pid' : $(this).parent().attr('data-pid')});" class='pointer'>
-		<div class='prodThumbContainer'>
-			<img src='blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
+		<div class='prodThumbContainer w140h93'>
+			<img src='img/blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
 		</div>
 
 		<span class='description hideInMinimalMode' data-bind='var: product(description); format:truncHTML; numCharacters: 150; extension:tikimaster; '></span>
@@ -1139,7 +1139,7 @@ this will likely become more flexible in the future. ###
 <div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).attr("data-pid")});' class='pointer clearfix'  data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;'>
 
 	<div data-bind="var: product(zoovy:prod_is_tags); format:addTagSpans;" class='tagsContainer'></div>
-	<img src='blank.gif' class='prodBigImage' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='640' height='480' />
+	<img src='img/blank.gif' class='prodBigImage' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='640' height='480' />
 
 </div>
 

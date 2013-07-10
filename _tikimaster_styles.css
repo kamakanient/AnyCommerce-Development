@@ -643,7 +643,7 @@ an + b - a - size of loop, b - offset
 .categoryList li:nth-child(8n+6) { background:#2D62B5; }
 .categoryList li:nth-child(8n+7) { background:#A4C200; }
 
-.categoryList li .thumbContainer { width:229px; height:171px; }
+.categoryList li .thumbContainer { width:229px; height:171px; background-image:url("img/blank-229x171.gif");}
 
 .categoryList li .catName {
   border-top:1px solid #4F493C;
@@ -702,6 +702,15 @@ button.quickView:hover {
   border:1px dotted #4F493C;
 }
 
+/* Display Sad Tiki image with "No Image Available" text if product/category image is absent */
+li:not(.loadingBG) div.prodThumbContainer.w120h120 { width:120px; height:120px; background-image:url("img/blank-120x120.gif"); }
+li:not(.loadingBG) div.prodThumbContainer.w140h93 { width:140px; height:93px; background-image:url("img/blank-140x93.gif"); }
+li:not(.loadingBG) div.prodThumbContainer.w160h160 { width:160px; height:160px; background-image:url("img/blank-160x160.gif"); }
+li:not(.loadingBG) div.prodThumbContainer.w236h177 { width:236px; height:177px; background-image:url("img/blank-236x177.gif"); }
+li:not(.loadingBG) div.prodThumbContainer.w312h234 { width:312px; height:234px; background-image:url("img/blank-312x234.gif"); }
+
+
+
   /************* END Category with products page layout *****************/
   
   /************* Product page layout *****************/
@@ -712,6 +721,9 @@ button.quickView:hover {
 
 .prodBigImage {
   border:1px solid #4F493C;
+/*  width:640px;
+  height:480px;
+  background:#fdffd2 url("img/blank-640x480.gif") no-repeat;*/
 }
 
 .productPage .prodThumbs img {
