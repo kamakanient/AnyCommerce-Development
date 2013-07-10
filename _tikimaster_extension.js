@@ -44,6 +44,7 @@ var tikimaster = function() {
 					app.rq.push(['templateFunction', 'homepageTemplate','onCompletes',function(P) {
 						var $context = $(app.u.jqSelector('#',P.parentID));
 						app.ext.tikimaster.u.showHomepageSlideshow();
+						app.ext.tikimaster.u.prepareRootNavCats();
 						
 						$('.randomList', $context).each(function(){
 							app.ext.tikimaster.u.randomizeList($(this)); // randomizes list
@@ -251,6 +252,12 @@ var tikimaster = function() {
 						timeout: 3500,
 					});
 				}
+			},
+			prepareRootNavCats : function(){
+				$("#leftNav ul li").unbind()
+					.click(function() { showContent('category',{'navcat':$(this).attr('data-catsafeid')}) })
+					.mouseover(function() { app.ext.tikimaster.a.showDropDown($(this)); })
+					.mouseout(function() { app.ext.tikimaster.a.hideDropDown($(this)); });
 			},
 			makeDropDownBreadcrumb : function(){
 				//app.u.dump("Tikimaser makeDropDownBreadcrumb started");
