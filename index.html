@@ -127,15 +127,24 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 		</div>
 
 		<img id="homepageLink" class="pointer" onclick="return showContent('homepage',{});" src='img/blank.gif' width='440' height='120' alt='tikimaster.com' title='TikiMaster.com - The Ultimate Tiki Source' />
+		
+		<a id="phoneLink" href="callto://8876774440" title='Call Us' alt='Call Us'></a>
 
 		<div id="livechat"><img src="https://chat.livechatinc.net/licence/1018178/button.cgi?lang=en&amp;groups=0" style="cursor:pointer;cursor:hand" onclick="window.open('https://chat.livechatinc.net/licence/1018178/open_chat.cgi?groups=0'+'&amp;s=1&amp;lang=en&amp;dc='+escape(document.cookie+';l='+document.location+';r='+document.referer+';s='+typeof lc_session),'Czat_1018178','width=604,height=247,resizable=no,scrollbars=no,status=1');" />
 		</div>
 
 		<div id="headerNav">
-			<img class="pointer" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' />
+			<!--img class="pointer swing" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' /-->
+			<a class="bindByAnchor swing" href="#!category?navcat=.004" alt='Tiki Decor' title='Tiki Decor' style="width:118px; background-position:0 0"></a>
+			<a class="bindByAnchor swing" href="#!category?navcat=.nautical_signs" alt='Nautical Decor' title='Nautical Decor' style="width:154px; background-position:-118px 0"></a>
+			<a class="bindByAnchor swing" href="#!category?navcat=.90" alt='Surf Decor' title='Surf Decor' style="width:119px; background-position:-272px 0"></a>
+			<a class="bindByAnchor swing" href="#!category?navcat=.pirate_decor" alt='Pirate Decor' title='Pirate Decor' style="width:136px; background-position:-391px 0"></a>
+			<a class="bindByAnchor swing" href="#!category?navcat=.beach_signs" alt='Beach Decor' title='Beach Decor' style="width:137px; background-position:-527px 0"></a>
+			<a class="bindByAnchor swing" href="#!category?navcat=.coastal_decor" alt='Coastal Decor' title='Coastal Decor' style="width:144px; background-position:-664px 0"></a>
+			<a class="bindByAnchor swing" href="#!category?navcat=.skull_and_bones_decor" alt='Skull n Bones Decor' title='Skull n Bones Decor' style="width:168px; background-position:-808px 0"></a>
 		</div>
 
-		<img id="cartLink" class="pointer" onclick="return showContent('cart',{})" src='img/tk08_btn_cart-129x29.gif' width='129' height='29' alt='view cart' />
+		<a id="cartLink" href="#" onclick="return showContent('cart',{})" alt='View Cart' title="View Cart"></a>
 
 	</div>
 	<!-- /HEADER -->

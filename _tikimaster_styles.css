@@ -131,6 +131,22 @@ h2.ui-widget-header { font-size:1.1em; }
   height:136px;
 }
 
+#header #phoneLink {
+  display:block;
+  z-index:21;
+  position:absolute;
+  top:88px;
+  left:471px;
+  width:230px;
+  height:26px;
+ /* background-image:url('img/header_phone_hover-226x21.png');*/
+  
+}
+
+#header #phoneLink:hover {
+  background-image:url('img/header_phone_hover-230x26.png');
+}
+
 #header #livechat {
   z-index:50;
   position:absolute;
@@ -142,8 +158,59 @@ h2.ui-widget-header { font-size:1.1em; }
   z-index:15;
   position:absolute;
   top:132px;
-  left:1px;
+  height:57px;
 }
+
+#header #headerNav a {
+  display:block;
+  float:left;
+  margin:0;
+  padding:0;
+  height:57px;
+  background-image:url('img/tk08_specstores-976x57.png');
+}
+
+.swing:hover {
+  -moz-animation: 1.5s ease 0s normal none infinite swing;
+  -o-animation: 1.5s ease 0s normal none infinite swing;
+  -ms-animation: 1.5s ease 0s normal none infinite swing;
+  -webkit-animation:swing 1.5s infinite ease-in-out;
+  animation: 1.5s ease 0s normal none infinite swing;
+  
+  -moz-transform-origin: center top;
+  -o-transform-origin: center top;
+  -ms-transform-origin: center top;
+  -webkit-transform-origin:top;
+  transform-origin: center top;
+}
+
+@-moz-keyframes swing{
+  0%{-moz-transform:skewX(7deg)}
+  50%{-moz-transform:skewX(-7deg)}
+  100%{-moz-transform:skewX(7deg)}
+}
+@-o-keyframes swing{
+  0%{-moz-transform:skewX(7deg)}
+  50%{-moz-transform:skewX(-7deg)}
+  100%{-moz-transform:skewX(7deg)}
+}
+@-ms-keyframes swing{
+  0%{-moz-transform:skewX(7deg)}
+  50%{-moz-transform:skewX(-7deg)}
+  100%{-moz-transform:skewX(7deg)}
+}
+@-webkit-keyframes swing{
+  0%{-moz-transform:skewX(7deg)}
+  50%{-moz-transform:skewX(-7deg)}
+  100%{-moz-transform:skewX(7deg)}
+}
+
+@keyframes swing{
+  0%{-moz-transform:skewX(7deg)}
+  50%{-moz-transform:skewX(-7deg)}
+  100%{-moz-transform:skewX(7deg)}
+}
+
 
 #header #cartLink {
   display:block;
@@ -151,6 +218,13 @@ h2.ui-widget-header { font-size:1.1em; }
   position:absolute;
   top:82px;
   right:145px;
+  width:129px;
+  height:29px;
+  background-image:url('img/tk08_btn_cart-129x29.gif');
+}
+
+#header #cartLink:hover {
+  background-image:url('img/tk08_btn_cart_hover-129x29.gif');
 }
 
 #bannerBottom {
