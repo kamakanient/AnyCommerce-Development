@@ -1,9 +1,11 @@
+html, body { height:100%; }
+
 body {
-  background:#8e7a47 url('img/tk08_bodybg_top-986x160.jpg') repeat-x top center;
   margin:0px; 
   /*font-family: Tahoma, Arial, sans-serif;*/
   font-family: verdana, arial, helvetica;
   color:#3B1B0E;
+  background:#EDF2FD;
 }
 
 .relative {position:relative;}
@@ -537,16 +539,46 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 #appPreView {
+  position:relative;
+  height:100%;
+  display:table;
+}
+
+#appPreView #loader {
+  width:500px;
+  height:400px;
+  display:table-cell;
+  vertical-align:middle;
+}
+
+#appPreView #loaderInner {
+  position:relative;
+  border:1px solid #623b25;
+  width:480px;
+  height:315px;
+}
+
+#appPreView #progressWrapper {
+  position:absolute;
+  top:140px;
+  left:85px;
+}
+
+/*#appPreView {
   background:#E9DBB9;
   border:2px solid #623b25;
   margin:1em auto;
-}
+}*/
 
 #appPreView #loader {
   font-size:70%;
   color:#623b25;
   text-align:center;
   padding:0.8em;
+}
+
+#appView {
+  background:#8e7a47 url('img/tk08_bodybg_top-986x160.jpg') repeat-x top center;
 }
 
 #mainContentArea { 

@@ -81,29 +81,24 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 
 <!-- what is displayed onLoad until the view is loaded -->
 <div id='appPreView'>
-<table>
-<tr>
-	<td><img src="img/tk13_logo_apppreview.png" /></td>
-	<td>
-
 	<div id="loader">
-		<h3>Loading Our New &amp; Improved Shopping Experience</h3>
+		<div id="loaderInner">
+			<img src="img/app_pre_view2-480x315.jpg" alt="Aloha!" />
+			<div id="progressWrapper">
+				<h3>Resetting your clock to island time. Aloha!</h3>
 
-		<div class='alignCenter'>
-		<progress id="appPreViewProgressBar" max="100" value="0"></progress><br>
+				<div class='alignCenter'>
+					<progress id="appPreViewProgressBar" max="100" value="0"></progress><br>
+				</div>
+				<div id='appPreViewProgressText'>0% Complete</div>
+			</div>
 		</div>
-		<div id='appPreViewProgressText'>0% Complete</div>
 	</div>
-	<div id="clickToLoad" class="displayNone pointer">
-		Click here to load your new and amazing shopping experience!
-	</div>
-	<div class='appMessaging'></div>
-	</td>
-</tr>
-</table>
+		<div id="clickToLoad" class="displayNone pointer">
+			Click here to load your new and amazing shopping experience!
+		</div>
+		<div class='appMessaging'></div>
 </div>
-
-
 
 <div id='appView' class='displayNone'>
 
