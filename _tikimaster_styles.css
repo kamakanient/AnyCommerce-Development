@@ -276,14 +276,14 @@ h2.ui-widget-header { font-size:1.1em; }
   z-index:20;
   position:absolute;
   top:82px;
-  right:145px;
-  width:129px;
-  height:29px;
-  background-image:url('img/tk08_btn_cart-129x29.gif');
+  right:141px;
+  width:133px;
+  height:34px;
+  background:url('img/tk08_btn_cart-133x68.png') no-repeat 0 0;
 }
 
 #header #cartLink:hover {
-  background-image:url('img/tk08_btn_cart_hover-129x29.gif');
+  background:url('img/tk08_btn_cart-133x68.png') no-repeat 0 -34px;
 }
 
 #bannerBottom {
