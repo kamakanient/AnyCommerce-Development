@@ -440,10 +440,15 @@ td.ztxt { padding:0 20px 0 0px; }
 
 .searchAndBreadcrumb .productSearchForm button {
   display:inline-block;
-  width:96px; height:26px;
-  background:url('img/tk08_btn_search-96x22.gif') left top no-repeat;
+  width:102px; height:27px;
+  background:url('img/tk08_btn_search-102x54.png') left top no-repeat;
   border:0;
   padding:3px;
+}
+
+.searchAndBreadcrumb .productSearchForm button:hover,
+.searchAndBreadcrumb .productSearchForm button:focus {
+  background:url('img/tk08_btn_search-102x54.png') 0 -27px no-repeat;
 }
 
 .breadcrumb {
