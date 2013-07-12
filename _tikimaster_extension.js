@@ -255,9 +255,10 @@ var tikimaster = function() {
 			},
 			prepareRootNavCats : function(){
 				$("#leftNav ul li").unbind()
-					.click(function() { showContent('category',{'navcat':$(this).attr('data-catsafeid')}) })
-					.mouseover(function() { app.ext.tikimaster.a.showDropDown($(this)); })
-					.mouseout(function() { app.ext.tikimaster.a.hideDropDown($(this)); });
+													 .mouseover(function() { app.ext.tikimaster.a.showDropDown($(this)); })
+													 .mouseout(function() { app.ext.tikimaster.a.hideDropDown($(this)); });
+				$("#leftNav ul li span").click(function() { showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')}) });
+				$("#leftNav ul li > ul li").click(function() { showContent('category',{'navcat':$(this).attr('data-catsafeid')}) });
 			},
 			makeDropDownBreadcrumb : function(){
 				//app.u.dump("Tikimaser makeDropDownBreadcrumb started");
