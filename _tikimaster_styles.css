@@ -844,6 +844,7 @@ button.quickView:hover {
 }
 
 /* Display Sad Tiki image with "No Image Available" text if product/category image is absent */
+li:not(.loadingBG) div.prodThumbContainer.w75h75 { width:75px; height:75px; background-image:url("img/blank-75x75.gif"); }
 li:not(.loadingBG) div.prodThumbContainer.w120h120 { width:120px; height:120px; background-image:url("img/blank-120x120.gif"); }
 div.prodThumbContainer.w140h93 { width:140px; height:93px; margin:0 auto; background-image:url("img/blank-140x93.gif"); }
 li:not(.loadingBG) div.prodThumbContainer.w160h160 { width:160px; height:160px; background-image:url("img/blank-160x160.gif"); }

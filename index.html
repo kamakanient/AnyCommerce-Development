@@ -1112,9 +1112,9 @@ container ul should have lineItemProdlist class on it instead of productList
 <li id='productListTemplateBuyerList' class='loadingBG clearfix' >
 	<div data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' >
 
-		<div class='prodThumbContainer floatLeft'>
+		<div class='prodThumbContainer w160h160 floatLeft'>
 			<div class='ui-widget ui-widget-content ui-corner-all'>
-				<img src='img/blank-160x160.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='160' height='160' />
+				<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='160' height='160' />
 				<div class='buttonList ui-widget ui-widget-header ui-corner-all alignCenter'>
 
 <button class='ui-state-default ui-corner-all' title='add item to cart' onClick="showContent('product',{'pid':$(this).closest('[data-pid]').attr('data-pid')});">
@@ -1180,7 +1180,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 	
 	<!--div onClick="app.ext.myRIA.a.handleProdPreview($(this).parent().attr('data-pid'));" class='pointer'-->
 	<div onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')})"  class='pointer'>
-		<div class='prodThumbContainer'>
+		<div class='prodThumbContainer w312h234'>
 		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='312' height='234' />
 		</div>
 
@@ -1193,7 +1193,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 
 <li id='productListTemplateResultsNoPreview' class='loadingBG searchResultsProduct ' >
 	<div onClick="return showContent('product', {'pid' : $(this).parent().attr('data-pid')});" class='pointer'>
-		<div class='prodThumbContainer'>
+		<div class='prodThumbContainer w120h120'>
 		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='120' height='120' />
 		</div>
 
@@ -1949,7 +1949,7 @@ So the cart template should contain these two elements and the extension should 
 		<button class='floatRight removeButton' data-bind='format:removeItemBtn; extension:store_cart; useParentData:true;' >Remove Item From Cart</button>
 		<button class='floatRight moveToWishlist marginRight' data-bind='format:moveToWishlistButton; extension:myRIA; useParentData:true;' >Move to Wishlist</button>
 
-		<div class='floatLeft'><img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); defaultVar: product(%attribs.zoovy:prod_image1); format:imageURL;' width='75' height='75' /></div>
+		<div class='floatLeft'><img src='blank.gif' class='prodThumb w75h75' alt='' data-bind='var: product(zoovy:prod_image1); defaultVar: product(%attribs.zoovy:prod_image1); format:imageURL;' width='75' height='75' /></div>
 
 		<h4 data-bind='var: product(prod_name); format:text; '></h4>
 
