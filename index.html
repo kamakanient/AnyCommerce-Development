@@ -31,7 +31,7 @@ _gaq.push(['_trackPageview']);
 var myCreole;
 
 var app = {vars:{
-	"release":"20130712211000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130712213600",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -130,8 +130,10 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 		
 		<a id="phoneLink" href="callto://8776774440" title='Call Us' alt='Call Us'></a>
 
-		<div id="livechat"><img src="https://chat.livechatinc.net/licence/1018178/button.cgi?lang=en&amp;groups=0" style="cursor:pointer;cursor:hand" onclick="window.open('https://chat.livechatinc.net/licence/1018178/open_chat.cgi?groups=0'+'&amp;s=1&amp;lang=en&amp;dc='+escape(document.cookie+';l='+document.location+';r='+document.referer+';s='+typeof lc_session),'Czat_1018178','width=604,height=247,resizable=no,scrollbars=no,status=1');" />
-		</div>
+		<!-- Livechatinc button doesn't work - probably license issue. 
+		And they've changed the domain to livechatinc.com, and have different scripts now -->
+		<!--div id="livechat"><img src="https://chat.livechatinc.net/licence/1018178/button.cgi?lang=en&amp;groups=0" style="cursor:pointer;cursor:hand" onclick="window.open('https://chat.livechatinc.net/licence/1018178/open_chat.cgi?groups=0'+'&amp;s=1&amp;lang=en&amp;dc='+escape(document.cookie+';l='+document.location+';r='+document.referer+';s='+typeof lc_session),'Czat_1018178','width=604,height=247,resizable=no,scrollbars=no,status=1');" />
+		</div-->
 
 		<div id="headerNav">
 			<!--img class="pointer swing" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' /-->
