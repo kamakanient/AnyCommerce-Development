@@ -128,7 +128,7 @@ It is run once, executed by the renderFormat.
 
 				var bindData = $tag.data('bindData');
 //tag is likely an li or a table.  add a loading graphic after it.
-				$tag.parent().append($("<div \/>").addClass('loadingBG').attr('data-app-role','infiniteProdlistLoadIndicator'));
+				$tag.after($("<div \/>").addClass('loadingBG').attr('data-app-role','infiniteProdlistLoadIndicator'));
 
 
 //Need either the tag itself ($tag) or the parent id to build a list. recommend $tag to ensure unique parent id is created
