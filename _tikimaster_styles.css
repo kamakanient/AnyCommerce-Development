@@ -174,14 +174,14 @@ h2.ui-widget-header { font-size:1.1em; }
   -moz-animation: 1.5s ease 0s normal none infinite swing;
   -o-animation: 1.5s ease 0s normal none infinite swing;
   -ms-animation: 1.5s ease 0s normal none infinite swing;
-  -webkit-animation: 1.5s ease 0s normal none infinite swing;
-  /*-webkit-animation:swing 1.5s infinite ease-in-out;*/
+/*  -webkit-animation: 1.5s ease 0s normal none infinite swing;*/
+  -webkit-animation:swing 1.5s infinite ease-in-out;
   animation: 1.5s ease 0s normal none infinite swing;
   
   -moz-transform-origin: center top;
   -o-transform-origin: center top;
   -ms-transform-origin: center top;
-  -webkit-transform-origin: center top;
+  -webkit-transform-origin:top;
   transform-origin: center top;
 }
 
