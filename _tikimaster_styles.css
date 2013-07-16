@@ -281,7 +281,7 @@ h2.ui-widget-header { font-size:1.1em; }
   right:141px;
   width:133px;
   height:34px;
-  background:url('img/tk08_btn_cart-133x68.png') no-repeat 0 0;
+  background:url('img/tk08_btn_cart-133x68.png') no-repeat 0 1px;
 }
 
 #header #cartLink:hover {
@@ -443,14 +443,14 @@ td.ztxt { padding:0 20px 0 0px; }
 .searchAndBreadcrumb .productSearchForm button {
   display:inline-block;
   width:102px; height:27px;
-  background:url('img/tk08_btn_search-102x54.png') left top no-repeat;
+  background:url('img/tk08_btn_search-102x54.png') no-repeat 0 1px;
   border:0;
   padding:3px;
 }
 
 .searchAndBreadcrumb .productSearchForm button:hover,
 .searchAndBreadcrumb .productSearchForm button:focus {
-  background:url('img/tk08_btn_search-102x54.png') 0 -27px no-repeat;
+  background:url('img/tk08_btn_search-102x54.png') no-repeat 0 -27px;
 }
 
 .breadcrumb {
@@ -937,12 +937,16 @@ li:not(.loadingBG) div.prodThumbContainer.w312h234 { width:312px; height:234px; 
 }
 
 .prodSummaryContainer .addToCartButton {
-  background:url('img/tk08b_add_to_cart.gif');
-  width:131px;
-  height:31px;
+  background:url('img/tk08b_add_to_cart-135x70.png') no-repeat 0 1px;
+  width:135px;
+  height:35px;
   border:none;
   margin:0 0;
   padding:0;
+}
+
+.prodSummaryContainer .addToCartButton:hover {
+  background-position:0 -35px;
 }
 
 .prodSummaryContainer .latency, .notAvailableForPurchase {
