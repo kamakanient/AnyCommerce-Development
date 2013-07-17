@@ -2727,10 +2727,12 @@ buyer to 'take with them' as they move between  pages.
 					else if(infoObj.pageType == 'category' ){
 						// if category has subcats - use categoryTemplate (it only renders list of subcats)
 						// if category has no subcats - use categoryTemplateNoSubcats (it only renders list of products)
+						infoObj.templateID = 'categoryTemplateNoSubcats';
 						app.model.fetchData('appCategoryDetail|'+catSafeID);
-						if(app.data["appCategoryDetail|"+catSafeID] && app.data["appCategoryDetail|"+catSafeID].subcategoryCount == 0) {
-							infoObj.templateID = 'categoryTemplateNoSubcats';
-							}
+						if(app.data["appCategoryDetail|"+catSafeID] && app.data["appCategoryDetail|"+catSafeID].subcategoryCount != 0) {
+							infoObj.templateID = 'categoryTemplate';
+						}
+						
 						}
 					else	{
 						infoObj.templateID = 'categoryTemplate'
