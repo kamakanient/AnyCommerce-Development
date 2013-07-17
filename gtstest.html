@@ -71,11 +71,12 @@
 				$div.appendTo('body');*/
 				
 				// Destroy GTS objects and Re-initialize GTS javascript
+				$('#gts-comm').remove();
 				delete window.GoogleTrustedStore;
 				for (var i = 0; i < window.gts.length; i++) {
 					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
 				}
-				gtsInit();
+				//gtsInit();
 				
 			});
 		});
