@@ -31,7 +31,7 @@
 		gts.push(["google_base_country", "US"]);
 		gts.push(["google_base_language", "EN"]);
 		
-		gtsInit();
+//		gtsInit();
 		
 		$(document).ready(function(){
 			$("button").click(function(){
@@ -76,7 +76,7 @@
 				for (var i = 0; i < window.gts.length; i++) {
 					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
 				}
-				//gtsInit();
+				gtsInit();
 				
 			});
 		});
