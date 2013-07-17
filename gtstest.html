@@ -75,10 +75,11 @@
 				$div.appendTo('body');
 				
 				// Destroy GTS objects and Re-initialize GTS javascript
-				$('script[src*="gtmp_compiled"]').remove();
-				$('#gts-comm').remove();
-				delete window.GoogleTrustedStore;
+				$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
+				$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
+				delete window.GoogleTrustedStore; // saw this in Safari only (?)
 				for (var i = 0; i < window.gts.length; i++) {
+					// remove 2 items from "window.gts" array - gts code will re-create them on init
 					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
 				}
 				gtsInit();
