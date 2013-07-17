@@ -42,6 +42,15 @@
 				// make sure there's no #gts-order node in the DOM
 				$("div#gts-order").remove();
 				
+				// Destroy all GTS objects and nodes
+				$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
+				$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
+				delete window.GoogleTrustedStore; // saw this in Safari only (?)
+				for (var i = 0; i < window.gts.length; i++) {
+					// remove 2 items from "window.gts" array - gts code will re-create them on init
+					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
+				}
+				
 				// show Thank You note
 				$(".order").fadeIn();
 
@@ -74,14 +83,8 @@
 
 				$div.appendTo('body');
 				
-				// Destroy GTS objects and Re-initialize GTS javascript
-				$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
-				$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
-				delete window.GoogleTrustedStore; // saw this in Safari only (?)
-				for (var i = 0; i < window.gts.length; i++) {
-					// remove 2 items from "window.gts" array - gts code will re-create them on init
-					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
-				}
+				// re-init GTS code - it will think that we arrived at Order Confirmation step
+				// will pick-up gts-order details block and send it to Google, hopefully 
 				gtsInit();
 				
 			});
