@@ -31,7 +31,7 @@
 		gts.push(["google_base_country", "US"]);
 		gts.push(["google_base_language", "EN"]);
 		
-//		gtsInit();
+		gtsInit();
 		
 		$(document).ready(function(){
 			$("button").click(function(){
@@ -42,7 +42,7 @@
 				$(".order").fadeIn().delay(3000).fadeOut();
 
 				// Insert gts-o data sections into DOM
-/*				$div = $("<div \/>",{'id':'gts-order'});
+				$div = $("<div \/>",{'id':'gts-order'});
 
 				$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
 				$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
@@ -68,7 +68,7 @@
 				
 				$itemSpan.appendTo($div);
 
-				$div.appendTo('body');*/
+				$div.appendTo('body');
 				
 				// Destroy GTS objects and Re-initialize GTS javascript
 				$('#gts-comm').remove();
