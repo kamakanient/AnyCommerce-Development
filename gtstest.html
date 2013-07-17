@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<style type="text/css">
+		body {width:900px; margin:0 auto; font-family:Helvetica;}
+		h1, h3 { text-align:center; }
+		p { line-height:130%;}
+		pre { background:#eee; padding:1em; }
+		button { display:block; margin:1em auto; font-size:150%; cursor:pointer; }
+		.order { width:500px; margin:0 auto; padding:1em; border:1px solid #ccc; background:#eef; }
+		.displayNone, #gts-order { display:none; }
+	</style>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+	<script>
+		function gtsInit() {
+			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+			var gts = document.createElement("script");
+			gts.type = "text/javascript";
+			gts.async = true;
+			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(gts, s);
+		}
+		
+		var gts = gts || [];
+		gts.push(["id", "12117"]);
+		gts.push(["google_base_offer_id", "DPT5330A"]);
+		gts.push(["google_base_subaccount_id", "1079369"]);
+		gts.push(["google_base_country", "US"]);
+		gts.push(["google_base_language", "EN"]);
+		
+		gtsInit();
+		
+		$(document).ready(function(){
+			$("button").click(function(){
+				// make sure there's no gts-o data sections
+				$("div#gts-order").remove();
+				
+				// show Thank You note
+				$(".order").fadeIn().delay(3000).fadeOut();
+
+				// Insert gts-o data sections into DOM
+/*				$div = $("<div \/>",{'id':'gts-order'});
+
+				$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
+				$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
+				$("<span \/>",{'id':'gts-o-email'}).text('mispeaced@gmail.com').appendTo($div);
+				$("<span \/>",{'id':'gts-o-country'}).text('USA').appendTo($div);
+				$("<span \/>",{'id':'gts-o-total'}).text('13.90').appendTo($div);
+				$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
+				$("<span \/>",{'id':'gts-o-discounts'}).text('0').appendTo($div);
+				$("<span \/>",{'id':'gts-o-shipping-total'}).text('0').appendTo($div);
+				$("<span \/>",{'id':'gts-o-tax-total'}).text('0').appendTo($div);
+				$("<span \/>",{'id':'gts-o-est-ship-date'}).text('20130719').appendTo($div); //!!! needs to be set.
+				$("<span \/>",{'id':'gts-o-has-preorder'}).text('N').appendTo($div); //set in loop above.
+				$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
+				
+				$itemSpan = $("<span \/>",{'class':'gts-item'});
+				$("<span \/>",{'id':'gts-i-name'}).text('DPT5330A').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-price'}).text('13.90').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-quantity'}).text('1').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-id'}).text('DPT5330A').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-store-id'}).text('1079369').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-country'}).text('USA').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
+				
+				$itemSpan.appendTo($div);
+
+				$div.appendTo('body');*/
+				
+				// Destroy GTS objects and Re-initialize GTS javascript
+				delete window.GoogleTrustedStore;
+				for (var i = 0; i < window.gts.length; i++) {
+					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
+				}
+				gtsInit();
+				
+			});
+		});
+	</script>
+	
+</head>
+
+<body>
+	<h1>anyCommerce + Google Trusted Stores test page</h1>
+	<h4>Basic idea how this should work:</h4>
+	<p>
+		 In Rich Internet Application (RIA) HTML page loads only once. And HTML DOM initializes only once.<br />
+		 After that any user interaction happens without the page reload - we just make ajax calls to send/fetch the data and delete/insert html nodes into the existing DOM - using javascript.<br />
+	   So, Google Trusted Stores badge code in RIA also initializes only once... But, unfortunately, that's not enough!
+	</p>
+	<p>
+	   After you press "Create Test Order" button, we'll show "Thank You" note to the user. There will be no page reload - javascript will insert "gts-o" data sections<br />
+		<pre>
+&lt;span id="gts-o-id">111&lt;/span&gt;
+&lt;span id="gts-o-domain">tikimaster.com&lt;/span&gt;
+&lt;span id="gts-o-email">...&lt;/span&gt;
+&lt;span id="gts-o-country">USA&lt;/span&gt;
+&lt;span id="gts-o-currency">USD&lt;/span&gt;
+...</pre>
+		into the existing DOM and we will need to destroy and re-load GTS javascript code by hand then. This page is created to perform such testing.
+	</p>
+		
+	<div class="order displayNone">
+		<h3>Order created. Thank you!</h3>
+		<p>gts-order structure added to DOM, see Firebug->Inspect Element</p>
+	</div>
+	
+	<button>Create Test Order</button>
+	
+</body>
+
+</html>
