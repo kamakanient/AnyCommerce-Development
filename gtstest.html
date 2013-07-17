@@ -7,6 +7,7 @@
 		p { line-height:130%;}
 		pre { background:#eee; padding:1em; }
 		button { display:block; margin:1em auto; font-size:150%; cursor:pointer; }
+		button:disabled { cursor:auto; }
 		.order { width:500px; margin:0 auto; padding:1em; border:1px solid #ccc; background:#eef; }
 		.displayNone, #gts-order { display:none; }
 	</style>
@@ -34,12 +35,15 @@
 		gtsInit();
 		
 		$(document).ready(function(){
+			$("button").attr("disabled",false);
 			$("button").click(function(){
-				// make sure there's no gts-o data sections
+				$(this).attr("disabled",true);
+				
+				// make sure there's no #gts-order node in the DOM
 				$("div#gts-order").remove();
 				
 				// show Thank You note
-				$(".order").fadeIn().delay(3000).fadeOut();
+				$(".order").fadeIn();
 
 				// Insert gts-o data sections into DOM
 				$div = $("<div \/>",{'id':'gts-order'});
@@ -89,25 +93,30 @@
 	<h1>anyCommerce + Google Trusted Stores test page</h1>
 	<h4>Basic idea how this should work:</h4>
 	<p>
-		 In Rich Internet Application (RIA) HTML page loads only once. And HTML DOM initializes only once.<br />
-		 After that any user interaction happens without the page reload - we just make ajax calls to send/fetch the data and delete/insert html nodes into the existing DOM - using javascript.<br />
+		 In the Rich Internet Application (RIA) HTML page loads only once. And HTML DOM initializes only once.<br />
+		 After that any user interaction happens without the page reload - we just make ajax calls to send/fetch the data and then delete/insert html nodes into the existing DOM - using javascript.<br />
 	   So, Google Trusted Stores badge code in RIA also initializes only once... But, unfortunately, that's not enough!
 	</p>
 	<p>
-	   After you press "Create Test Order" button, we'll show "Thank You" note to the user. There will be no page reload - javascript will insert "gts-o" data sections<br />
+	   Imagine you're at the Product page (or at the Checkout page), preparing to complete the checkout. After you press "Create Test Order" button, we'll show "Thank You" note. Javascript will insert "gts-o" and "gts-i" data sections<br />
 		<pre>
-&lt;span id="gts-o-id">111&lt;/span&gt;
+&lt;span id="gts-o-id">TEST111&lt;/span&gt;
 &lt;span id="gts-o-domain">tikimaster.com&lt;/span&gt;
-&lt;span id="gts-o-email">...&lt;/span&gt;
-&lt;span id="gts-o-country">USA&lt;/span&gt;
+&lt;span id="gts-o-email">my_email_here&lt;/span&gt;
+&lt;span id="gts-o-country">US&lt;/span&gt;
 &lt;span id="gts-o-currency">USD&lt;/span&gt;
 ...</pre>
-		into the existing DOM and we will need to destroy and re-load GTS javascript code by hand then. This page is created to perform such testing.
+		into the existing DOM and we will need to destroy and re-load GTS javascript code by hand then. This page is created to perform such testing. See the page source for what we actually delete and how we re-init everything on checkout.
 	</p>
 		
 	<div class="order displayNone">
-		<h3>Order created. Thank you!</h3>
-		<p>gts-order structure added to DOM, see Firebug->Inspect Element</p>
+		<h3>Order "TEST111" created. Thank you!</h3>
+		<p>
+			gts-order structure added to DOM, see Firebug->Inspect Element.<br />
+			GTS code reloaded, hopefully Google received the test order data.<br /><br />
+			Test this code in the <a href="https://www.google.com/trustedstores/sell">Google Trusted Stores panel</a><br />
+			Also check the <a href="https://www.google.com/trustedstores/main#order/all/p/0">Google Trusted Stores orders list</a>
+		</p>
 	</div>
 	
 	<button>Create Test Order</button>
