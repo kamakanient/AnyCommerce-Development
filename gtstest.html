@@ -71,6 +71,7 @@
 				$div.appendTo('body');
 				
 				// Destroy GTS objects and Re-initialize GTS javascript
+				$('script[src*="gtmp_compiled"]').remove();
 				$('#gts-comm').remove();
 				delete window.GoogleTrustedStore;
 				for (var i = 0; i < window.gts.length; i++) {
