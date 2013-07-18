@@ -28,6 +28,15 @@ var _gaq = _gaq || [];
 _gaq.push(['_setAccount','UA-668926-1']);
 _gaq.push(['_trackPageview']);
 
+// Google Trusted Store Config
+var gts = gts || [];
+gts.push(["id", "12117"]); 
+gts.push(["google_base_offer_id", "ISLANDTIKIBARNA"]); // Some key product ID, related to this page - optional
+gts.push(["google_base_subaccount_id", "1079369"]); // Google Shopping ID - optional
+gts.push(["google_base_country", "US"]); // optional
+gts.push(["google_base_language", "EN"]); // optional
+// Init happens in extensions/partner_google_analytics.js
+
 var myCreole;
 
 var app = {vars:{
@@ -280,27 +289,6 @@ src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=
 				</td>
 				<td><img width='115' border='0' height='55' src="img/ssl-geotrust.gif" /><!-- end GeoTrust Smart Icon tag --></td>
 				<td>
-					<!-- BEGIN: Google Trusted Store -->
-					<script type="text/javascript">
-						var gts = gts || [];
-						
-						gts.push(["id", "12117"]);
-						gts.push(["google_base_offer_id", ""]);
-						gts.push(["google_base_subaccount_id", "1079369"]);
-						gts.push(["google_base_country", "US"]);
-						gts.push(["google_base_language", "EN"]);
-						
-						(function() {
-							var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
-							var gts = document.createElement("script");
-							gts.type = "text/javascript";
-							gts.async = true;
-							gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
-							var s = document.getElementsByTagName("script")[0];
-							s.parentNode.insertBefore(gts, s);
-						})();
-					</script>
-					<!-- END: Google Trusted Store -->
 				</td>
 			</tr>
 		</table>

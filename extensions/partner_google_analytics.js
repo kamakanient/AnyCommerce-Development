@@ -80,10 +80,44 @@ app.ext.myRIA.template.searchTemplate.onInits.push(function(P) {
 app.ext.myRIA.template.pageNotFoundTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/404.html?page=' + document.location.pathname + document.location.search + '&from=' + document.referrer]);})
 
 
-//for GoogleTrustedStores.
+
+//////////// Handlers for GoogleTrustedStores \\\\\\\\\\\\\\\\
+app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) {
+	app.ext.google_analytics.u.gtsInit(P);
+	});
+app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
+	// change google_base_offer_id in "gts" array to the current PID and re-init gts
+	app.ext.google_analytics.u.gtsDestroy(P);
+	if(P.pid && window.gts && window.gts.length) {
+		for (var i = 0; i < window.gts.length; i++) {
+			if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = P.pid }
+			}
+		}
+	app.ext.google_analytics.u.gtsInit(P);
+	});
+
 app.ext.orderCreate.checkoutCompletes.push(function(P){
-	if(typeof window.GoogleTrustedStore)	{
+	if(window.gts)	{
 		if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
+			
+			app.u.dump(" ---------- In checkoutCompletes, dumping order ------------ ");
+			app.u.dump(app.data[P.datapointer].order);
+			
+			// Destroy all GTS objects and nodes
+			app.ext.google_analytics.u.gtsDestroy(P);
+			
+			Date.prototype.yyyymmdd = function() { // returns date in YYYY-MM-DD format
+				var yyyy = this.getFullYear().toString();
+				var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+				var dd  = this.getDate().toString();
+				return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]); // padding
+			};
+		
+			// Tikimaster usually dispatches orders within 1-2 days
+			var estShipDate = new Date();
+			estShipDate.setDate(estShipDate.getDate() + 2);
+			estShipDate = estShipDate.yyyymmdd();
+			
 			var order = app.data[P.datapointer].order,
 			$div = $("<div \/>",{'id':'gts-order'}),
 			L = order['@ITEMS'].length, hasPreBack = 'N', discounts = 0;
@@ -92,6 +126,20 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 				if(order['@ITEMS'][i].sku.charAt(0) == '%')	{discounts += Number(order['@ITEMS'][i].extended)}
 				}
 			
+			var google_base_offer_id = '', google_base_subaccount_id = '';
+			
+			if(order['@ITEMS'] && order['@ITEMS'][0] && order['@ITEMS'][0].product) {
+				google_base_offer_id = order['@ITEMS'][0].product;
+			}
+			
+			// extract google shopping store id from window.gts
+			// set first order product ID into window.gts -> google_base_offer_id
+			for (var i = 0; i < window.gts.length; i++) {
+				if(window.gts[i][0] == "google_base_subaccount_id" ) { google_base_subaccount_id = window.gts[i][1] }
+				if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = google_base_offer_id }
+				}
+			
+			// prepare gts-o section with Order totals
 			$("<span \/>",{'id':'gts-o-id'}).text(P.orderID).appendTo($div);
 			$("<span \/>",{'id':'gts-o-domain'}).text(document.domain).appendTo($div); //sdomain
 			$("<span \/>",{'id':'gts-o-email'}).text(order.customer.login || order.bill.email).appendTo($div);
@@ -101,35 +149,42 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			$("<span \/>",{'id':'gts-o-discounts'}).text(discounts).appendTo($div);
 			$("<span \/>",{'id':'gts-o-shipping-total'}).text(order.sum.ship_total).appendTo($div);
 			$("<span \/>",{'id':'gts-o-tax-total'}).text(order.sum.tax_total).appendTo($div);
-			//$("<span \/>",{'id':'gts-o-est-ship-date'}).text("").appendTo($div); //!!! needs to be set.
+			$("<span \/>",{'id':'gts-o-est-ship-date'}).text(estShipDate).appendTo($div); //!!! needs to be set.
 			$("<span \/>",{'id':'gts-o-has-preorder'}).text(hasPreBack).appendTo($div); //set in loop above.
 			$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
 			
+			// prepare gts-i sections for all Items in the order
+			for(var i = 0; i < L; i += 1) {
+				var $itemSpan = $("<span \/>",{'class':'gts-item'});
+				$("<span \/>",{'id':'gts-i-name'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-price'}).text(order['@ITEMS'][i].base_price).appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-quantity'}).text(order['@ITEMS'][i].qty).appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-id'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-store-id'}).text(google_base_subaccount_id).appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
+				$("<span \/>",{'id':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
+				
+				$itemSpan.appendTo($div);
+				}
+			
 			$div.appendTo('body');
 
-//delete existing object or gts conversion won't load right.
-			delete window.GoogleTrustedStore; 
-//this function will re-load the gts code. The spans above tell the GTS store to treat this as a conversion.
-//so it's important those spans are added to the DOM prior to this code being run.
-			(function() {
-			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
-			var gts = document.createElement("script");
-			gts.type = "text/javascript";
-			gts.async = true;
-			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
-			var s = document.getElementsByTagName("script")[0];
-			s.parentNode.insertBefore(gts, s);
-			})();
-
-
+			//re-load the gts code. The spans above tell the GTS store to treat this as a conversion.
+			//so it's important those spans are added to the DOM prior to this code being run.
+			app.ext.google_analytics.u.gtsInit(P);
+			
+			
 			}
 		else	{
 			//unable to determine order contents.
 			}
 		}
 	});
+///////// END - Handlers for GoogleTrustedStores \\\\\\\\\\
 
 
+
+// Google Analytics TrackTrans
 app.ext.orderCreate.checkoutCompletes.push(function(P){
 	app.u.dump("BEGIN google_analytics code pushed on orderCreate.checkoutCompletes");
 	if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
@@ -184,7 +239,29 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					else	{
 						//catch. 
 						}
-					}
+					},
+				gtsInit : function(P) {
+					if(window.gts) {
+						var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+						var gts = document.createElement("script");
+						gts.type = "text/javascript";
+						gts.async = true;
+						gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+						var s = document.getElementsByTagName("script")[0];
+						s.parentNode.insertBefore(gts, s);
+						}
+					}, // gtsInit
+				gtsDestroy : function(P) { // remove all related to Google Trusted Stores from DOM
+					if(window.gts) {
+						$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
+						$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
+						delete window.GoogleTrustedStore; // saw this in Safari only (?)
+						for (var i = 0; i < window.gts.length; i++) {
+							// remove 2 items from "window.gts" array - gts code will re-create them on init
+							if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
+							}
+						}
+					} // gtsDestroy
 				} //util
 		} //r object.
 	return r;
