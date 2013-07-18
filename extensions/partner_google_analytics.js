@@ -80,8 +80,51 @@ app.ext.myRIA.template.searchTemplate.onInits.push(function(P) {
 app.ext.myRIA.template.pageNotFoundTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/404.html?page=' + document.location.pathname + document.location.search + '&from=' + document.referrer]);})
 
 
+// Google Analytics TrackTrans
+app.ext.orderCreate.checkoutCompletes.push(function(P){
+	app.u.dump("BEGIN google_analytics code pushed on orderCreate.checkoutCompletes");
+	if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
+		var order = app.data[P.datapointer].order;
+		_gaq.push(['_addTrans',
+			  P.orderID,           // order ID - required
+			  '', // affiliation or store name
+			  order.sum.order_total,          // total - required
+			  order.sum.tax_total,           // tax
+			  order.sum.ship_total,          // shipping
+			  order.sum.city,       // city
+			  order.sum.region,     // state or province
+			  order.sum.countrycode             // country
+		   ]);
+	
+		var L = order['@ITEMS'].length;
+		app.u.dump(" -> "+L+" items in @ITEMS");
+	
+		for(var i = 0; i < L; i += 1)	{
+			_gaq.push(['_addItem',
+				P.orderID,         // order ID - necessary to associate item with transaction
+				order['@ITEMS'][i].product,         // SKU/code - required
+				order['@ITEMS'][i].prod_name,      // product name - necessary to associate revenue with product
+				order['@ITEMS'][i].stid, // category or variation
+				order['@ITEMS'][i].base_price,        // unit price - required
+				order['@ITEMS'][i].qty             // quantity - required
+				]);
+			}
+		_gaq.push(['_trackTrans']);
+		}
+	else	{
+		//unable to determine order contents.
+		}
+	}); // end .push					
+
+						}
+					else	{
+						setTimeout(function(){app.ext.google_analytics.callbacks.startExtension.onSuccess()},250);
+						} //// END if(app.ext.myRIA && app.ext.myRIA.template && typeof _gaq == 'object')
+
 
 //////////// Handlers for GoogleTrustedStores \\\\\\\\\\\\\\\\
+					if(app.ext.myRIA && app.ext.myRIA.template && window.gts) {
+						
 app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) {
 	app.ext.google_analytics.u.gtsInit(P);
 	});
@@ -179,51 +222,10 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			//unable to determine order contents.
 			}
 		}
-	});
+	}); // end .push
+						}
 ///////// END - Handlers for GoogleTrustedStores \\\\\\\\\\
 
-
-
-// Google Analytics TrackTrans
-app.ext.orderCreate.checkoutCompletes.push(function(P){
-	app.u.dump("BEGIN google_analytics code pushed on orderCreate.checkoutCompletes");
-	if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
-		var order = app.data[P.datapointer].order;
-		_gaq.push(['_addTrans',
-			  P.orderID,           // order ID - required
-			  '', // affiliation or store name
-			  order.sum.order_total,          // total - required
-			  order.sum.tax_total,           // tax
-			  order.sum.ship_total,          // shipping
-			  order.sum.city,       // city
-			  order.sum.region,     // state or province
-			  order.sum.countrycode             // country
-		   ]);
-	
-		var L = order['@ITEMS'].length;
-		app.u.dump(" -> "+L+" items in @ITEMS");
-	
-		for(var i = 0; i < L; i += 1)	{
-			_gaq.push(['_addItem',
-				P.orderID,         // order ID - necessary to associate item with transaction
-				order['@ITEMS'][i].product,         // SKU/code - required
-				order['@ITEMS'][i].prod_name,      // product name - necessary to associate revenue with product
-				order['@ITEMS'][i].stid, // category or variation
-				order['@ITEMS'][i].base_price,        // unit price - required
-				order['@ITEMS'][i].qty             // quantity - required
-				]);
-			}
-		_gaq.push(['_trackTrans']);
-		}
-	else	{
-		//unable to determine order contents.
-		}
-	}); // end .push					
-
-						}
-					else	{
-						setTimeout(function(){app.ext.google_analytics.callbacks.startExtension.onSuccess()},250);
-						}
 
 					},
 				onError : function(){}
