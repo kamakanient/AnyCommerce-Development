@@ -242,6 +242,8 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					},
 				gtsInit : function(P) {
 					if(window.gts) {
+						app.u.dump(" --------- gts init ----------");
+						
 						var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 						var gts = document.createElement("script");
 						gts.type = "text/javascript";
