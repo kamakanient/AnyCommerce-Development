@@ -190,7 +190,7 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			$("<span \/>",{'id':'gts-o-total'}).text(order.sum.order_total).appendTo($div);
 			$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
 			$("<span \/>",{'id':'gts-o-discounts'}).text(discounts).appendTo($div);
-			$("<span \/>",{'id':'gts-o-shipping-total'}).text(order.sum.ship_total).appendTo($div);
+			$("<span \/>",{'id':'gts-o-shipping-total'}).text(order.sum.shp_total).appendTo($div);
 			$("<span \/>",{'id':'gts-o-tax-total'}).text(order.sum.tax_total).appendTo($div);
 			$("<span \/>",{'id':'gts-o-est-ship-date'}).text(estShipDate).appendTo($div); //!!! needs to be set.
 			$("<span \/>",{'id':'gts-o-has-preorder'}).text(hasPreBack).appendTo($div); //set in loop above.
