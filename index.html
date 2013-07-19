@@ -35,12 +35,22 @@ gts.push(["google_base_offer_id", "ISLANDTIKIBARNA"]); // Some key product ID, r
 gts.push(["google_base_subaccount_id", "1079369"]); // Google Shopping ID - optional
 gts.push(["google_base_country", "US"]); // optional
 gts.push(["google_base_language", "EN"]); // optional
-// Init happens in extensions/partner_google_analytics.js
+
+(function() {
+  var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+  var gts = document.createElement("script");
+  gts.type = "text/javascript";
+  gts.async = true;
+  gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(gts, s);
+})();
+// Init also happens in extensions/partner_google_analytics.js
 
 var myCreole;
 
 var app = {vars:{
-	"release":"20130719210000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130719212000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required

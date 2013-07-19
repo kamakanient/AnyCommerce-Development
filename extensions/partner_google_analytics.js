@@ -126,6 +126,7 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					if(app.ext.myRIA && app.ext.myRIA.template && window.gts) {
 						
 app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) {
+	app.ext.google_analytics.u.gtsDestroy(P);
 	app.ext.google_analytics.u.gtsInit(P);
 	});
 app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
@@ -257,6 +258,8 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					}, // gtsInit
 				gtsDestroy : function(P) { // remove all related to Google Trusted Stores from DOM
 					if(window.gts) {
+						app.u.dump(" --------- gts destroy ----------");
+						
 						$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
 						$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
 						delete window.GoogleTrustedStore; // saw this in Safari only (?)
