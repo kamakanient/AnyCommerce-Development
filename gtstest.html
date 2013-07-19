@@ -33,7 +33,7 @@
 			$('.gtss-rc-sc-tc').remove();
 			$('.gtss-rc-sc').remove();
 			$('.gtss-ed').parent().remove();
-			if(window.0) { delete window.0; }
+			if(window[0]) { delete window[0] }
 			delete window.GoogleTrustedStore; // saw this in Safari only (?)
 			$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
 			for (var i = 0; i < window.gts.length; i++) {
