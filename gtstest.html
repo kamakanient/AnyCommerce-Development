@@ -16,6 +16,7 @@
 
 	<script>
 		function gtsInit() {
+			alert('In gtsInit');
 			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 			var gts = document.createElement("script");
 			gts.type = "text/javascript";
@@ -23,6 +24,22 @@
 			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(gts, s);
+		}
+		
+		function gtsDestroy() {
+			// Destroy all GTS objects and nodes
+			alert('In gtsDestroy');
+			$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
+			$('.gtss-rc-sc-tc').remove();
+			$('.gtss-rc-sc').remove();
+			$('.gtss-ed').parent().remove();
+			if(window.0) { delete window.0; }
+			delete window.GoogleTrustedStore; // saw this in Safari only (?)
+			$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
+			for (var i = 0; i < window.gts.length; i++) {
+				// remove 2 items from "window.gts" array - gts code will re-create them on init
+				if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
+			}
 		}
 		
 		var gts = gts || [];
@@ -42,14 +59,7 @@
 				// make sure there's no #gts-order node in the DOM
 				$("div#gts-order").remove();
 				
-				// Destroy all GTS objects and nodes
-				$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
-				$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
-				delete window.GoogleTrustedStore; // saw this in Safari only (?)
-				for (var i = 0; i < window.gts.length; i++) {
-					// remove 2 items from "window.gts" array - gts code will re-create them on init
-					if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
-				}
+				gtsDestroy();
 				
 				// show Thank You note
 				$(".order").fadeIn();
