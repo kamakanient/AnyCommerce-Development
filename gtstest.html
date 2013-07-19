@@ -21,7 +21,7 @@
 			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 			var gts = document.createElement("script");
 			gts.type = "text/javascript";
-			gts.async = true;
+			gts.async = false;
 			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(gts, s);
