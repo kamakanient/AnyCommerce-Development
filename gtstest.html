@@ -31,8 +31,8 @@
 			// Destroy all GTS objects and nodes
 			console.log(' ----- In gtsDestroy');
 			$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
-			$('.gtss-rc-sc-tc').remove();
-			$('.gtss-rc-sc').remove();
+			$('#gts-risk, #gts-c, #gts-g-w, #gts-bgvignette, .gtss-rc-sc-tc, .gtss-rc-sc, .gtss-uf').remove();
+			$('span[tabindex="0"]').remove();
 			$('.gtss-ed').parent().remove();
 			if(window[0]) { delete window[0] }
 			delete window.GoogleTrustedStore; // saw this in Safari only (?)
