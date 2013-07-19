@@ -6,7 +6,8 @@
 		h1, h3 { text-align:center; }
 		p { line-height:130%;}
 		pre { background:#eee; padding:1em; }
-		button { display:block; margin:1em auto; font-size:150%; cursor:pointer; }
+		.buttons { text-align:center; }
+		button { font-size:150%; cursor:pointer; display:inline-block; margin:0 0.5em;}
 		button:disabled { cursor:auto; }
 		.order { width:500px; margin:0 auto; padding:1em; border:1px solid #ccc; background:#eef; }
 		.displayNone, #gts-order { display:none; }
@@ -16,7 +17,7 @@
 
 	<script>
 		function gtsInit() {
-			alert('In gtsInit');
+			console.log(' ----- In gtsInit');
 			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 			var gts = document.createElement("script");
 			gts.type = "text/javascript";
@@ -28,7 +29,7 @@
 		
 		function gtsDestroy() {
 			// Destroy all GTS objects and nodes
-			alert('In gtsDestroy');
+			console.log(' ----- In gtsDestroy');
 			$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
 			$('.gtss-rc-sc-tc').remove();
 			$('.gtss-rc-sc').remove();
@@ -49,17 +50,20 @@
 		gts.push(["google_base_country", "US"]);
 		gts.push(["google_base_language", "EN"]);
 		
-		gtsInit();
+		//gtsInit();
 		
 		$(document).ready(function(){
-			$("button").attr("disabled",false);
-			$("button").click(function(){
-				$(this).attr("disabled",true);
+			//$("button#gtsInit").attr("disabled",false);
+			$("button#gtsInit").click(function(){ gtsInit() });
+			$("button#gtsDestroy").click(function(){ gtsDestroy() });
+			$("button#gtsCreateOrder").click(function(){
+				console.log(' ----- Creating gts-o structure');
+				//$(this).attr("disabled",true);
 				
 				// make sure there's no #gts-order node in the DOM
 				$("div#gts-order").remove();
 				
-				gtsDestroy();
+				//gtsDestroy();
 				
 				// show Thank You note
 				$(".order").fadeIn();
@@ -95,7 +99,7 @@
 				
 				// re-init GTS code - it will think that we arrived at Order Confirmation step
 				// will pick-up gts-order details block and send it to Google, hopefully 
-				gtsInit();
+				//gtsInit();
 				
 			});
 		});
@@ -133,7 +137,11 @@
 		</p>
 	</div>
 	
-	<button>Create Test Order</button>
+	<p class="buttons">
+		<button id="gtsInit">Init GTS Code</button>
+		<button id="gtsDestroy">Destroy GTS Code</button>
+		<button id="gtsCreateOrder">Create Test Order</button>
+	</p>
 	
 </body>
 
