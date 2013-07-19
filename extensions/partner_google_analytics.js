@@ -162,7 +162,7 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			estShipDate = estShipDate.yyyymmdd();
 			
 			var order = app.data[P.datapointer].order,
-			$div = $("<div \/>",{'id':'gts-order'}),
+			$div = $("<div \/>",{'id':'gts-order','style':'display:none;'}),
 			L = order['@ITEMS'].length, hasPreBack = 'N', discounts = 0;
 			
 			for(var i = 0; i < L; i += 1)	{
@@ -199,13 +199,13 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			// prepare gts-i sections for all Items in the order
 			for(var i = 0; i < L; i += 1) {
 				var $itemSpan = $("<span \/>",{'class':'gts-item'});
-				$("<span \/>",{'id':'gts-i-name'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
-				$("<span \/>",{'id':'gts-i-price'}).text(order['@ITEMS'][i].base_price).appendTo($itemSpan);
-				$("<span \/>",{'id':'gts-i-quantity'}).text(order['@ITEMS'][i].qty).appendTo($itemSpan);
-				$("<span \/>",{'id':'gts-i-prodsearch-id'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
-				$("<span \/>",{'id':'gts-i-prodsearch-store-id'}).text(google_base_subaccount_id).appendTo($itemSpan);
-				$("<span \/>",{'id':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
-				$("<span \/>",{'id':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-name'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-price'}).text(order['@ITEMS'][i].base_price).appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-quantity'}).text(order['@ITEMS'][i].qty).appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-id'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text(google_base_subaccount_id).appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
 				
 				$itemSpan.appendTo($div);
 				}
