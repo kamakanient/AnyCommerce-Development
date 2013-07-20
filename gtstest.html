@@ -45,7 +45,8 @@
 			$('span[tabindex="0"]').remove();
 			$('.gtss-ed').parent().remove();
 			$('script[src*="resources/gtmp_compiled"]').remove();
-			$("#validator.en, #desktop.en").remove()
+			$("script[id='validator.en']").remove();
+			$("script[id='desktop.en']").remove();
 			for (var i = 0; i < window.gts.length; i++) {
 				if(window.gts[i][0] == "jsv" ) { window.gts.splice(i) }
 			}

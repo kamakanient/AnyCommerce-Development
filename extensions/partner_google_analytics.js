@@ -136,6 +136,9 @@ app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
 		for (var i = 0; i < window.gts.length; i++) {
 			if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = P.pid }
 			}
+		if(window.GoogleTrustedStore && window.GoogleTrustedStore.google_base_offer_id) {
+			window.GoogleTrustedStore.google_base_offer_id = P.pid;
+			}
 		}
 	app.ext.google_analytics.u.gtsInit(P);
 	});
@@ -181,6 +184,10 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			for (var i = 0; i < window.gts.length; i++) {
 				if(window.gts[i][0] == "google_base_subaccount_id" ) { google_base_subaccount_id = window.gts[i][1] }
 				if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = google_base_offer_id }
+				}
+				
+			if(window.GoogleTrustedStore && window.GoogleTrustedStore.google_base_offer_id) {
+				window.GoogleTrustedStore.google_base_offer_id = google_base_offer_id;
 				}
 			
 			// prepare gts-o section with Order totals
@@ -250,24 +257,38 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 						var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 						var gts = document.createElement("script");
 						gts.type = "text/javascript";
-						gts.async = true;
-						gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+						gts.async = false;
+						// If that's a first init - load script from Google
+						if($('script[src*="www.googlecommerce.com/trustedstores/gtmp_compiled.js"]').attr("src")) {
+							gts.src = scheme + window.document.location.hostname + "/resources/gtmp_compiled_WLWEGXvT1ic.js";
+							} else {
+							gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+							}
 						var s = document.getElementsByTagName("script")[0];
 						s.parentNode.insertBefore(gts, s);
 						}
 					}, // gtsInit
-				gtsDestroy : function(P) { // remove all related to Google Trusted Stores from DOM
+				gtsDestroy : function(P) {
 					if(window.gts) {
 						app.u.dump(" --------- gts destroy ----------");
 						
-						$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
+						// We need to destroy some GTS objects and nodes
+						// Actually, it we could do 'delete.window.GoogleTrustedStore' that will be enough
+						// but Google made 'window.GoogleTrustedStore' object indestroyable!!! (cyclic refs?)
+						// Don't believe me? Try to delete it in FF/IE/Chrome :)
+						// The only browser where we can delete it is Safari (Safari 5.1 in my case)
 						$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
-						delete window.GoogleTrustedStore; // saw this in Safari only (?)
+						$('#gts-risk, #gts-c, #gts-g-w, #gts-bgvignette, .gtss-rc-sc-tc, .gtss-rc-sc, .gtss-uf').remove();
+						$('span[tabindex="0"]').remove();
+						$('.gtss-ed').parent().remove();
+						$('script[src*="resources/gtmp_compiled"]').remove();
+						$("script[id='validator.en']").remove();
+						$("script[id='desktop.en']").remove();
 						for (var i = 0; i < window.gts.length; i++) {
-							// remove 2 items from "window.gts" array - gts code will re-create them on init
-							if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
-							}
+							if(window.gts[i][0] == "jsv" ) { window.gts.splice(i) }
 						}
+						// THE MOST IMPORTANT BIT - PUSH "jsv" = "WLWEGXvT1ic" to gts array
+						window.gts.push(["jsv","WLWEGXvT1ic"]);
 					} // gtsDestroy
 				} //util
 		} //r object.
