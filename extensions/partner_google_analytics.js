@@ -252,7 +252,14 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					},
 				gtsInit : function(P) {
 					if(window.gts) {
-						app.u.dump(" --------- gts init ----------");
+						// On the first init we take javascript from googlecommerce.com
+						// On re-init we load our modified gtmp_compiled_WLWEGXvT1ic.js
+						
+						// But after that google anyway creates an iframe and load there
+						// the javascript from googlecommerce.com
+						// So our modified js is just a pre-pre-loader
+						
+						//app.u.dump(" --------- gts init ----------");
 						
 						var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 						var gts = document.createElement("script");
@@ -270,13 +277,14 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					}, // gtsInit
 				gtsDestroy : function(P) {
 					if(window.gts) {
-						app.u.dump(" --------- gts destroy ----------");
+						//app.u.dump(" --------- gts destroy ----------");
 						
 						// We need to destroy some GTS objects and nodes
 						// Actually, it we could do 'delete.window.GoogleTrustedStore' that will be enough
-						// but Google made 'window.GoogleTrustedStore' object indestroyable!!! (cyclic refs?)
-						// Don't believe me? Try to delete it in FF/IE/Chrome :)
+						// but Google made 'window.GoogleTrustedStore' object indestructible!!! (cyclic refs?)
+						// Don't believe me? Try to delete it in Firefox/IE/Chrome console :)
 						// The only browser where we can delete it is Safari (Safari 5.1 in my case)
+						// So, the process is a bit trickier :) Delete nodes and call gtsInit
 						$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
 						$('#gts-risk, #gts-c, #gts-g-w, #gts-bgvignette, .gtss-rc-sc-tc, .gtss-rc-sc, .gtss-uf').remove();
 						$('span[tabindex="0"]').remove();
