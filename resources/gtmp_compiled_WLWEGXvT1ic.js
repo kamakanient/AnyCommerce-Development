@@ -4512,7 +4512,7 @@
             bf(_.E, "exec", ff);
             var a = null;
             try {
-                if (D("gtsframe"))
+                /*if (D("gtsframe"))
                     if (a = {
                         what: "iferr0"
                     }, window == window.top)(0, _.Ve)({
@@ -4525,7 +4525,7 @@
                         }, {
                             what: "iferr1"
                         })
-                    } else {
+                    } else {*/
                         var a = {
                             what: "badge"
                         }, c = new gj;
@@ -4537,7 +4537,7 @@
                         }, {
                             what: "badgeimpl"
                         })
-                    }
+                    //}
             } catch (d) {
                 (0, _.Ve)(a, d)
             }
