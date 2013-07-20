@@ -286,9 +286,10 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 						$("script[id='desktop.en']").remove();
 						for (var i = 0; i < window.gts.length; i++) {
 							if(window.gts[i][0] == "jsv" ) { window.gts.splice(i) }
-						}
+							}
 						// THE MOST IMPORTANT BIT - PUSH "jsv" = "WLWEGXvT1ic" to gts array
 						window.gts.push(["jsv","WLWEGXvT1ic"]);
+						}
 					} // gtsDestroy
 				} //util
 		} //r object.
