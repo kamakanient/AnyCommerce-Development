@@ -18,29 +18,39 @@
 	<script>
 		function gtsInit() {
 			console.log(' ----- In gtsInit');
+			
 			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
 			var gts = document.createElement("script");
 			gts.type = "text/javascript";
 			gts.async = false;
-			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+			// If that's a first init - load script from Google
+			if($('script[src*="www.googlecommerce.com/trustedstores/gtmp_compiled1.js"]').attr("src")) {
+				gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+			} else {
+				gts.src = scheme + window.document.location.hostname + "/resources/gtmp_compiled_WLWEGXvT1ic.js";
+			}
 			var s = document.getElementsByTagName("script")[0];
 			s.parentNode.insertBefore(gts, s);
 		}
 		
 		function gtsDestroy() {
-			// Destroy all GTS objects and nodes
+			// We need to destroy some GTS objects and nodes
+			// Actually, it we could do 'delete.window.GoogleTrustedStore' that will be enough
+			// but Google made 'window.GoogleTrustedStore' object indestroyable!!! (cyclic refs?)
+			// Don't believe me? Try to delete it in FF/IE/Chrome :)
+			// The only browser where we can delete it is Safari (Safari 5.1 in my case)
 			console.log(' ----- In gtsDestroy');
 			$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
 			$('#gts-risk, #gts-c, #gts-g-w, #gts-bgvignette, .gtss-rc-sc-tc, .gtss-rc-sc, .gtss-uf').remove();
 			$('span[tabindex="0"]').remove();
 			$('.gtss-ed').parent().remove();
-			if(window[0]) { delete window[0] }
-			delete window.GoogleTrustedStore; // saw this in Safari only (?)
-			$('script[src*="gtmp_compiled"]').remove(); // these are <script> lines in the <head>
+			$('script[src*="resources/gtmp_compiled"]').remove();
+			$("#validator.en, #desktop.en").remove()
 			for (var i = 0; i < window.gts.length; i++) {
-				// remove 2 items from "window.gts" array - gts code will re-create them on init
-				if(window.gts[i][0] == "jsv" || window.gts[i][0] == "gtmJsHost") { window.gts.splice(i) }
+				if(window.gts[i][0] == "jsv" ) { window.gts.splice(i) }
 			}
+			// THE MOST IMPORTANT BIT - PUSH "jsv" = "WLWEGXvT1ic" to gts array
+			window.gts.push(["jsv","WLWEGXvT1ic"]);
 		}
 		
 		var gts = gts || [];
