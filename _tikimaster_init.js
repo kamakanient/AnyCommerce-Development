@@ -18,7 +18,7 @@ app.rq.push(['extension',0,'tikimaster','_tikimaster_extension.js','startExtensi
 app.rq.push(['extension',0,'prodlist_infinite','extensions/prodlist_infinite.js']);
 
 
-app.rq.push(['extension',1,'google_analytics','extensions/partner_google_analytics.js','startExtension']);
+app.rq.push(['extension',0,'google_analytics','extensions/partner_google_analytics.js','startExtension']);
 
 //app.rq.push(['extension',1,'tools_ABtesting','extensions/tools_ab_testing.js']);
 //app.rq.push(['extension',0,'partner_addthis','extensions/partner_addthis.js','startExtension']);

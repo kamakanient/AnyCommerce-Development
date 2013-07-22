@@ -125,7 +125,8 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 //////////// Handlers for GoogleTrustedStores \\\\\\\\\\\\\\\\
 					if(app.ext.myRIA && app.ext.myRIA.template && window.gts) {
 						
-app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) { app.u.dump(P); app.ext.google_analytics.u.gtsInit(P); });
+app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) { app.ext.google_analytics.u.gtsInit(P); });
+app.ext.myRIA.template.categoryTemplate.onCompletes.push(function(P) { app.ext.google_analytics.u.gtsInit(P); });
 app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
 	// change google_base_offer_id in "gts" array to the current PID and re-init gts
 	if(P.pid && window.gts && window.gts.length) {
@@ -236,7 +237,7 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 						//catch. 
 						}
 					},
-				gtsInit : function(P) {
+				gtsInit : function(P) { // Init Google Trusted Stores code
 					if(window.gts) {
 						
 						// IE < 9 fix - load stylesheets first
