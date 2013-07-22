@@ -13,13 +13,15 @@
 		gts.push(["google_base_country", "US"]);
 		gts.push(["google_base_language", "EN"]);
 		
-		var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
-		var gts = document.createElement("script");
-		gts.type = "text/javascript";
-		gts.async = false;
-		gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(gts, s);
+		(function() {
+			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+			var gts = document.createElement("script");
+			gts.type = "text/javascript";
+			gts.async = false;
+			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(gts, s);
+		});
 	</script>
 </body>
 </html>
