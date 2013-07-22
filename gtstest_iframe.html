@@ -4,15 +4,10 @@
 </head>
 <body>
 	<script>
-		console.log(' ----- Inside <iframe>');
-		//console.log(parent.gt)
-		
 		var gts = gts || [];
-		gts.push(["id", "12117"]);
-		gts.push(["google_base_offer_id", "DPT5330A"]);
-		gts.push(["google_base_subaccount_id", "1079369"]);
-		gts.push(["google_base_country", "US"]);
-		gts.push(["google_base_language", "EN"]);
+		for (var i = 0; i < parent.gts.length; i++) {
+			gts.push([parent.gts[i][0], parent.gts[i][1]]);
+		}
 		
 		(function() {
 			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");

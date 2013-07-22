@@ -14,7 +14,9 @@
 		.displayNone, #gts-order { display:none; }
 		#my-gts-iframe { position:fixed; top:0; left:0; width:100%; background:#ccc; }
 		#my-gts-iframe iframe { border:none; width:100%; }
-		#anycommerce-gts-iframe { position:fixed; top:0; left:0; width:100%; border:none; }
+		#anycommerce-gts-iframe { 
+			position:fixed; top:0; left:0; width:100%; border:none; height:40px; pointer-events:none;
+		}
 	</style>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -113,9 +115,19 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			}, 250);
 			*/
 			
-			//$div = $("<div \/>",{});
 			$("<iframe \/>",{'id':'anycommerce-gts-iframe','src':'gtstest_iframe.html'}).appendTo('body');
-			//$div.appendTo('body');
+			
+			// We load Google Trusted Stores scripts and Badge image into the iframe
+			// that means that iframe sits on top of our webpage - that's not good at all
+			// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
+			// let's transfer Badge image from the iframe back to main DOM as a compromise
+			var transferDivs = setInterval(function(){
+				$('#anycommerce-gts-iframe').contents().find('body > div').each(function(){ if($(this).attr('id') != 'gts-comm') { $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove } });
+				$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-div'); $('head').append($(this)); });
+				$('#anycommerce-gts-iframe').contents().find('style').remove();
+			},1000);
+			// I hope 10 seconds is enough for GTS scripts to load
+			setTimeout(function(){window.clearInterval(transferDivs);},10000);
 			
 		} // gtsIFrame
 		
