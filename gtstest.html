@@ -122,8 +122,8 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
 			// let's transfer Badge image from the iframe back to main DOM as a compromise
 			var transferDivs = setInterval(function(){
-				$('#anycommerce-gts-iframe').contents().find('body > div').each(function(){ if($(this).attr('id') != 'gts-comm') { $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove } });
-				$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-div'); $('head').append($(this)); });
+				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+				$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
 				$('#anycommerce-gts-iframe').contents().find('style').remove();
 			},1000);
 			// I hope 10 seconds is enough for GTS scripts to load
@@ -133,7 +133,7 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 		
 		function gtsDestroyIFrame() {
 			console.log(' ----- In gtsDestroyIFrame');
-			$("#anycommerce-gts-iframe").remove();
+			$("#anycommerce-gts-iframe,.anycommerce-gts-div,.anycommerce-gts-style").remove();
 		}
 		
 		var gts = gts || [];
@@ -205,44 +205,34 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 				// show Thank You note
 				$(".order").fadeIn();
 				
-				var frame = document.createElement("iframe");
-				$(frame).attr("id","anycommerce-gts-iframe");
+				$div = $("<div \/>",{'id':'gts-order','style':'display:none;'});
 
-				if(!$("#anycommerce-gts-iframe").attr('id')) {
-					$('body').append(frame);
-				} else {
-					frame = document.getElementByID("anycommerce-gts-iframe");
-				}
+				$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
+				$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
+				$("<span \/>",{'id':'gts-o-email'}).text('mispeaced@gmail.com').appendTo($div);
+				$("<span \/>",{'id':'gts-o-country'}).text('US').appendTo($div);
+				$("<span \/>",{'id':'gts-o-total'}).text('13.90').appendTo($div);
+				$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
+				$("<span \/>",{'id':'gts-o-discounts'}).text('0').appendTo($div);
+				$("<span \/>",{'id':'gts-o-shipping-total'}).text('0').appendTo($div);
+				$("<span \/>",{'id':'gts-o-tax-total'}).text('0').appendTo($div);
+				$("<span \/>",{'id':'gts-o-est-ship-date'}).text('2013-07-20').appendTo($div); //!!! needs to be set.
+				$("<span \/>",{'id':'gts-o-has-preorder'}).text('N').appendTo($div); //set in loop above.
+				$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
 
-				setTimeout(function(){
-					$div = $("<div \/>",{'id':'gts-order','style':'display:none;'});
+				$itemSpan = $("<span \/>",{'class':'gts-item'});
+				$("<span \/>",{'id':'gts-i-name'}).text('DPT5330A').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-price'}).text('13.90').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-quantity'}).text('1').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-id'}).text('DPT5330A').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text('1079369').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
+				$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
 
-					$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
-					$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
-					$("<span \/>",{'id':'gts-o-email'}).text('mispeaced@gmail.com').appendTo($div);
-					$("<span \/>",{'id':'gts-o-country'}).text('US').appendTo($div);
-					$("<span \/>",{'id':'gts-o-total'}).text('13.90').appendTo($div);
-					$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
-					$("<span \/>",{'id':'gts-o-discounts'}).text('0').appendTo($div);
-					$("<span \/>",{'id':'gts-o-shipping-total'}).text('0').appendTo($div);
-					$("<span \/>",{'id':'gts-o-tax-total'}).text('0').appendTo($div);
-					$("<span \/>",{'id':'gts-o-est-ship-date'}).text('2013-07-20').appendTo($div); //!!! needs to be set.
-					$("<span \/>",{'id':'gts-o-has-preorder'}).text('N').appendTo($div); //set in loop above.
-					$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
-
-					$itemSpan = $("<span \/>",{'class':'gts-item'});
-					$("<span \/>",{'id':'gts-i-name'}).text('DPT5330A').appendTo($itemSpan);
-					$("<span \/>",{'class':'gts-i-price'}).text('13.90').appendTo($itemSpan);
-					$("<span \/>",{'class':'gts-i-quantity'}).text('1').appendTo($itemSpan);
-					$("<span \/>",{'class':'gts-i-prodsearch-id'}).text('DPT5330A').appendTo($itemSpan);
-					$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text('1079369').appendTo($itemSpan);
-					$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
-					$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
-
-					$itemSpan.appendTo($div);
-					
-					$div.appendTo($(frame.contentWindow.document.body));
-				}, 250);
+				$itemSpan.appendTo($div);
+				
+				window.gts_order = $div.html();
+				//$div.appendTo($(frame.contentWindow.document.body));
 				
 			}); // button#gtsFrameCreateOrder
 		}); // $(document)
