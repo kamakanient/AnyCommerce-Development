@@ -126,8 +126,11 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					if(app.ext.myRIA && app.ext.myRIA.template && window.gts) {
 						
 app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) {
-	app.ext.google_analytics.u.gtsDestroy(P);
-	app.ext.google_analytics.u.gtsInit(P);
+	// load only if not loaded
+	if(!window.GoogleTrustedStore) {
+		app.ext.google_analytics.u.gtsDestroy(P);
+		app.ext.google_analytics.u.gtsInit(P);
+		}
 	});
 app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
 	// change google_base_offer_id in "gts" array to the current PID and re-init gts
@@ -147,8 +150,8 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 	if(window.gts)	{
 		if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
 			
-			app.u.dump(" ---------- In checkoutCompletes, dumping order ------------ ");
-			app.u.dump(app.data[P.datapointer].order);
+			//app.u.dump(" ---------- In checkoutCompletes, dumping order ------------ ");
+			//app.u.dump(app.data[P.datapointer].order);
 			
 			// Destroy all GTS objects and nodes
 			app.ext.google_analytics.u.gtsDestroy(P);
@@ -162,8 +165,8 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 		
 			// Tikimaster usually dispatches orders within 1-2 days
 			var estShipDate = new Date();
-			estShipDate.setDate(estShipDate.getDate() + 2);
-			estShipDate = estShipDate.yyyymmdd();
+			estShipDate.setDate(estShipDate.getDate() + 2); // today + 2 days
+			estShipDate = estShipDate.yyyymmdd(); // YYYY-MM-DD
 			
 			var order = app.data[P.datapointer].order,
 			$div = $("<div \/>",{'id':'gts-order','style':'display:none;'}),
