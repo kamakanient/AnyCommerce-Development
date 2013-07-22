@@ -75,6 +75,8 @@
 				}
 			}
 			
+			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+			var hostname = window.document.location.hostname;
 			var gtsInitCode = 'var gts = gts || [];\
 gts.push(["id", "'+vars["id"]+'"]);\
 gts.push(["google_base_offer_id", "'+vars["google_base_offer_id"]+'"]);\
@@ -82,11 +84,10 @@ gts.push(["google_base_subaccount_id", "'+vars["google_base_subaccount_id"]+'"])
 gts.push(["google_base_country", "'+vars["google_base_country"]+'"]);\
 gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 (function() {\
-	var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");\
 	var gts = document.createElement("script");\
 	gts.type = "text/javascript";\
 	gts.async = false;\
-	gts.src = scheme + window.document.location.hostname + "/resources/gtmp_compiled_WLWEGXvT1ic.js";\
+	gts.src = '+scheme+hostname+' + "/resources/gtmp_compiled_WLWEGXvT1ic.js";\
 	var s = document.getElementsByTagName("script")[0];\
 	s.parentNode.insertBefore(gts, s);\
 })();\
