@@ -14,8 +14,12 @@
 		if(parent.gts_order) {
 			var gts_order = document.createElement("div");
 			gts_order.id = 'gts-order';
-			gts_order.setAttribute('style', 'display:none;');
-			gts_order.style.setAttribute('cssText', 'display:none;');
+			if(gts_order.setAttribute) {
+				gts_order.setAttribute('style', 'display:none;'); // All normal browsers
+			}
+			if(gts_order.style) { // IE
+				gts_order.style.setAttribute('cssText', 'display:none;');
+			}
 			gts_order.innerHTML = parent.gts_order;
 			document.body.appendChild(gts_order);
 			delete parent.gts_order;
