@@ -60,13 +60,27 @@
 		
 		function gtsIFrame() {
 			console.log(' ----- In gtsIFrame');
-
-/*			var gtsInitCode = 'var gts = gts || [];\
-gts.push(["id", "12117"]);\
-gts.push(["google_base_offer_id", "DPT5330A"]);\
-gts.push(["google_base_subaccount_id", "1079369"]);\
-gts.push(["google_base_country", "US"]);\
-gts.push(["google_base_language", "EN"]);\
+			
+			vars = {
+				"id":"",
+				"google_base_offer_id":"",
+				"google_base_subaccount_id":"",
+				"google_base_country":"US",
+				"google_base_language":"EN"
+			};
+			// fetch Google Trusted Stores vars from window.gts
+			if(window.gts) {
+				for (var i = 0; i < window.gts.length; i++) {
+					vars[window.gts[i][0]] = window.gts[i][1];
+				}
+			}
+			
+			var gtsInitCode = 'var gts = gts || [];\
+gts.push(["id", "'+vars["id"]+'"]);\
+gts.push(["google_base_offer_id", "'+vars["google_base_offer_id"]+'"]);\
+gts.push(["google_base_subaccount_id", "'+vars["google_base_subaccount_id"]+'"]);\
+gts.push(["google_base_country", "'+vars["google_base_country"]+'"]);\
+gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 (function() {\
 	var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");\
 	var gts = document.createElement("script");\
@@ -77,22 +91,28 @@ gts.push(["google_base_language", "EN"]);\
 	s.parentNode.insertBefore(gts, s);\
 })();\
 ';
-			gtsInitCode = '<scr'+'ipt>'+gtsInitCode+'</scr'+'ipt>';
-
-			$('<iframe />', {id:'anycommerce-gts-iframe'}).appendTo('body');
-			$('#anycommerce-gts-iframe').contents().find('head').append(gtsInitCode);
-			//alert($('#anycommerce-gts-iframe').contents().find('body').text());*/
 			
-			$div = $("<div \/>",{'id':'my-gts-iframe'});
-			$("<iframe \/>",{'src':'gtstest_iframe.html'}).appendTo($div);
-			$div.appendTo('body');
+			if(!$("#anycommerce-gts-iframe").attr('id')) {
+				$('<iframe />', {id:'anycommerce-gts-iframe'}).appendTo('body');
+			}
+			
+			$("#anycommerce-gts-iframe").load(function(){
+				var frameHead = this.contentDocument.getElementsByTagName('head').item(0);
+				var s = this.contentDocument.createElement("script");
+				s.type = "text/javascript";
+				try {
+					s.appendChild(document.createTextNode(gtsInitCode)); // doesn't work on ie...
+				} catch(e) {
+					s.text = gtsInitCode; // IE has funky script nodes
+				}
+				frameHead.appendChild(s);
+			});
+			
 		}
 		
 		function gtsDestroyIFrame() {
 			console.log(' ----- In gtsDestroyIFrame');
-			$("#my-gts-iframe").remove();
 			$("#anycommerce-gts-iframe").remove();
-			
 		}
 		
 		var gts = gts || [];
@@ -156,7 +176,51 @@ gts.push(["google_base_language", "EN"]);\
 				//gtsInit();
 				
 			});
-		});
+			
+			$('button#gtsFrameCreateOrder').click(function() {
+				
+				//gtsDestroy();
+				
+				// show Thank You note
+				$(".order").fadeIn();
+				
+				if(!$("#anycommerce-gts-iframe").attr('id')) {
+					$('<iframe />', {id:'anycommerce-gts-iframe'}).appendTo('body');
+				}
+
+				$("#anycommerce-gts-iframe").load(function(){
+					
+					$div = $("<div \/>",{'id':'gts-order','style':'display:none;'});
+
+					$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
+					$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
+					$("<span \/>",{'id':'gts-o-email'}).text('mispeaced@gmail.com').appendTo($div);
+					$("<span \/>",{'id':'gts-o-country'}).text('US').appendTo($div);
+					$("<span \/>",{'id':'gts-o-total'}).text('13.90').appendTo($div);
+					$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
+					$("<span \/>",{'id':'gts-o-discounts'}).text('0').appendTo($div);
+					$("<span \/>",{'id':'gts-o-shipping-total'}).text('0').appendTo($div);
+					$("<span \/>",{'id':'gts-o-tax-total'}).text('0').appendTo($div);
+					$("<span \/>",{'id':'gts-o-est-ship-date'}).text('2013-07-20').appendTo($div); //!!! needs to be set.
+					$("<span \/>",{'id':'gts-o-has-preorder'}).text('N').appendTo($div); //set in loop above.
+					$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
+
+					$itemSpan = $("<span \/>",{'class':'gts-item'});
+					$("<span \/>",{'id':'gts-i-name'}).text('DPT5330A').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-price'}).text('13.90').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-quantity'}).text('1').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-id'}).text('DPT5330A').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text('1079369').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
+
+					$itemSpan.appendTo($div);
+
+					$div.appendTo($(this.contentDocument.getElementsByTagName('body').item(0)));
+				});
+				
+			}); // button#gtsFrameCreateOrder
+		}); // $(document)
 	</script>
 	
 </head>
@@ -195,8 +259,9 @@ gts.push(["google_base_language", "EN"]);\
 		<button id="gtsInit">Init GTS Code</button>
 		<button id="gtsDestroy">Destroy GTS Code</button>
 		<button id="gtsCreateOrder">Create Test Order</button><br />
-		<button id="gtsIFrame">Init ver2 - in iframe</button>
-		<button id="gtsDestroyIFrame">Destroy ver2 - in iframe</button>
+		<button id="gtsIFrame">Init in iframe</button>
+		<button id="gtsDestroyIFrame">Destroy in iframe</button>
+		<button id="gtsFrameCreateOrder">Create order in iframe</button>
 	</p>
 	
 </body>
