@@ -17,7 +17,7 @@
 			if(gts_order.setAttribute) {
 				gts_order.setAttribute('style', 'display:none;'); // All normal browsers
 			}
-			if(gts_order.style) { // IE
+			if(gts_order.style && gts_order.style.setAttribute) { // IE
 				gts_order.style.setAttribute('cssText', 'display:none;');
 			}
 			gts_order.innerHTML = parent.gts_order;
