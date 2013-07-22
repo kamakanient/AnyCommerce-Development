@@ -54,6 +54,18 @@
 			window.gts.push(["jsv","WLWEGXvT1ic"]);
 		}
 		
+		function gtsIFrame() {
+			console.log(' ----- In gtsIFrame');
+			$div = $("<div \/>",{'id':'my-gts-iframe','style':'display:none;'});
+			$("<iframe \/>",{'src':'gtstest_iframe.html'}).appendTo($div);
+			$div.appendTo('body');
+		}
+		
+		function gtsDestroyIFrame() {
+			console.log(' ----- In gtsDestroyIFrame');
+			$("#my-gts-iframe").remove();
+		}
+		
 		var gts = gts || [];
 		gts.push(["id", "12117"]);
 		gts.push(["google_base_offer_id", "DPT5330A"]);
@@ -67,6 +79,8 @@
 			//$("button#gtsInit").attr("disabled",false);
 			$("button#gtsInit").click(function(){ gtsInit() });
 			$("button#gtsDestroy").click(function(){ gtsDestroy() });
+			$("button#gtsIFrame").click(function(){ gtsIFrame() });
+			$("button#gtsDestroyIFrame").click(function(){ gtsIFrame() });
 			$("button#gtsCreateOrder").click(function(){
 				console.log(' ----- Creating gts-o structure');
 				//$(this).attr("disabled",true);
@@ -151,7 +165,9 @@
 	<p class="buttons">
 		<button id="gtsInit">Init GTS Code</button>
 		<button id="gtsDestroy">Destroy GTS Code</button>
-		<button id="gtsCreateOrder">Create Test Order</button>
+		<button id="gtsCreateOrder">Create Test Order</button><br />
+		<button id="gtsIFrame">Init ver2 - in iframe</button>
+		<button id="gtsDestroyIFrame">Destroy ver2 - in iframe</button>
 	</p>
 	
 </body>
