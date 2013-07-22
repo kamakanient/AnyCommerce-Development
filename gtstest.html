@@ -113,7 +113,9 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			}, 250);
 			*/
 			
-			$("<iframe \/>",{'src':'gtstest_iframe.html','id':'anycommerce-gts-iframe'}).appendTo('body');
+			$div = $("<div \/>",{});
+			$("<iframe \/>",{'src':'gtstest_iframe.html'}).appendTo($div);
+			$div.appendTo('body');
 			
 		} // gtsIFrame
 		
