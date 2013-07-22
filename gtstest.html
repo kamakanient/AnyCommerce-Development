@@ -61,7 +61,7 @@
 		function gtsIFrame() {
 			console.log(' ----- In gtsIFrame');
 			
-			vars = {
+/*			vars = {
 				"id":"",
 				"google_base_offer_id":"",
 				"google_base_subaccount_id":"",
@@ -75,15 +75,19 @@
 				}
 			}
 			
-			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
-			var hostname = window.document.location.hostname;
 			var gtsInitCode = '\
-console.log(gts);\
+var gts = gts || [];\
+gts.push(["id", "'+vars["id"]+'"]);\
+gts.push(["google_base_offer_id", "'+vars["google_base_offer_id"]+'"]);\
+gts.push(["google_base_subaccount_id", "'+vars["google_base_subaccount_id"]+'"]);\
+gts.push(["google_base_country", "'+vars["google_base_country"]+'"]);\
+gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 (function() {\
 	var gts = document.createElement("script");\
 	gts.type = "text/javascript";\
 	gts.async = false;\
-	gts.src = "'+scheme+hostname+'" + "/resources/gtmp_compiled_WLWEGXvT1ic.js";\
+	var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");\
+	gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";\
 	var s = document.getElementsByTagName("script")[0];\
 	s.parentNode.insertBefore(gts, s);\
 })();\
@@ -107,8 +111,11 @@ console.log(gts);\
 				}
 				frame.contentDocument.getElementsByTagName('head').item(0).appendChild(s);
 			}, 250);
+			*/
 			
-		}
+			$("<iframe \/>",{'src':'gtstest_iframe.html','id':'anycommerce-gts-iframe'}).appendTo('body');
+			
+		} // gtsIFrame
 		
 		function gtsDestroyIFrame() {
 			console.log(' ----- In gtsDestroyIFrame');
