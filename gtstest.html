@@ -12,7 +12,7 @@
 		button:disabled { cursor:auto; }
 		.order { width:500px; margin:0 auto; padding:1em; border:1px solid #ccc; background:#eef; }
 		.displayNone, #gts-order { display:none; }
-		#my-gts-iframe { position:fixed; top:0; left:0; width:100%; }
+		#my-gts-iframe { position:fixed; top:0; left:0; width:100%; background:#ccc; }
 		#my-gts-iframe iframe { border:none; width:100%; }
 		#anycommerce-gts-iframe { position:fixed; top:0; left:0; width:100%; border:none; }
 	</style>
@@ -61,7 +61,7 @@
 		function gtsIFrame() {
 			console.log(' ----- In gtsIFrame');
 
-			var gtsInitCode = 'var gts = gts || [];\
+/*			var gtsInitCode = 'var gts = gts || [];\
 gts.push(["id", "12117"]);\
 gts.push(["google_base_offer_id", "DPT5330A"]);\
 gts.push(["google_base_subaccount_id", "1079369"]);\
@@ -81,11 +81,11 @@ gts.push(["google_base_language", "EN"]);\
 
 			$('<iframe />', {id:'anycommerce-gts-iframe'}).appendTo('body');
 			$('#anycommerce-gts-iframe').contents().find('head').append(gtsInitCode);
-			//alert($('#anycommerce-gts-iframe').contents().find('body').text());
+			//alert($('#anycommerce-gts-iframe').contents().find('body').text());*/
 			
-			//$div = $("<div \/>",{'id':'my-gts-iframe'});
-			//$("<iframe \/>",{'src':'gtstest_iframe.html'}).appendTo($div);
-			//$div.appendTo('body');
+			$div = $("<div \/>",{'id':'my-gts-iframe'});
+			$("<iframe \/>",{'src':'gtstest_iframe.html'}).appendTo($div);
+			$div.appendTo('body');
 		}
 		
 		function gtsDestroyIFrame() {
