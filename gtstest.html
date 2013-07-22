@@ -91,22 +91,26 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 	s.parentNode.insertBefore(gts, s);\
 })();\
 ';
+			var frame = document.createElement("iframe");
+			$(frame).attr("id","anycommerce-gts-iframe");
 			
 			if(!$("#anycommerce-gts-iframe").attr('id')) {
-				$('<iframe />', {id:'anycommerce-gts-iframe'}).appendTo('body');
+				$('body').append(frame);
+			} else {
+				frame = document.getElementByID("anycommerce-gts-iframe");
 			}
 			
-			$("#anycommerce-gts-iframe").load(function(){
-				var frameHead = this.contentDocument.getElementsByTagName('head').item(0);
-				var s = this.contentDocument.createElement("script");
+			setTimeout(function(){
+				var frameHead = frame.contentDocument.getElementsByTagName('head').item(0);
+				var s = frame.contentDocument.createElement("script");
 				s.type = "text/javascript";
 				try {
 					s.appendChild(document.createTextNode(gtsInitCode)); // doesn't work on ie...
 				} catch(e) {
 					s.text = gtsInitCode; // IE has funky script nodes
 				}
-				frameHead.appendChild(s);
-			});
+				frame.contentWindow.document.body.appendChild(s);
+			}, 250);
 			
 		}
 		
@@ -184,12 +188,16 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 				// show Thank You note
 				$(".order").fadeIn();
 				
+				var frame = document.createElement("iframe");
+				$(frame).attr("id","anycommerce-gts-iframe");
+
 				if(!$("#anycommerce-gts-iframe").attr('id')) {
-					$('<iframe />', {id:'anycommerce-gts-iframe'}).appendTo('body');
+					$('body').append(frame);
+				} else {
+					frame = document.getElementByID("anycommerce-gts-iframe");
 				}
 
-				$("#anycommerce-gts-iframe").load(function(){
-					
+				setTimeout(function(){
 					$div = $("<div \/>",{'id':'gts-order','style':'display:none;'});
 
 					$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
@@ -215,9 +223,9 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 					$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
 
 					$itemSpan.appendTo($div);
-
-					$div.appendTo($(this.contentDocument.getElementsByTagName('body').item(0)));
-				});
+					
+					$div.appendTo($(frame.contentWindow.document.body));
+				}, 250);
 				
 			}); // button#gtsFrameCreateOrder
 		}); // $(document)
