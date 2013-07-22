@@ -124,7 +124,7 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			var transferDivs = setInterval(function(){
 				$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
 				$('#anycommerce-gts-iframe').contents().find('style').remove();
-				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order)').each(function(){ $(this).addClass('anycommerce-gts-div').attr('type','text/css'); $('body').append($(this)); $(this).remove });
 			},1000);
 			// I hope 10 seconds is enough for GTS scripts to load
 			setTimeout(function(){window.clearInterval(transferDivs);},10000);
