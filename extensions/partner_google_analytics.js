@@ -125,22 +125,12 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 //////////// Handlers for GoogleTrustedStores \\\\\\\\\\\\\\\\
 					if(app.ext.myRIA && app.ext.myRIA.template && window.gts) {
 						
-app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) {
-	// load only if not loaded
-	if(!window.GoogleTrustedStore) {
-		app.ext.google_analytics.u.gtsDestroy(P);
-		app.ext.google_analytics.u.gtsInit(P);
-		}
-	});
+app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) { app.u.dump(P); app.ext.google_analytics.u.gtsInit(P); });
 app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
 	// change google_base_offer_id in "gts" array to the current PID and re-init gts
-	app.ext.google_analytics.u.gtsDestroy(P);
 	if(P.pid && window.gts && window.gts.length) {
 		for (var i = 0; i < window.gts.length; i++) {
 			if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = P.pid }
-			}
-		if(window.GoogleTrustedStore && window.GoogleTrustedStore.google_base_offer_id) {
-			window.GoogleTrustedStore.google_base_offer_id = P.pid;
 			}
 		}
 	app.ext.google_analytics.u.gtsInit(P);
@@ -152,9 +142,6 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			
 			//app.u.dump(" ---------- In checkoutCompletes, dumping order ------------ ");
 			//app.u.dump(app.data[P.datapointer].order);
-			
-			// Destroy all GTS objects and nodes
-			app.ext.google_analytics.u.gtsDestroy(P);
 			
 			Date.prototype.yyyymmdd = function() { // returns date in YYYY-MM-DD format
 				var yyyy = this.getFullYear().toString();
@@ -188,10 +175,6 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 				if(window.gts[i][0] == "google_base_subaccount_id" ) { google_base_subaccount_id = window.gts[i][1] }
 				if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = google_base_offer_id }
 				}
-				
-			if(window.GoogleTrustedStore && window.GoogleTrustedStore.google_base_offer_id) {
-				window.GoogleTrustedStore.google_base_offer_id = google_base_offer_id;
-				}
 			
 			// prepare gts-o section with Order totals
 			$("<span \/>",{'id':'gts-o-id'}).text(P.orderID).appendTo($div);
@@ -221,10 +204,10 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 				$itemSpan.appendTo($div);
 				}
 			
-			$div.appendTo('body');
+			window.gts_order = $div.html();
 
 			//re-load the gts code. The spans above tell the GTS store to treat this as a conversion.
-			//so it's important those spans are added to the DOM prior to this code being run.
+			// gts code is loaded into iframe and will pick up parent.gts_order structure
 			app.ext.google_analytics.u.gtsInit(P);
 			
 			
@@ -255,53 +238,42 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 					},
 				gtsInit : function(P) {
 					if(window.gts) {
-						// On the first init we take javascript from googlecommerce.com
-						// On re-init we load our modified gtmp_compiled_WLWEGXvT1ic.js
 						
-						// But after that google anyway creates an iframe and load there
-						// the javascript from googlecommerce.com
-						// So our modified js is just a pre-pre-loader
-						
-						//app.u.dump(" --------- gts init ----------");
-						
-						var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
-						var gts = document.createElement("script");
-						gts.type = "text/javascript";
-						gts.async = false;
-						// If that's a first init - load script from Google
-						if($('script[src*="www.googlecommerce.com/trustedstores/gtmp_compiled.js"]').attr("src")) {
-							gts.src = scheme + window.document.location.hostname + "/resources/gtmp_compiled_WLWEGXvT1ic.js";
-							} else {
-							gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+						// IE < 9 fix - load stylesheets first
+						if (window.attachEvent && !window.addEventListener) { // that's dirty IE8 detection
+							var gts_stylesheet = 'extensions/partner_google_analytics_gts_iefix.css';
+							if (document.createStyleSheet) {
+								document.createStyleSheet(gts_stylesheet);
+								} else {
+								$("head").append('<link rel="stylesheet" type="text/css" href="'+gts_stylesheet+'" />'); 
+								}
 							}
-						var s = document.getElementsByTagName("script")[0];
-						s.parentNode.insertBefore(gts, s);
-						}
-					}, // gtsInit
-				gtsDestroy : function(P) {
-					if(window.gts) {
-						//app.u.dump(" --------- gts destroy ----------");
 						
-						// We need to destroy some GTS objects and nodes
-						// Actually, it we could do 'delete.window.GoogleTrustedStore' that will be enough
-						// but Google made 'window.GoogleTrustedStore' object indestructible!!! (cyclic refs?)
-						// Don't believe me? Try to delete it in Firefox/IE/Chrome console :)
-						// The only browser where we can delete it is Safari (Safari 5.1 in my case)
-						// So, the process is a bit trickier :) Delete nodes and call gtsInit
-						$('#gts-comm').remove(); // this is the hidden iframe GTS creates on init
-						$('#gts-risk, #gts-c, #gts-g-w, #gts-bgvignette, .gtss-rc-sc-tc, .gtss-rc-sc, .gtss-uf').remove();
-						$('span[tabindex="0"]').remove();
-						$('.gtss-ed').parent().remove();
-						$('script[src*="resources/gtmp_compiled"]').remove();
-						$("script[id='validator.en']").remove();
-						$("script[id='desktop.en']").remove();
-						for (var i = 0; i < window.gts.length; i++) {
-							if(window.gts[i][0] == "jsv" ) { window.gts.splice(i) }
-							}
-						// THE MOST IMPORTANT BIT - PUSH "jsv" = "WLWEGXvT1ic" to gts array
-						window.gts.push(["jsv","WLWEGXvT1ic"]);
-						}
-					} // gtsDestroy
+						// If re-init - remove gts nodes first
+						$("#anycommerce-gts-iframe,.anycommerce-gts-div,.anycommerce-gts-style").remove();
+						
+						// Load gts code into iframe
+						$("<iframe \/>",{
+							'id':'anycommerce-gts-iframe',
+							'src':'extensions/partner_google_analytics_gts_iframe.html',
+							'style':'position:fixed; top:0; left:0; border:none; height:0; width:100%; pointer-events:none;'
+							}).appendTo('body');
+
+						// We load Google Trusted Stores scripts and Badge image into the iframe
+						// creating iframe is the only way to re-load this stuff dynamically
+						// But that means iframe will sit on top of our webpage - that's not good at all
+						// (it's not transparent for the mouse clicks)
+						// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
+						// let's transfer Badge image from the iframe back to main DOM as a compromise
+						var transferDivsTimer = setInterval(function(){
+							$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
+							$('#anycommerce-gts-iframe').contents().find('style').remove();
+							$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+							},1000);
+						// I hope 10 seconds is enough for GTS scripts to load
+						setTimeout(function(){window.clearInterval(transferDivsTimer);},10000);	
+						} // if(window.gts)
+					} // gtsInit
 				} //util
 		} //r object.
 	return r;

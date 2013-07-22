@@ -11,15 +11,10 @@
 		button { font-size:150%; cursor:pointer; display:inline-block; margin:0.2em 0.5em;}
 		button:disabled { cursor:auto; }
 		.order { width:500px; margin:0 auto; padding:1em; border:1px solid #ccc; background:#eef; }
-		.displayNone, #gts-order { display:none; }
-		#my-gts-iframe { position:fixed; top:0; left:0; width:100%; background:#ccc; }
-		#my-gts-iframe iframe { border:none; width:100%; }
-		#anycommerce-gts-iframe { 
-			position:fixed; top:0; left:0; width:100%; border:none; height:40px; pointer-events:none;
-		}
+		.displayNone { display:none; }
 	</style>
 	<!--[if lt IE 10]>
-		<link rel="stylesheet" type="text/css" href="_gts_styles.css" />
+		<link rel="stylesheet" type="text/css" href="extensions/partner_google_analytics_gts_iefix.css" />
 	<![endif]-->
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -118,7 +113,22 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			}, 250);
 			*/
 			
-			$("<iframe \/>",{'id':'anycommerce-gts-iframe','src':'gtstest_iframe.html'}).appendTo('body');
+			// IE < 9 fix - load stylesheets first
+			if (window.attachEvent && !window.addEventListener) { // that's dirty IE8 detection
+				var gts_stylesheet = 'extensions/partner_google_analytics_gts_iefix.css';
+				if (document.createStyleSheet) {
+					document.createStyleSheet(gts_stylesheet);
+				} else {
+					$("head").append('<link rel="stylesheet" type="text/css" href="'+gts_stylesheet+'" />'); 
+				}
+			}
+			
+			// Load gts code into iframe
+			$("<iframe \/>",{
+				'id':'anycommerce-gts-iframe',
+				'src':'extensions/partner_google_analytics_gts_iframe.html',
+				'style':'position:fixed; top:0; left:0; border:none; height:0; width:100%; pointer-events:none;'
+			}).appendTo('body');
 			
 			// We load Google Trusted Stores scripts and Badge image into the iframe
 			// that means that iframe sits on top of our webpage - that's not good at all

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+<body>
+	<script>
+		// Initialize Google Trusted Stores acc id
+		var gts = gts || [];
+		for (var i = 0; i < parent.gts.length; i++) {
+			gts.push([parent.gts[i][0], parent.gts[i][1]]);
+		}
+		
+		// If this is Order Confirmation part - create <div id="gts-order">
+		if(parent.gts_order) {
+			var gts_order = document.createElement("div");
+			gts_order.id = 'gts-order';
+			if(gts_order.setAttribute) {
+				gts_order.setAttribute('style', 'display:none;'); // All normal browsers
+			}
+			if(gts_order.style && gts_order.style.setAttribute) { // IE
+				gts_order.style.setAttribute('cssText', 'display:none;');
+			}
+			gts_order.innerHTML = parent.gts_order;
+			document.body.appendChild(gts_order);
+			parent.gts_order = false;
+		}
+		
+		// Init GTS scripts - see, we modified nothing!
+		(function() {
+			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+			var gts = document.createElement("script");
+			gts.type = "text/javascript";
+			gts.async = false;
+			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(gts, s);
+		})();
+	</script>
+</body>
+</html>
