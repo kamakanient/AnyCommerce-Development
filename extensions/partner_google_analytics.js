@@ -266,13 +266,29 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 						// (it's not transparent for the mouse clicks)
 						// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
 						// let's transfer Badge image from the iframe back to main DOM as a compromise
-						var transferDivsTimer = setInterval(function(){
-							$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
-							$('#anycommerce-gts-iframe').contents().find('style').remove();
-							$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+						// !!! GTS order complete popup and vignette-bg stay in the iframe - thanks Michael for testing this !!!
+						var transferDivs = setInterval(function(){
+							$('#anycommerce-gts-iframe').contents().find('style:not(.anycommerce-gts-style)').each(function(){
+								$(this).addClass('anycommerce-gts-style');
+								$('<style class="anycommerce-gts-style">'+$(this).text()+'</style>').appendTo('head');
+							});
+							$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order,#gts-g-w,#gts-bgvignette)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+							// make iframe height 100% if we got GTS popup on screen
+							if($('#anycommerce-gts-iframe').contents().find('#gts-bgvignette:visible').attr('id')) {
+								$('#anycommerce-gts-iframe').css('height','100%');
+								$('#anycommerce-gts-iframe').css('pointer-events','auto');
+								} else {
+								$('#anycommerce-gts-iframe').css('height','0');
+								$('#anycommerce-gts-iframe').css('pointer-events','none');
+								}
 							},1000);
-						// I hope 10 seconds is enough for GTS scripts to load
-						setTimeout(function(){window.clearInterval(transferDivsTimer);},10000);	
+						// I hope 20 seconds is enough for GTS scripts to load
+						// and also for the customer to press Yes/No on GTS popup
+						setTimeout(function(){
+							window.clearInterval(transferDivs);
+							$('#anycommerce-gts-iframe').css('height','0');
+							},20000);
+						
 						} // if(window.gts)
 					} // gtsInit
 				} //util
