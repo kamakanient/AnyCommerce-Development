@@ -140,8 +140,8 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 					$('<style class="anycommerce-gts-style">'+$(this).text()+'</style>').appendTo('head');
 				});
 				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order,#gts-g-w,#gts-bgvignette)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
-				// make iframe height 100% if we got GTS popup
-				if($('#anycommerce-gts-iframe').contents().find('#gts-g-w').attr('id')) {
+				// make iframe height 100% if we got GTS popup on screen
+				if($('#anycommerce-gts-iframe').contents().find('#gts-bgvignette:visible').attr('id')) {
 					$('#anycommerce-gts-iframe').css('height','100%');
 					$('#anycommerce-gts-iframe').css('pointer-events','auto');
 				} else {
