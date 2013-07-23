@@ -282,12 +282,12 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 								$('#anycommerce-gts-iframe').css('pointer-events','none');
 								}
 							},1000);
-						// I hope 20 seconds is enough for GTS scripts to load
+						// I hope 30 seconds is enough for GTS scripts to load
 						// and also for the customer to press Yes/No on GTS popup
 						setTimeout(function(){
 							window.clearInterval(transferDivs);
 							$('#anycommerce-gts-iframe').css('height','0');
-							},20000);
+							},30000);
 						
 						} // if(window.gts)
 					} // gtsInit
