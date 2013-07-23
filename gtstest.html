@@ -143,8 +143,10 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 				// make iframe height 100% if we got GTS popup
 				if($('#anycommerce-gts-iframe').contents().find('#gts-g-w').attr('id')) {
 					$('#anycommerce-gts-iframe').css('height','100%');
+					$('#anycommerce-gts-iframe').css('pointer-events','auto');
 				} else {
 					$('#anycommerce-gts-iframe').css('height','0');
+					$('#anycommerce-gts-iframe').css('pointer-events','none');
 				}
 			},1000);
 			// I hope 20 seconds is enough for GTS scripts to load
