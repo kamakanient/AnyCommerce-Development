@@ -135,7 +135,10 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
 			// let's transfer Badge image from the iframe back to main DOM as a compromise
 			var transferDivs = setInterval(function(){
-				$('#anycommerce-gts-iframe').contents().find('style:not(.anycommerce-gts-style)').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
+				$('#anycommerce-gts-iframe').contents().find('style:not(.anycommerce-gts-style)').each(function(){
+					$(this).addClass('anycommerce-gts-style');
+					$('<style class="anycommerce-gts-style">'+$(this).text()+'</style>').appendTo('head');
+				});
 				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order,#gts-g-w,#gts-bgvignette)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
 				// make iframe height 100% if we got GTS popup
 				if($('#anycommerce-gts-iframe').contents().find('#gts-g-w').attr('id')) {
