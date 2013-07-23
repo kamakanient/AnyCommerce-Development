@@ -111,14 +111,14 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			*/
 			
 			// IE < 9 fix - load stylesheets first
-			/*if (window.attachEvent && !window.addEventListener) { // that's dirty IE8 detection
+			if (window.attachEvent && !window.addEventListener) { // that's dirty IE8 detection
 				var gts_stylesheet = 'extensions/partner_google_analytics_gts_iefix.css';
 				if (document.createStyleSheet) {
 					document.createStyleSheet(gts_stylesheet);
 				} else {
 					$("head").append('<link rel="stylesheet" type="text/css" href="'+gts_stylesheet+'" />'); 
 				}
-			}*/
+			}
 			
 			// Load gts code into iframe
 			$("<iframe \/>",{
