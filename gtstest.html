@@ -135,12 +135,21 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 			// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
 			// let's transfer Badge image from the iframe back to main DOM as a compromise
 			var transferDivs = setInterval(function(){
-				$('#anycommerce-gts-iframe').contents().find('style').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
-				$('#anycommerce-gts-iframe').contents().find('style').remove();
-				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+				$('#anycommerce-gts-iframe').contents().find('style:not(.anycommerce-gts-style)').each(function(){ $(this).addClass('anycommerce-gts-style'); $('head').append($(this)); });
+				$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order,#gts-g-w,#gts-bgvignette)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
+				// make iframe height 100% if we got GTS popup
+				if($('#anycommerce-gts-iframe').contents().find('#gts-g-w').attr('id')) {
+					$('#anycommerce-gts-iframe').css('height','100%');
+				} else {
+					$('#anycommerce-gts-iframe').css('height','0');
+				}
 			},1000);
-			// I hope 10 seconds is enough for GTS scripts to load
-			setTimeout(function(){window.clearInterval(transferDivs);},10000);
+			// I hope 20 seconds is enough for GTS scripts to load
+			// and also for the customer to press Yes/No on GTS popup
+			setTimeout(function(){
+				window.clearInterval(transferDivs);
+				$('#anycommerce-gts-iframe').css('height','0');
+			},20000);
 			
 		} // gtsIFrame
 		
