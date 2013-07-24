@@ -687,7 +687,8 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 .prodBlock .topRound { cursor:pointer; }
-.prodBlock .topRound:hover { text-shadow:2px 2px 3px #352819; margin-top:-1px; padding-bottom:1px; }
+.prodBlock .topRound:hover { text-shadow:2px 2px 3px #251809; margin-top:-1px; padding-bottom:1px; }
+.prodBlock .topRound.zcolor_light:hover { text-shadow:2px 2px 3px #857869; margin-top:-1px; padding-bottom:1px; }
 
 .prodBlockContent {
   position:relative;
