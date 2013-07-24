@@ -8,7 +8,8 @@
 		p { line-height:130%;}
 		pre { background:#eee; padding:1em; }
 		.buttons { text-align:center; }
-		button { font-size:150%; cursor:pointer; display:inline-block; margin:0.2em 0.5em;}
+		button, input { font-size:120%; cursor:pointer; display:inline-block; margin:0.2em 0.5em;}
+		label { font-size:120%; }
 		button:disabled { cursor:auto; }
 		.order { width:500px; margin:0 auto; padding:1em; border:1px solid #ccc; background:#eef; }
 		.displayNone { display:none; }
@@ -168,6 +169,7 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 		gts.push(["google_base_language", "EN"]);
 		
 		//gtsInit();
+		gtsIFrame();
 		
 		$(document).ready(function(){
 			//$("button#gtsInit").attr("disabled",false);
@@ -222,40 +224,60 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 				
 			});
 			
-			$('button#gtsFrameCreateOrder').click(function() {
+			//$('button#gtsFrameCreateOrder').click(function() {
+			$('button#gtsTestOrder').click(function() {
 				
-				//gtsDestroy();
+				if($('#id_email').val()) {
+					//gtsDestroy();
+					gtsDestroyIFrame();
 				
-				// show Thank You note
-				$(".order").fadeIn();
-				
-				$div = $("<div \/>",{'id':'gts-order','style':'display:none;'});
+					// show Thank You note
+					$(".order").fadeIn();
+					
+					Date.prototype.yyyymmdd = function() { // returns date in YYYY-MM-DD format
+						var yyyy = this.getFullYear().toString();
+						var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+						var dd  = this.getDate().toString();
+						return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]); // padding
+					};
 
-				$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
-				$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
-				$("<span \/>",{'id':'gts-o-email'}).text('mispeaced@gmail.com').appendTo($div);
-				$("<span \/>",{'id':'gts-o-country'}).text('US').appendTo($div);
-				$("<span \/>",{'id':'gts-o-total'}).text('13.90').appendTo($div);
-				$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
-				$("<span \/>",{'id':'gts-o-discounts'}).text('0').appendTo($div);
-				$("<span \/>",{'id':'gts-o-shipping-total'}).text('0').appendTo($div);
-				$("<span \/>",{'id':'gts-o-tax-total'}).text('0').appendTo($div);
-				$("<span \/>",{'id':'gts-o-est-ship-date'}).text('2013-07-20').appendTo($div); //!!! needs to be set.
-				$("<span \/>",{'id':'gts-o-has-preorder'}).text('N').appendTo($div); //set in loop above.
-				$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
-
-				$itemSpan = $("<span \/>",{'class':'gts-item'});
-				$("<span \/>",{'class':'gts-i-name'}).text('DPT5330A').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-price'}).text('13.90').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-quantity'}).text('1').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-id'}).text('DPT5330A').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text('1079369').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
-
-				$itemSpan.appendTo($div);
+					// Tikimaster usually dispatches orders within 1-2 days
+					var estShipDate = new Date();
+					estShipDate.setDate(estShipDate.getDate() + 2); // today + 2 days
+					estShipDate = estShipDate.yyyymmdd(); // YYYY-MM-DD
 				
-				window.gts_order = $div.html();
+					$div = $("<div \/>",{'id':'gts-order','style':'display:none;'});
+
+					$("<span \/>",{'id':'gts-o-id'}).text('TEST111').appendTo($div);
+					$("<span \/>",{'id':'gts-o-domain'}).text('tikimaster.com').appendTo($div); //sdomain
+					$("<span \/>",{'id':'gts-o-email'}).text($('#id_email').val()).appendTo($div);
+					$("<span \/>",{'id':'gts-o-country'}).text('US').appendTo($div);
+					$("<span \/>",{'id':'gts-o-total'}).text('13.90').appendTo($div);
+					$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
+					$("<span \/>",{'id':'gts-o-discounts'}).text('0').appendTo($div);
+					$("<span \/>",{'id':'gts-o-shipping-total'}).text('0').appendTo($div);
+					$("<span \/>",{'id':'gts-o-tax-total'}).text('0').appendTo($div);
+					$("<span \/>",{'id':'gts-o-est-ship-date'}).text(estShipDate).appendTo($div); //!!! needs to be set.
+					$("<span \/>",{'id':'gts-o-has-preorder'}).text('N').appendTo($div); //set in loop above.
+					$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
+
+					$itemSpan = $("<span \/>",{'class':'gts-item'});
+					$("<span \/>",{'class':'gts-i-name'}).text('DPT5330A').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-price'}).text('13.90').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-quantity'}).text('1').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-id'}).text('DPT5330A').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text('1079369').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
+					$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
+
+					$itemSpan.appendTo($div);
+				
+					window.gts_order = $div.html();
+					
+					gtsIFrame();
+				} else {
+					alert("Enter email");
+				} // if val()
 				//$div.appendTo($(frame.contentWindow.document.body));
 				
 			}); // button#gtsFrameCreateOrder
@@ -266,7 +288,7 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 
 <body>
 	<h1>anyCommerce + Google Trusted Stores test page</h1>
-	<h4>Basic idea how this should work:</h4>
+	<!--h4>Basic idea how this should work:</h4>
 	<p>
 		 In the Rich Internet Application (RIA) HTML page loads only once. And HTML DOM initializes only once.<br />
 		 After that any user interaction happens without the page reload - we just make ajax calls to send/fetch the data and then delete/insert html nodes into the existing DOM - using javascript.<br />
@@ -282,8 +304,12 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 &lt;span id="gts-o-currency">USD&lt;/span&gt;
 ...</pre>
 		into the existing DOM and we will need to destroy and re-load GTS javascript code by hand then. This page is created to perform such testing. See the page source for what we actually delete and how we re-init everything on checkout.
-	</p>
-		
+	</p-->
+	
+	<p>1. Wait until the page is fully loaded – the Google Trusted Stores test-drive toolbar must appear</p>
+	<p>2. Enter your email - we'll pass it to google</p>
+	<p>3. Click "Create Order" button – this will test the "Order Confirmation" module</p>
+	
 	<div class="order displayNone">
 		<h3>Order "TEST111" created. Thank you!</h3>
 		<p>
@@ -295,12 +321,14 @@ gts.push(["google_base_language", "'+vars["google_base_language"]+'"]);\
 	</div>
 	
 	<p class="buttons">
-		<button id="gtsInit">Init GTS Code</button>
+		<!--button id="gtsInit">Init GTS Code</button>
 		<button id="gtsDestroy">Destroy GTS Code</button>
 		<button id="gtsCreateOrder">Create Test Order</button><br />
 		<button id="gtsIFrame">Init in iframe</button>
 		<button id="gtsDestroyIFrame">Destroy in iframe</button>
-		<button id="gtsFrameCreateOrder">Create order in iframe</button>
+		<button id="gtsFrameCreateOrder">Create order in iframe</button-->
+		<label for="id_email">Enter your valid email: </label><input type="text" name="email" id="id_email" size="20" value="" />
+		<button id="gtsTestOrder">Create Order</button>
 	</p>
 	
 </body>
