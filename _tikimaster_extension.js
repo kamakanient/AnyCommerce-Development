@@ -51,6 +51,20 @@ var tikimaster = function() {
 							app.ext.tikimaster.u.truncList($(this)); // to leave only 3-4 first items after shuffle
 						});
 						app.ext.tikimaster.u.loadFeaturedStoreBanner();
+						
+						// Make prod lists unfoldable on header-tab click
+						$('.prodBlock .topRound').click(function() {
+							$el = $(this).parent().parent().find('.prodBlockContent');
+							$el.toggleClass('unfolded');
+							if($el.hasClass('unfolded')) {
+								curHeight = $el.height(),
+								autoHeight = $el.css('height', 'auto').height();
+								$el.height(curHeight).animate({height: autoHeight}, 800);
+								$('html, body').animate({ scrollTop: $(this).offset().top-30 }, 600);
+							} else {
+								$el.animate({'height':'247px'},800);
+							}
+						});
 					}]);
 					
 					
@@ -448,10 +462,10 @@ var tikimaster = function() {
 				// assigned to the list, extracts the number of items to leave and truncs
 				var num = 4;
 				var matches = $list.attr('class').match(/itemsPerPage(\d+)/);
-				if(matches[1]) {
+				if(matches && matches[1]) {
 					num = matches[1]-1;
+					$list.children('li:gt('+num+')').remove();
 				}
-				$list.children('li:gt('+num+')').remove();
 			}
 		}, //u [utilities]
 

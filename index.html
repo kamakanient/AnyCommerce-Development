@@ -40,7 +40,7 @@ gts.push(["google_base_language", "EN"]); // optional
 var myCreole;
 
 var app = {vars:{
-	"release":"20130724171000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20130724180000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -570,7 +570,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor_dark floatLeft topRound">Always Happy Hour</div>
 		</div>
 		<div class="prodBlockContent zcolor_dark">
-			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList itemsPerPage4"></ul>
+			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
 		</div>
 	</div>
 	
@@ -579,7 +579,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor floatLeft topRound">Coastal &amp; Nautical</div>
 		</div>
 		<div class="prodBlockContent zcolor">
-			<ul data-bind="var: list($nautical_featured.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList itemsPerPage4"></ul>
+			<ul data-bind="var: list($nautical_featured.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
 		</div>
 	</div>
 	
@@ -588,7 +588,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor_light floatLeft topRound">Gifts Under $25</div>
 		</div>
 		<div class="prodBlockContent zcolor_light">
-			<ul data-bind="var: list($bulk_favorites.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList itemsPerPage4"></ul>
+			<ul data-bind="var: list($bulk_favorites.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
 		</div>
 	</div>
 	
