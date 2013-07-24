@@ -53,7 +53,7 @@ var tikimaster = function() {
 						app.ext.tikimaster.u.loadFeaturedStoreBanner();
 						
 						// Make prod lists unfoldable on header-tab click
-						$('.prodBlock .topRound').click(function() {
+						$('.prodBlock .topRound').unbind().click(function() {
 							$el = $(this).parent().parent().find('.prodBlockContent');
 							$el.toggleClass('unfolded');
 							if($el.hasClass('unfolded')) {
