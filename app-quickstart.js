@@ -30,7 +30,7 @@ var myRIA = function() {
 //the list of templates that are commonly edited (same order as they appear in appTemplates
 			'homepageTemplate',
 			'categoryTemplate',
-			'categoryTemplateNoSubcats',
+			'categoryTemplateShowSubCats',
 			'categoryTemplateAffiliates',
 			'categoryTemplateAffiliatesSignUp',
 			'categoryTemplateAffiliatesLinkExchange',
@@ -2724,16 +2724,6 @@ buyer to 'take with them' as they move between  pages.
 					else if(app.ext.tikimaster.vars.catTemplates[catSafeID]){
 						infoObj.templateID = app.ext.tikimaster.vars.catTemplates[catSafeID];
 						}
-					else if(infoObj.pageType == 'category' ){
-						// if category has subcats - use categoryTemplate (it only renders list of subcats)
-						// if category has no subcats - use categoryTemplateNoSubcats (it only renders list of products)
-						infoObj.templateID = 'categoryTemplateNoSubcats';
-						app.model.fetchData('appCategoryDetail|'+catSafeID);
-						if(app.data["appCategoryDetail|"+catSafeID] && app.data["appCategoryDetail|"+catSafeID].subcategoryCount != 0) {
-							infoObj.templateID = 'categoryTemplate';
-						}
-						
-						}
 					else	{
 						infoObj.templateID = 'categoryTemplate'
 						}
@@ -3083,7 +3073,7 @@ else	{
 				app.ext.myRIA.template = {};
 				var pageTemplates = new Array(
 					'categoryTemplate',
-					'categoryTemplateNoSubcats',
+					'categoryTemplateShowSubCats',
 					'categoryTemplateAffiliates',
 					'categoryTemplateAffiliatesSignUp',
 					'categoryTemplateAffiliatesLinkExchange',
