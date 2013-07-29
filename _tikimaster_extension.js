@@ -71,6 +71,9 @@ var tikimaster = function() {
 					var catTemplates = [
 						'categoryTemplate',
 						'categoryTemplateShowSubCats',
+						'categoryTemplateVideos',
+						'categoryTemplateVideosList',
+						'categoryTemplateVideosWatch',
 						'categoryTemplateAffiliates',
 						'categoryTemplateAffiliatesSignUp',
 						'categoryTemplateAffiliatesLinkExchange',
@@ -575,11 +578,11 @@ var tikimaster = function() {
 				'.tikidiscovery.yskull___bones_decor' : 'categoryTemplateShowSubCats',
 				'.tikidiscovery.znautical_decor' : 'categoryTemplateShowSubCats',
 				'.tikihomedecor' : 'categoryTemplateShowSubCats',
-				'.videos' : 'categoryTemplateShowSubCats',
-				'.videos.product_videos' : 'categoryTemplateShowSubCats',
-				'.videos.product_videos.topic_1' : 'categoryTemplateShowSubCats',
-				'.videos.product_videos.topic_2' : 'categoryTemplateShowSubCats',
-				'.videos.product_videos.topic_3' : 'categoryTemplateShowSubCats',
+				'.videos' : 'categoryTemplateVideos',
+				'.videos.product_videos' : 'categoryTemplateVideosList',
+				'.videos.product_videos.topic_1' : 'categoryTemplateVideos',
+				'.videos.product_videos.topic_2' : 'categoryTemplateVideos',
+				'.videos.product_videos.topic_3' : 'categoryTemplateVideos',
 			}
 		} // vars
 		

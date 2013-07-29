@@ -702,6 +702,63 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </div><!-- END categoryTemplateShowSubCats -->
 
 
+<!-- /////////////// VIDEOS TEMPLATES - TRANSFERRED FROM OLD WEBSITE \\\\\\\\\\\\\\\ -->
+<div id='categoryTemplateVideos' class='loadingBG categoryTemplate'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader greenHeader">
+		<h2>Videos</h2>
+		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+	</div>
+	
+	<table cellspacing="0" cellpadding="0" border="0" align="center">
+	<tbody><tr>
+		<td valign="top" width="33%"><a class="bindByAnchor" href="#category?navcat=.videos.product_videos"><img src="img/tm11_c_vidsplash_prodvids-321x366.png" width="321" height="366" alt="product videos" border="0"></a></td>
+		<td valign="top" width="33%"><a class="bindByAnchor" href="#category?navcat=.videos.hawaii_videos"><img src="img/tm11_c_vidsplash_hawaiivids-321x366.png" width="321" height="366" alt="hawaii videos" border="0"></a></td>
+		<td valign="top" width="33%"><a class="bindByAnchor" href="#category?navcat=.videos.how_to_videos"><img src="img/tm11_c_vidsplash_howtovids-321x366.png" width="321" height="366" alt="how to videos" border="0"></a></td>
+	</tr>
+	<tr>
+		<td colspan="2" valign="top" class="ztxt"></td>
+		<td valign="top"></td>
+	</tr>
+	</tbody></table>
+	<br />
+
+</div><!-- END categoryTemplateVideos -->
+
+
+<div id='categoryTemplateVideosList' class='loadingBG categoryTemplate alignCenter'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<!--div class="catHeader greenHeader">
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul>
+	</div!-->
+	<br />
+	<iframe width="853" height="480" src="https://www.youtube.com/embed/A1F0qpDSZJc" frameborder="0" allowfullscreen></iframe>
+	<br />
+	<br />
+	
+</div><!-- END categoryTemplateVideosList -->
+
+
+<div id='categoryTemplateVideosWatch' class='loadingBG categoryTemplate'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader greenHeader">
+		<h2>Videos</h2>
+		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+	</div>
+
+</div><!-- END categoryTemplateVideosWatch -->
+
+<!-- /////////////// END VIDEOS TEMPLATES - TRANSFERRED FROM OLD WEBSITE \\\\\\\\\\\\\\\ -->
+
+
+
 
 
 <!-- /////////////// AFFILIATES TEMPLATES \\\\\\\\\\\\\\\\\ -->
