@@ -2,7 +2,8 @@
 .hideDialog .ui-dialog-titlebar {
 	display: none;
 }
-.redirectToSiteApp {text-align:center;}
+.redirectToSiteApp { text-align:center; }
+.redirectToSiteApp h3 { font-size:16px; color:#553B14; margin:1.2em 0 1.4em 0; }
 
 .floatLeft {float: left;}
 .floatRight{float: right;}
