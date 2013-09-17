@@ -816,11 +816,12 @@ an + b - a - size of loop, b - offset
   padding:3px;
 }
 
-.productList > li h6 {
+.productList > li .price {
   color:#B47E0C;
   font-size:9pt;
-  padding:0 4px;
-  float:right;
+  position:absolute;
+  right:5px;
+  bottom:5px;
 }
 
 button.quickView {
