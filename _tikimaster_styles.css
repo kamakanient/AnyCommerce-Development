@@ -1030,7 +1030,7 @@ li:not(.loadingBG) div.prodThumbContainer.w312h234 { width:312px; height:234px; 
 	/************* Cart tweaks ******************/
 .checkoutButtonsContainer { position:relative; }
 .checkoutButtonsContainer .spacer { color:#654B24; font-weight:bold; font-size:90%; margin:5px 10px 0 0;}
-.checkoutButtonsContainer .paymentMethodsIcons { width:275px; position:absolute; bottom:10px; left:0; font-size:80%; font-weight:normal; }
+.checkoutButtonsContainer .paymentMethodsIcons { display:none; width:275px; position:absolute; bottom:10px; left:0; font-size:80%; font-weight:normal; }
 .checkoutButtonsContainer .paymentMethodsIcons span { padding:0.2em 0.5em 0.5em 0.5em; margin:0; }
 
   /************* End Cart tweaks ******************/
