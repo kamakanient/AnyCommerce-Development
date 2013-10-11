@@ -451,6 +451,13 @@ var tikimaster = function() {
 					}, 500);
 				}
 			},
+			checkoutButtonMouseover : function() {
+			  $('.checkoutButtonsContainer > .paymentMethodsIcons').fadeIn();
+			},
+			checkoutButtonMouseout : function() {
+			  $('.checkoutButtonsContainer > .paymentMethodsIcons').fadeOut();
+			},
+			
 			
 			columnCompletes : {
 				hotItemList : function(){

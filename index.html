@@ -1957,9 +1957,16 @@ So the cart template should contain these two elements and the extension should 
 	</menu>
 
 	<div class='checkoutButtonsContainer'>
-
-		<span title='proceed to secure checkout'><button class='ui-button ui-button-text ui-state-default ui-corner-all checkoutButton' onClick="showContent('checkout',{});">Store Checkout</button></span>
-
+    <div class="ui-state-default alignCenter paymentMethodsIcons">
+      <img src="img/cart_payment_methods-240x48.png" />
+      <span class="alignLeft">
+        Proceed to our 1-page secure checkout.<br/>
+        We accept Visa, MasterCard, Discover, AMEX,<br/> 
+        PayPal, Money orders and Cashiers checks by Mail.
+      </span>
+    </div>
+		<span title='proceed to secure checkout'><button class='ui-button ui-button-text ui-state-focus ui-corner-all checkoutButton' onClick="showContent('checkout',{});" onMouseOver="app.ext.tikimaster.u.checkoutButtonMouseover()" onMouseOut="app.ext.tikimaster.u.checkoutButtonMouseout()">Store Checkout</button></span>
+    <span class="spacer">or</span>
 		<span id='paypalECButton' data-bind='var: cart(cart/cartid); format:paypalECButton;'></span>
 
 		<!--span id='googleCheckoutButton' class='pointer' data-bind='var: cart(sum/items_total); format:googleCheckoutButton;'></span>
