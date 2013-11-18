@@ -551,6 +551,7 @@ var tikimaster = function() {
 				'.design_assistant' : 'categoryTemplateShowSubCats',
 				'.duke_kahanamoku' : 'categoryTemplateShowSubCats',
 				'.fashion' : 'categoryTemplateShowSubCats',
+				'.green__collection' : 'categoryTemplateShowSubCats',
 				'.island_gourmet' : 'categoryTemplateShowSubCats',
 				'.koamaster' : 'categoryTemplateShowSubCats',
 				'.nautical_signs' : 'categoryTemplateShowSubCats',
