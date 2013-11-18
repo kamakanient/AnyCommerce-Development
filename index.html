@@ -40,7 +40,7 @@ gts.push(["google_base_language", "EN"]); // optional
 var myCreole;
 
 var app = {vars:{
-	"release":"20131118185000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20131118231000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -583,7 +583,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor floatLeft topRound">Coastal &amp; Nautical</div>
 		</div>
 		<div class="prodBlockContent zcolor">
-			<ul data-bind="var: list($nautical_featured.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
+			<ul data-bind="var: list($tikis_new.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
 		</div>
 	</div>
 	
