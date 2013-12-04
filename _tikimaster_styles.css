@@ -529,7 +529,7 @@ td.ztxt { padding:0 20px 0 0px; }
 }
 
 #bg1.xmas, #bg2.xmas {
-  background:url('img/tk08_xmas_bg-329x480.gif') left top no-repeat;
+  background-image:url('img/tk08_xmas_bg-329x480.gif');
 }
 
 #appPreView {height:100%; width:100%; z-index:9999; position:absolute; background:rgba(237,242,253,.9); } /*rgba(59,179,195,.5)*/
