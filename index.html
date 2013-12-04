@@ -118,7 +118,10 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 
 		<!-- holiday/xmas header = tk08_header_xmas-738x136.png -->
 
-		<div id="headerLogo"><img src='img/tk08_header-738x136.png' width='738' height='136' alt='TikiMaster.com - The Ultimate Tiki Source' /></div>
+		<div id="headerLogo">
+		  <!--img src='img/tk08_header-738x136.png' width='738' height='136' alt='TikiMaster.com - The Ultimate Tiki Source' /-->
+		  <img src='img/tk08_header_xmas-738x136.png' width='738' height='136' alt='TikiMaster.com - The Ultimate Tiki Source' />
+		</div>
 	
 		<div id="headerLogoBG"><img src='img/tk08_header_bg4-726x122.jpg' width='726' height='122' alt='' /></div>
 
@@ -153,8 +156,8 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	</div>
 	<!-- /HEADER -->
 	
-	<div id="bg1"><!-- bg1 empty div for left background -->
-	<div id="bg2"><!-- bg2 empty div for right background -->
+	<div id="bg1" class="xmas"><!-- bg1 empty div for left background -->
+	<div id="bg2" class="xmas"><!-- bg2 empty div for right background -->
 		
 		<div class="searchAndBreadcrumb">
 			<form id="headerSearchFrm" name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
@@ -508,7 +511,9 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 		</li>
 		</ul>
 		
-		<img class="pointer catLink block center" onClick="return showContent('category',{'navcat':'.thatchandbamboo'});" src='img/logos/2009_logos/thatchandbamboo.jpg' width='140' height='71' alt="Thatch &amp; Bamboo" title="Thatch &amp; Bamboo" />
+		<!--img class="pointer catLink block center" onClick="return showContent('category',{'navcat':'.thatchandbamboo'});" src='img/logos/2009_logos/thatchandbamboo.jpg' width='140' height='71' alt="Thatch &amp; Bamboo" title="Thatch &amp; Bamboo" /-->
+		<a href="http://www.koamaster.com"><img class="pointer catLink block center" src='img/logos/2009_logos/koamaster2.jpg' width='140' height='51' alt="Koamaster.com" title="Koamaster.com" /></a>
+		<a href="http://www.tikizilla.com/category/beach_signs/"><img class="pointer catLink block center" src='img/logos/2009_logos/beach_signs2.jpg' width='140' height='80' alt="Tikizilla - Beach signs" title="Tikizilla - Beach signs" /></a>
 	</div>
 	
 	
@@ -522,16 +527,20 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 			data-cycle-pager-template="<a href=#> {{slideNum}} </a>"
 			>
 			<!-- empty element for pager links -->
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.03'});" src='img/homepage/slideshow/tikis_home3.jpg' width='512' height='384' alt="Tiki Signs" title="Tiki Signs" />
+			<!--img class="pointer" onClick="return showContent('category',{'navcat':'.03'});" src='img/homepage/slideshow/tikis_home3.jpg' width='512' height='384' alt="Tiki Signs" title="Tiki Signs" />
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.05.kim_taylor_reece_collection'});" src='img/homepage/slideshow/kim_taylor_reece_home.jpg' width='512' height='384' alt="Kim Taylor Reece Collection" title="Kim Taylor Reece Collection" />
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.tiki_bar'});" src='img/homepage/slideshow/tikibar_tikimaster.jpg' width='512' height='384' alt="Tiki Bar" title="Tiki Bar" />
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.koamaster'});" src='img/homepage/slideshow/hawaiian_koa_mainpic08.jpg' width='512' height='384' alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.americana'});" src='img/homepage/slideshow/americana_decor2.jpg' width='512' height='384' alt="Americana Decor" title="Americana Decor" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.americana'});" src='img/homepage/slideshow/americana_decor2.jpg' width='512' height='384' alt="Americana Decor" title="Americana Decor" /-->
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.004.bishop_museum_tikis'});" src='img/homepage/slideshow/tikis0391.jpg' width='512' height='340' alt="Carved tiki bishop museum" title="Carved tiki bishop museum" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.green__collection.mirrors'});" src='img/homepage/slideshow/tikis0702.jpg' width='512' height='340' alt="Driftwood mirrors recycle green product" title="Driftwood mirrors recycle green product" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.03.aloha_tropical'});" src='img/homepage/slideshow/tikis0602.jpg' width='512' height='340' alt="Aloha carved wood signs Hawaii" title="Aloha carved wood signs Hawaii" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.koamaster'});" src='img/homepage/slideshow/koa_oar_03015.jpg' width='512' height='340' alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" />
 		</div>
 		<div class="decoratorHoriz"></div>
 		
 		<div id="dealOfTheWeek">
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.temp_deal_of_week'});" src="img/tiki__02172.jpg" width="512" height="241" alt="DEAL OF THE WEEK" title="Deal Of The Week" />
+			<img class="pointer" onClick="return showContent('category',{'navcat':'.temp_deal_of_week'});" src="img/tiki__02227_512x340.jpg" width="512" height="340" alt="DEAL OF THE WEEK" title="Deal Of The Week" />
 		</div>
 	</div>
 	
@@ -571,7 +580,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	
 	<div class="prodBlock">
 		<div class="ztitle">
-	 		<div class="zcolor_dark floatLeft topRound">Always Happy Hour</div>
+	 		<div class="zcolor_dark floatLeft topRound">Always Happy Hour Collection</div>
 		</div>
 		<div class="prodBlockContent zcolor_dark">
 			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>

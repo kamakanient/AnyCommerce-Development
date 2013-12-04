@@ -127,7 +127,7 @@ h2.ui-widget-header { font-size:1.1em; }
   display:block;
   z-index:20;
   position:absolute;
-  top:9px;
+  top:11px;
   left:341px;
   width:350px;
   height:80px;
@@ -142,7 +142,7 @@ h2.ui-widget-header { font-size:1.1em; }
   display:block;
   z-index:21;
   position:absolute;
-  top:88px;
+  top:90px;
   left:471px;
   width:230px;
   height:26px;
@@ -526,6 +526,10 @@ td.ztxt { padding:0 20px 0 0px; }
 #bg2 {
   background:url('img/tk08_bodybg_right-493x552.gif') right top no-repeat;
   overflow:hidden;
+}
+
+#bg1.xmas, #bg2.xmas {
+  background:url('img/tk08_xmas_bg-329x480.gif') left top no-repeat;
 }
 
 #appPreView {height:100%; width:100%; z-index:9999; position:absolute; background:rgba(237,242,253,.9); } /*rgba(59,179,195,.5)*/
