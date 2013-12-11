@@ -583,7 +583,7 @@ td.ztxt { padding:0 20px 0 0px; }
 #slideshowNav a:focus { outline: none; }
 
 #dealOfTheWeek {
-  background:#faf3e0; margin-top:5px;
+  background:#faf3e0; margin-top:0px;
 }
 
 #leftNav {
