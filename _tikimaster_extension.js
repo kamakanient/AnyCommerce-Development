@@ -298,7 +298,7 @@ var tikimaster = function() {
 						var $dropdown = $(this).find('ul.dropdown');
 					
 						for (var i = 0; i < subcats.length; i++) {
-							if(subcats[i].pretty && subcats[i].pretty.search(/^\w/) == 0 && subcats[i].id) {
+							if(subcats[i].pretty && subcats[i].pretty.search(/^[\w\"]/) == 0 && subcats[i].id) {
 								$dropdown.append('<li data-catsafeid="'+subcats[i].id+'">'+subcats[i].pretty+'</li>');
 							}
 						}
