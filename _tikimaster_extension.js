@@ -585,8 +585,7 @@ var tikimaster = function() {
 				'.videos.product_videos' : 'categoryTemplateVideosList',
 				'.videos.product_videos.topic_1' : 'categoryTemplateVideos',
 				'.videos.product_videos.topic_2' : 'categoryTemplateVideos',
-				'.videos.product_videos.topic_3' : 'categoryTemplateVideos',
-				'.temp_deal_of_week' : 'categoryTemplateTempDealOfWeek',
+				'.videos.product_videos.topic_3' : 'categoryTemplateVideos'
 			}
 		} // vars
 		
