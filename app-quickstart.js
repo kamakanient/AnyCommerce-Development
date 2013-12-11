@@ -31,6 +31,7 @@ var myRIA = function() {
 			'homepageTemplate',
 			'categoryTemplate',
 			'categoryTemplateShowSubCats',
+			'categoryTemplateTempDealOfWeek',
 			'categoryTemplateVideos',
 			'categoryTemplateVideosList',
 			'categoryTemplateVideosWatch',

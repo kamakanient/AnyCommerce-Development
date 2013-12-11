@@ -719,6 +719,24 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </div><!-- END categoryTemplateShowSubCats -->
 
 
+<div id='categoryTemplateTempDealOfWeek' class='loadingBG categoryTemplate'>
+	
+	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+
+	<div class="catHeader greenHeader">
+		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;">E-Gift Cards by Tikimaster.com - Gift Certificates</h2>
+		
+		<!--p></p-->
+		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+	</div>
+
+	<ul data-bind="var: category(@products); format: infiniteProductList; extension:prodlist_infinite; loadsTemplate: productListTemplate; items_per_page: 30;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul><!-- outputs infinite product list -->
+	
+	<p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"><b>E-Gift Cards by Tikimaster.com - Gift Certificates</b>: Our gift card is the perfect one size fits all gift for any occasion!<br/> - Delivered within minutes* of purchase, or choose a future email delivery date.<br/> - Can be redeemed at any of our online stores</p>
+
+</div><!-- END categoryTemplateTempDealOfWeek -->
+
+
 <!-- /////////////// VIDEOS TEMPLATES - TRANSFERRED FROM OLD WEBSITE \\\\\\\\\\\\\\\ -->
 <div id='categoryTemplateVideos' class='loadingBG categoryTemplate'>
 	
