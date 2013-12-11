@@ -40,7 +40,7 @@ gts.push(["google_base_language", "EN"]); // optional
 var myCreole;
 
 var app = {vars:{
-	"release":"20131211155000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20131211160000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -724,7 +724,8 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
 
 	<div class="catHeader greenHeader">
-		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;">E-Gift Cards by Tikimaster.com - Gift Certificates</h2>
+		<!--h2 data-bind="var: category(%page.page_title); format: text; editor: text;">E-Gift Cards by Tikimaster.com - Gift Certificates</h2-->
+		<h2>E-Gift Cards by Tikimaster.com - Gift Certificates</h2>
 		
 		<!--p></p-->
 		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
@@ -732,7 +733,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 
 	<ul data-bind="var: category(@products); format: infiniteProductList; extension:prodlist_infinite; loadsTemplate: productListTemplate; items_per_page: 30;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul><!-- outputs infinite product list -->
 	
-	<p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"><b>E-Gift Cards by Tikimaster.com - Gift Certificates</b>: Our gift card is the perfect one size fits all gift for any occasion!<br/> - Delivered within minutes* of purchase, or choose a future email delivery date.<br/> - Can be redeemed at any of our online stores</p>
+	<div data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"><b>E-Gift Cards by Tikimaster.com - Gift Certificates</b><br/> Our gift card is the perfect one size fits all gift for any occasion!<br/> - Delivered within minutes* of purchase, or choose a future email delivery date.<br/> - Can be redeemed at any of our online stores</div>
 
 </div><!-- END categoryTemplateTempDealOfWeek -->
 
