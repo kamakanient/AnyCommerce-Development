@@ -1026,7 +1026,7 @@ li:not(.loadingBG) div.prodThumbContainer.w312h234 { width:312px; height:234px; 
   border:1px solid #4F493C;
 }
 
-#mainContentArea_company .mainColumn, #mainContentArea_customer .mainColumn { min-height:344px; }
+#mainContentArea_company .mainColumn, #mainContentArea_customer .mainColumn { min-height:370px; }
 
 
   /************* END companyTemplate layout **************/

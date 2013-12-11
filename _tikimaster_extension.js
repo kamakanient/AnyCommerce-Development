@@ -99,7 +99,7 @@ var tikimaster = function() {
 						app.ext.tikimaster.u.loadFeaturedStoreBanner();
 					}]);
 					app.rq.push(['templateFunction', 'companyTemplate','onCompletes',function(P){
-						var title = "SportsWorldChicago Help Desk";
+						var title = "Tikimaster - Help Desk";
 						app.ext.tikimaster.u.setTitle(title);
 					}]);
 					app.rq.push(['templateFunction', 'customerTemplate','onCompletes',function(P){

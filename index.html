@@ -40,7 +40,7 @@ gts.push(["google_base_language", "EN"]); // optional
 var myCreole;
 
 var app = {vars:{
-	"release":"20131211144000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20131211150000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -1608,12 +1608,17 @@ if you change these, you should move them above this comment so that when you (o
 <!-- .textContentArea is used as a selector in quickstart.js because article tag type isn't ie8 friendly -->
 		<div id='aboutArticle' class='textContentArea article'>
 			<h1>About Us</h1>
-			<div data-bind='var: profile(zoovy:about); format:wiki; wikiFormats:myRIA;' id='aboutUsContent'></div>
+			<!--div data-bind='var: profile(zoovy:about); format:wiki; wikiFormats:myRIA;' id='aboutUsContent'></div-->
+			<p>TIKIMASTER.COM:<br/>
+      KAILUA, Hawaii (O'ahu)<br/>
+      Toll Free: 877-677-4440
+      </p>
 		</div>
 
 
 		<div id='contactArticle' class='displayNone textContentArea'>
 			<h1>Contact Information</h1>
+			<p>Toll Free: 877-677-4440</p>
 			<form action='#' onSubmit="app.calls.appSendMessage.init($(this).serializeJSON(),{'callback':'showMessaging','parentID':'contactFormMessaging','message':'Thank you, your message has been sent'},'immutable'); app.model.dispatchThis('immutable');  return false;" id='contactForm' name='contactForm'>
 			<fieldset>
 				<legend>Contact Us</legend>
@@ -1626,7 +1631,7 @@ if you change these, you should move them above this comment so that when you (o
 				</div>
 			</fieldset>
 			</form>
-			<div data-bind='var: profile(zoovy:contact); format:wiki; wikiFormats:myRIA;' id='contactContent'></div>
+			<!--div data-bind='var: profile(zoovy:contact); format:wiki; wikiFormats:myRIA;' id='contactContent'></div-->
 		</div>
 
 
@@ -1640,7 +1645,9 @@ if you change these, you should move them above this comment so that when you (o
 
 		<div class='displayNone textContentArea' id='paymentArticle'>
 			<h1>Payment Policy</h1>
-			<div data-bind='var: profile(zoovy:payment_policy); format:wiki; wikiFormats:myRIA;' id='paymentContent'></div>
+			<!--div data-bind='var: profile(zoovy:payment_policy); format:wiki; wikiFormats:myRIA;' id='paymentContent'></div-->
+			<p>Aloha e Komo Mai to Tikimaster.com!<br/>
+			  We accept major credit cards and Paypal! Please feel free to contact me if you need additional information!<br/> Aloha from all of us at Tikimaster.com!</p>
 		</div>
 
 
@@ -1690,14 +1697,44 @@ if you change these, you should move them above this comment so that when you (o
 
 		<div class='displayNone textContentArea' id='returnArticle'>
 			<h1>Return Policy</h1>
-			<div data-bind='var: profile(zoovy:return_policy); format:wiki; wikiFormats:myRIA;' id='returnContent'></div>
+			<!--div data-bind='var: profile(zoovy:return_policy); format:wiki; wikiFormats:myRIA;' id='returnContent'></div-->
+			<p>
+			  <b>Terms of Sale</b><br>
+        The following Terms of Sale will govern the sale between  Tikimaster.com  (the  Seller)  and you, our Customer, for any item purchased from our website.  By buying from us, you agree to these terms. <br><br>
+
+
+        <b>Payments</b><br>
+        We accept the following methods of payment: major credit cards (Visa, MasterCard, Discovery, AmericanExpress, JCB and more), Paypal, company checks.  We prefer payment by major credit cards.<br><br>
+
+
+        <b>Price</b><br>
+        All prices are listed in US Dollars, unless otherwise indicated.  All applicable state, local, federal, and international taxes and fees apply.<br><br>
+
+
+        <b>Shipping and Delivery</b><br>
+        We currently ship all over the world except in high risk countries.  Shipping and handling charges apply to all orders, unless otherwise specified.  Shipping charges will be calculated in your shopping cart, and may vary according to the number or weight of items shipped, carrier used, destination of order, and whether you requested expedited delivery.<br><br>
+
+
+        We ship items within 2 business days of payment clearance.  All delivery dates are estimates and are not guaranteed.<br><br>
+
+
+
+
+        <b>Refunds and Returns</b><br>
+        If you are not satisfied with your order for any reason, you may return it for a full refund within 5 days of receipt.  Shipping is not refundable, and you will bear the cost of return shipping.  Items must be returned in the condition in which they arrived and in their original packaging. A 20% restocking fee may be applied.<br>
+        We accept returns only with a return authorization.  In order to obtain a return authorization, you must contact Tikimaster.com at (877) 677-4440 within 5 days of receipt.<br>
+
+
+        <b>Bamboo and thatch products are none returnable</b>
+			</p>
 		</div>
 
 
 
 		<div class='displayNone textContentArea' id='shippingArticle'>
 			<h1>Shipping Information</h1>
-			<div data-bind='var: profile(zoovy:shipping_policy); format:wiki; wikiFormats:myRIA;' id='shippingContent'></div>
+			<!--div data-bind='var: profile(zoovy:shipping_policy); format:wiki; wikiFormats:myRIA;' id='shippingContent'></div-->
+			<p>WE SHIP EVERYDAY!!! Tikimaster ships all over the world! The published shipping cost is for the USA. If you live outside the USA, simply email us and we will gladly give you a quote based on your location.</p>
 		</div>
 
 	</div>
