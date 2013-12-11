@@ -40,7 +40,7 @@ gts.push(["google_base_language", "EN"]); // optional
 var myCreole;
 
 var app = {vars:{
-	"release":"20131211150000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	"release":"20131211151500",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 	"_clientid":"zmvc",
 	"baseURL":"", //used in non-local mode.
 	"checkoutAuthMode" : "active",//can be passive, active or required
@@ -532,7 +532,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.tiki_bar'});" src='img/homepage/slideshow/tikibar_tikimaster.jpg' width='512' height='384' alt="Tiki Bar" title="Tiki Bar" />
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.koamaster'});" src='img/homepage/slideshow/hawaiian_koa_mainpic08.jpg' width='512' height='384' alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" />
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.americana'});" src='img/homepage/slideshow/americana_decor2.jpg' width='512' height='384' alt="Americana Decor" title="Americana Decor" /-->
-			<img class="pointer" onClick="return showContent('company',{'show':'shipping'});" src='img/homepage/slideshow/ups_special2_512x340.jpg' width='512' height='340' alt="The Ultimate Tiki Shop Of Hawaii" title="The Ultimate Tiki Shop Of Hawaii" />
+			<img class="pointer" onClick="return showContent('company',{'show':'returns'});" src='img/homepage/slideshow/ups_special2_512x340.jpg' width='512' height='340' alt="The Ultimate Tiki Shop Of Hawaii" title="The Ultimate Tiki Shop Of Hawaii" />
 			<!--img class="pointer" onClick="return showContent('category',{'navcat':'.004.bishop_museum_tikis'});" src='img/homepage/slideshow/tikis0391_512x340.jpg' width='512' height='340' alt="Carved tiki bishop museum" title="Carved tiki bishop museum" /-->
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.green__collection.mirrors'});" src='img/homepage/slideshow/tikis0702_512x340.jpg' width='512' height='340' alt="Driftwood mirrors recycle green product" title="Driftwood mirrors recycle green product" />
 			<img class="pointer" onClick="return showContent('category',{'navcat':'.03.aloha_tropical'});" src='img/homepage/slideshow/tikis0602_512x340.jpg' width='512' height='340' alt="Aloha carved wood signs Hawaii" title="Aloha carved wood signs Hawaii" />
@@ -1609,16 +1609,15 @@ if you change these, you should move them above this comment so that when you (o
 		<div id='aboutArticle' class='textContentArea article'>
 			<h1>About Us</h1>
 			<!--div data-bind='var: profile(zoovy:about); format:wiki; wikiFormats:myRIA;' id='aboutUsContent'></div-->
-			<p>TIKIMASTER.COM:<br/>
+			TIKIMASTER.COM:<br/>
       KAILUA, Hawaii (O'ahu)<br/>
       Toll Free: 877-677-4440
-      </p>
 		</div>
 
 
 		<div id='contactArticle' class='displayNone textContentArea'>
 			<h1>Contact Information</h1>
-			<p>Toll Free: 877-677-4440</p>
+			Toll Free: 877-677-4440
 			<form action='#' onSubmit="app.calls.appSendMessage.init($(this).serializeJSON(),{'callback':'showMessaging','parentID':'contactFormMessaging','message':'Thank you, your message has been sent'},'immutable'); app.model.dispatchThis('immutable');  return false;" id='contactForm' name='contactForm'>
 			<fieldset>
 				<legend>Contact Us</legend>
@@ -1646,8 +1645,8 @@ if you change these, you should move them above this comment so that when you (o
 		<div class='displayNone textContentArea' id='paymentArticle'>
 			<h1>Payment Policy</h1>
 			<!--div data-bind='var: profile(zoovy:payment_policy); format:wiki; wikiFormats:myRIA;' id='paymentContent'></div-->
-			<p>Aloha e Komo Mai to Tikimaster.com!<br/>
-			  We accept major credit cards and Paypal! Please feel free to contact me if you need additional information!<br/> Aloha from all of us at Tikimaster.com!</p>
+			Aloha e Komo Mai to Tikimaster.com!<br/>
+			  We accept major credit cards and Paypal! Please feel free to contact me if you need additional information! Aloha from all of us at Tikimaster.com!
 		</div>
 
 
@@ -1698,7 +1697,6 @@ if you change these, you should move them above this comment so that when you (o
 		<div class='displayNone textContentArea' id='returnArticle'>
 			<h1>Return Policy</h1>
 			<!--div data-bind='var: profile(zoovy:return_policy); format:wiki; wikiFormats:myRIA;' id='returnContent'></div-->
-			<p>
 			  <b>Terms of Sale</b><br>
         The following Terms of Sale will govern the sale between  Tikimaster.com  (the  Seller)  and you, our Customer, for any item purchased from our website.  By buying from us, you agree to these terms. <br><br>
 
@@ -1722,11 +1720,10 @@ if you change these, you should move them above this comment so that when you (o
 
         <b>Refunds and Returns</b><br>
         If you are not satisfied with your order for any reason, you may return it for a full refund within 5 days of receipt.  Shipping is not refundable, and you will bear the cost of return shipping.  Items must be returned in the condition in which they arrived and in their original packaging. A 20% restocking fee may be applied.<br>
-        We accept returns only with a return authorization.  In order to obtain a return authorization, you must contact Tikimaster.com at (877) 677-4440 within 5 days of receipt.<br>
+        We accept returns only with a return authorization.  In order to obtain a return authorization, you must contact Tikimaster.com at (877) 677-4440 within 5 days of receipt.<br><br/>
 
 
         <b>Bamboo and thatch products are none returnable</b>
-			</p>
 		</div>
 
 
@@ -1734,7 +1731,7 @@ if you change these, you should move them above this comment so that when you (o
 		<div class='displayNone textContentArea' id='shippingArticle'>
 			<h1>Shipping Information</h1>
 			<!--div data-bind='var: profile(zoovy:shipping_policy); format:wiki; wikiFormats:myRIA;' id='shippingContent'></div-->
-			<p>WE SHIP EVERYDAY!!! Tikimaster ships all over the world! The published shipping cost is for the USA. If you live outside the USA, simply email us and we will gladly give you a quote based on your location.</p>
+			WE SHIP EVERYDAY!!! Tikimaster ships all over the world! The published shipping cost is for the USA. If you live outside the USA, simply email us and we will gladly give you a quote based on your location.
 		</div>
 
 	</div>
