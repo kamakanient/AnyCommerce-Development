@@ -583,8 +583,23 @@ td.ztxt { padding:0 20px 0 0px; }
 #slideshowNav a:focus { outline: none; }
 
 #dealOfTheWeek {
-  background:#faf3e0; margin-top:0px;
+  background:#faf3e0; margin-top:0px; position:relative;
 }
+
+#dealOfTheWeek .gift-card1,
+#dealOfTheWeek .gift-card2,
+#dealOfTheWeek .gift-card3,
+#dealOfTheWeek .gift-card4 { position:absolute; width:256px; height:132px; z-index:10; background-repeat:no-repeat; }
+
+#dealOfTheWeek .gift-card1 { top:10px; left:10px; background-position:-10px -10px; }
+#dealOfTheWeek .gift-card2 { top:10px; left:251px; background-position:-763px -10px; }
+#dealOfTheWeek .gift-card3 { top:127px; left:10px; background-position:-10px -391px; }
+#dealOfTheWeek .gift-card4 { top:127px; left:251px; background-position:-763px -391px; }
+
+#dealOfTheWeek .gift-card1:hover,
+#dealOfTheWeek .gift-card2:hover,
+#dealOfTheWeek .gift-card3:hover,
+#dealOfTheWeek .gift-card4:hover { background-image:url(img/giftcardtikis_1024x528.png); }
 
 #leftNav {
   color: #000000; 
