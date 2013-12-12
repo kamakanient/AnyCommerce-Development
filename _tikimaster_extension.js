@@ -316,13 +316,21 @@ var tikimaster = function() {
 				// if we arrived to the product page directly from search
 				// there's no breadcrumb at all
 				// Jerome asked to add 'Home' dropdown element with root cats
-				if(!$('.breadcrumb').children().length) {
+				/*if(!$('.breadcrumb').children().length) {
 					// fetch root cat with subcats details
 					var tagObj = {'datapointer' : 'appCategoryDetail|.'};
 					app.model.fetchData(tagObj.datapointer);
 					var bc_inner = "<li class='pointer' onmouseout='app.ext.tikimaster.a.hideDropDown($(this));' onmouseover='app.ext.tikimaster.a.showDropDown($(this));' data-catsafeid='.'><a onclick=\"return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});\" href='#'>Home</a></li>";
 					$('.breadcrumb').prepend(bc_inner);
-				}
+				}*/
+				$('.breadcrumb').each(function() {
+					if(!$(this).children().length) {
+  					// fetch root cat with subcats details
+  					var tagObj = {'datapointer' : 'appCategoryDetail|.'};
+  					app.model.fetchData(tagObj.datapointer);
+  					var bc_inner = "<li class='pointer' onmouseout='app.ext.tikimaster.a.hideDropDown($(this));' onmouseover='app.ext.tikimaster.a.showDropDown($(this));' data-catsafeid='.'><a onclick=\"return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});\" href='#'>Home</a></li>";
+  					$(this).prepend(bc_inner);
+				});
 			},
 			getPPI : function(){
 				
