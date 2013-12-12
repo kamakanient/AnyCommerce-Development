@@ -330,6 +330,7 @@ var tikimaster = function() {
   					app.model.fetchData(tagObj.datapointer);
   					var bc_inner = "<li class='pointer' onmouseout='app.ext.tikimaster.a.hideDropDown($(this));' onmouseover='app.ext.tikimaster.a.showDropDown($(this));' data-catsafeid='.'><a onclick=\"return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});\" href='#'>Home</a></li>";
   					$(this).prepend(bc_inner);
+					}
 				});
 			},
 			getPPI : function(){
