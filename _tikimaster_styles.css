@@ -586,20 +586,23 @@ td.ztxt { padding:0 20px 0 0px; }
   background:#faf3e0; margin-top:0px; position:relative;
 }
 
+#dealOfTheWeek .gift-card-top { position:absolute; width:512px; height:90px; z-index:10; background-repeat:no-repeat; }
 #dealOfTheWeek .gift-card1,
+#dealOfTheWeek .gift-card3 { position:absolute; width:242px; height:120px; z-index:10; background-repeat:no-repeat; }
 #dealOfTheWeek .gift-card2,
-#dealOfTheWeek .gift-card3,
-#dealOfTheWeek .gift-card4 { position:absolute; width:256px; height:132px; z-index:10; background-repeat:no-repeat; }
+#dealOfTheWeek .gift-card4 { position:absolute; width:256px; height:120px; z-index:10; background-repeat:no-repeat; }
 
-#dealOfTheWeek .gift-card1 { top:10px; left:10px; background-position:-10px -10px; }
-#dealOfTheWeek .gift-card2 { top:10px; left:251px; background-position:-763px -10px; }
-#dealOfTheWeek .gift-card3 { top:127px; left:10px; background-position:-10px -391px; }
-#dealOfTheWeek .gift-card4 { top:127px; left:251px; background-position:-763px -391px; }
+#dealOfTheWeek .gift-card-top { top:0; left:0; background-position:0 0; }
+#dealOfTheWeek .gift-card1 { top:94px; left:0; background-position:0 -94px; }
+#dealOfTheWeek .gift-card2 { top:94px; left:252px; background-position:-252px -94px; }
+#dealOfTheWeek .gift-card3 { top:217px; left:0px; background-position:0 -217px; }
+#dealOfTheWeek .gift-card4 { top:217px; left:252px; background-position:-252px -217px; }
 
+#dealOfTheWeek .gift-card-top:hover,
 #dealOfTheWeek .gift-card1:hover,
 #dealOfTheWeek .gift-card2:hover,
 #dealOfTheWeek .gift-card3:hover,
-#dealOfTheWeek .gift-card4:hover { background-image:url(img/giftcardtikis_1024x528.png); }
+#dealOfTheWeek .gift-card4:hover { background-image:url(img/tm_card_banner_xmas2013_hover-512x340.jpg); }
 
 #leftNav {
   color: #000000; 
