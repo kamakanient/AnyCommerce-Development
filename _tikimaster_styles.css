@@ -127,7 +127,7 @@ h2.ui-widget-header { font-size:1.1em; }
   display:block;
   z-index:20;
   position:absolute;
-  top:11px;
+  top:8px; /* set 11px for xmas wrapper */
   left:341px;
   width:350px;
   height:80px;
