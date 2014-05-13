@@ -20,6 +20,10 @@
 <meta name="google-site-verification" content="Z2kZ5JFCDaKRNZ2X2OwAYPVgx0ws63VFMYircbCc8m4" />
 <meta name="alexaVerifyID" content="s3m0KOC5ZTfJypY4m5th6AquAqw" />
 
+
+<link rel="SHORTCUT ICON" href="favicon.ico" />
+<link rel="ICON" href="favicon.ico" />
+
 <base href='' /><!-- leave blank so it works for a local file. updated to / if protocol is not file: -->
 
 <script type="text/javascript">
@@ -37,25 +41,15 @@ gts.push(["google_base_country", "US"]); // optional
 gts.push(["google_base_language", "EN"]); // optional
 // END Google Trusted Store Config
 
-var myCreole;
-
-var app = {vars:{
-	"release":"20140129231000",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
-	"_clientid":"zmvc",
-	"baseURL":"", //used in non-local mode.
-	"checkoutAuthMode" : "active",//can be passive, active or required
-	"testURL":"http://app.tikimaster.com/"
-	},u:{},rq:[]};
-
 //set base url so images, css, js, etc all load from appropriate location once deployed.
 //baseURL as blank lets loadScript function run off local copy when testing locally.
 if(document.location.protocol == 'file:')	{
-	app.vars.baseURL  = "";
+	baseURL  = "";
 	}
 else	{
-	app.vars.baseURL = document.location.protocol+"//"+document.domain+"/";
+	baseURL = document.location.protocol+"//"+document.domain+"/";
 	}
-document.getElementsByTagName('base')[0].href = app.vars.baseURL;
+document.getElementsByTagName('base')[0].href = baseURL;
 </script>
 
 
@@ -63,47 +57,65 @@ document.getElementsByTagName('base')[0].href = app.vars.baseURL;
 all css includes need to be after the js that changes the base url.
 css files should be included before any .js file to ensure they are downloaded in parallel
 -->
-<link rel="stylesheet" type="text/css" href="app-quickstart.css" />
 <!--link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/ui-lightness/jquery-ui.css" /-->
 <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/pepper-grinder/jquery-ui.css" />
-<link rel="stylesheet" type="text/css" href="_tikimaster_styles.css" />
+<link rel="stylesheet" type="text/css" href="_tikimaster_styles.css" /><!-- contains quickstart css also -->
 
-<link rel="SHORTCUT ICON" href="favicon.ico" />
-<link rel="ICON" href="favicon.ico" />
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="resources/jquery.ui.widget.min.js"></script><!-- here so that plugins that may load before the jqueryui lib load without error -->
-<script type="text/javascript" src="loadscript.js"></script>
+
+<!-- jquery and jquery ui are pivotal to the functionality of the myApp. load them early -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+<script src="controller.js"></script>
+<script src="model.js"></script>
+<script type="text/javascript" src="includes.js"></script><!-- contains some polyfills and should be loaded early -->
+
+
 <script type="text/javascript" src="https://sb.buysafe.com/private/rollover/rollover.js"></script>
 
-
-
-
 <script type="text/javascript">
-app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
+$(document).ready(function(){
+
+	window.myApp = new initApp({
+		"release":"201404.a",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
+		"baseURL":baseURL, //used in non-local mode.
+		"checkoutAuthMode" : "active",//can be passive, active or required
+		"testURL":"http://201404.tikimaster.com/", //used ONLY if protocol is file: (for testing)
+		"addjQueryPointer" : true,
+		"initComplete" : function(){
+			dump(" -> init is complete");
+			myApp.u.loadScript('tikimaster-init.js',function(){
+				var progress = myApp.u.loadResources(); //the object returns by loadResources will get updated as the resources finish loading.
+				myApp.u.showProgress(progress);
+				});
+//			$('#appversion').text(myApp.vars.release);
+			}
+		});
+	myApp.vars.initComplete();
+	myCreole = new Parse.Simple.Creole();
+	});
 </script>
 
 
 </head>
 
 <body>
+<div id='appPreViewBG'></div>
 
 <div id='appPreView'>
-<div class='preViewWrapper'>
-
-				<div id="loader">
-					<h3>Resetting your clock to island time. Aloha!</h3>
-					<div class='alignCenter'>
-						<progress id="appPreViewProgressBar" max="100" value="0" /><br />
-					</div>
-					<div id='appPreViewProgressText' class='alignCenter'>0% Complete</div>
-				</div>
-				
-				<div id="clickToLoad" class="displayNone pointer">
-					Click here to load your shopping experience!
-				</div>
-				<div class='appMessaging'></div>
-</div>
+	<div id="loader">
+		<h3>Resetting your clock to island time. Aloha!</h3>
+		<div class='alignCenter'>
+			<progress id="appPreViewProgressBar" max="100" value="0" /><br />
+		</div>
+		<div id='appPreViewProgressText' class='alignCenter'>0% Complete</div>
+	</div>
+	
+	<div id="clickToLoad" class="displayNone pointer">
+		Click here to load your shopping experience!
+	</div>
+	<div class='appMessaging'></div>
 </div>
 
 
@@ -112,9 +124,9 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	<!-- HEADER -->
 	<div id="header">
 
-		<img id="customCarvingLink" class="pointer shake" onclick="return showContent('category',{'navcat':'.002'})" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' />
+		<a href="#!category/002"><img id="customCarvingLink" class="pointer shake" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' /></a>
 
-		<div id="carvingEmporiumLink" class="shake"><a href='http://www.carvingemporium.com/c=TBB4t99aX93Wk8HLTXgv7LuEy/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' /></a></div>
+		<div id="carvingEmporiumLink" class="shake"><a href='http://www.carvingemporium.com/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' /></a></div>
 
 		<!-- holiday/xmas header = tk08_header_xmas-738x136.png -->
 
@@ -131,27 +143,22 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 			<div class="cartTotal"></div>
 		</div>
 
-		<img id="homepageLink" class="pointer" onclick="return showContent('homepage',{});" src='img/blank.gif' width='440' height='120' alt='tikimaster.com' title='TikiMaster.com - The Ultimate Tiki Source' />
+		<a href='#!home'><img id="homepageLink" class="pointer" src='img/blank.gif' width='440' height='120' alt='tikimaster.com' title='TikiMaster.com - The Ultimate Tiki Source' /></a>
 		
 		<a id="phoneLink" href="callto://8776774440" title='Call Us' alt='Call Us'></a>
 
-		<!-- Livechatinc button doesn't work - probably license issue. 
-		And they've changed the domain to livechatinc.com, and have different scripts now -->
-		<!--div id="livechat"><img src="https://chat.livechatinc.net/licence/1018178/button.cgi?lang=en&amp;groups=0" style="cursor:pointer;cursor:hand" onclick="window.open('https://chat.livechatinc.net/licence/1018178/open_chat.cgi?groups=0'+'&amp;s=1&amp;lang=en&amp;dc='+escape(document.cookie+';l='+document.location+';r='+document.referer+';s='+typeof lc_session),'Czat_1018178','width=604,height=247,resizable=no,scrollbars=no,status=1');" />
-		</div-->
-
 		<div id="headerNav">
 			<!--img class="pointer swing" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' /-->
-			<a class="bindByAnchor swing" href="#!category?navcat=.004" alt='Tiki Decor' style="width:118px; background-position:0 0"></a>
-			<a class="bindByAnchor swing" href="#!category?navcat=.nautical_signs" alt='Nautical Decor' style="width:154px; background-position:-118px 0"></a>
-			<a class="bindByAnchor swing" href="#!category?navcat=.90" alt='Surf Decor' style="width:119px; background-position:-272px 0"></a>
-			<a class="bindByAnchor swing" href="#!category?navcat=.pirate_decor" alt='Pirate Decor'  style="width:136px; background-position:-391px 0"></a>
-			<a class="bindByAnchor swing" href="#!category?navcat=.beach_signs" alt='Beach Decor' style="width:137px; background-position:-527px 0"></a>
-			<a class="bindByAnchor swing" href="#!category?navcat=.coastal_decor" alt='Coastal Decor' style="width:144px; background-position:-664px 0"></a>
-			<a class="bindByAnchor swing" href="#!category?navcat=.skull_and_bones_decor" alt='Skull n Bones Decor' style="width:168px; background-position:-808px 0"></a>
+			<a class="swing" href="#!category/004" alt='Tiki Decor' style="width:118px; background-position:0 0"></a>
+			<a class="swing" href="#!category/nautical_signs" alt='Nautical Decor' style="width:154px; background-position:-118px 0"></a>
+			<a class="swing" href="#!category/90" alt='Surf Decor' style="width:119px; background-position:-272px 0"></a>
+			<a class="swing" href="#!category/pirate_decor" alt='Pirate Decor'  style="width:136px; background-position:-391px 0"></a>
+			<a class="swing" href="#!category/beach_signs" alt='Beach Decor' style="width:137px; background-position:-527px 0"></a>
+			<a class="swing" href="#!category/coastal_decor" alt='Coastal Decor' style="width:144px; background-position:-664px 0"></a>
+			<a class="swing" href="#!category/skull_and_bones_decor" alt='Skull n Bones Decor' style="width:168px; background-position:-808px 0"></a>
 		</div>
 
-		<a id="cartLink" href="#" onclick="return showContent('cart',{})" alt='View Cart' title="View Cart"></a>
+		<a id="cartLink" href="#!cart" alt='View Cart' title="View Cart"></a>
 
 	</div>
 	<!-- /HEADER -->
@@ -160,16 +167,16 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 	<div id="bg2"><!-- bg2 empty div for right background -->
 		
 		<div class="searchAndBreadcrumb">
-			<form id="headerSearchFrm" name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
-				<input type='text' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
-				<button></button>
+			<form name='headerSearchFrm' id='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get"  data-app-submit='quickstart|searchFormSubmit'>
+				<input type='search' name='KEYWORDS' placeholder='Enter Search Term...' class="productSearchKeyword handleDefault" />
+				<button id='mastHeadSearchButton' class='sprite' title='Product Search'></button>
 			</form>
 		</div>
 		
 
 <div id='globalMessaging' class='appMessaging'></div><!-- DO NOT REMOVE - used for some high level error handling (usually appears below breadcrumb nav or top bar) -->
 
-<!-- These add specific functionality for the app. In most cases, you want to leave them alone. -->
+<!-- These add specific functionality for the myApp. In most cases, you want to leave them alone. -->
 <div id='appNav'>
 	<button class='displayNone prodDetailNextItemButton' data-app-role='prodDetailNextItemButton'>Next</button>
 	<button class='displayNone prodDetailPrevItemButton' data-app-role='prodDetailPrevItemButton'>Previous</button>
@@ -186,11 +193,9 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 
 					<div style='padding-top:5px;'>Our monthly newsletter will keep you up to date on our new items, special offers and closeouts. Subscribe and you are automatically entered to win our weekly sweepstakes! </div>
 					<div id="footerSubscribeBar">
-						<form action='#' id='footerSubscribeForm' name='footerSubscribeForm' onSubmit="app.ext.store_crm.u.handleSubscribe($(this)); return false">
-							<input class="text" type='email' placeholder="Email Address" maxlength='50' size='23' name='login' id='subscribeLogin' value='' />
-							<input class="text" type='text' placeholder="Full Name" maxlength='50' size='23' name='fullname' id='subscribeFullname' value='' />
-
-							<input type='submit' class='submit' value='Subscribe'>
+						<form action="#" name="subscribeFrm" data-app-submit="quickstart|subscribeSubmit">
+							<input placeholder="email address" maxlength="50" size="30" required name="email" value="" type="email" data-tlc="bind $var '.customer.login'; if(is $var --notblank;) {{apply --select=$var;}};">
+							<input class="submit" value="Subscribe" type="submit">
 						</form>
 					</div>
 				</td>
@@ -258,13 +263,12 @@ app.u.loadScript(app.vars.baseURL+"_tikimaster_init.js");
 
 			<div id='copyright'>
 				<div class='zsmall'>
-					<div>Copyright &copy; 2013. All images and information contained in this site are copyrighted and may not be distributed, modified or reproduced in whole or in part without the prior convert of Kamakani Enterprises, Inc.</div>
+					<div>Copyright &copy; 2014. All images and information contained in this site are copyrighted and may not be distributed, modified or reproduced in whole or in part without the prior convert of Kamakani Enterprises, Inc.</div>
 					<!--	<div>Please read our <a href='http://www.tikimaster.com/privacy.cgis'>Privacy Policy</a> -->
 					<div><a href='https://www.zoovy.com/' class='zsmall' target='zoovy'>ecommerce by zoovy</a></div>
 				</div>
 				<!-- begin livechat_footer --><!-- BEGIN LIVECHAT track tag. See also www.livechatinc.com -->
-				<script type="text/javascript"
-src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=0"></script>
+				<script type="text/javascript" src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=0"></script>
 				<!-- END LIVECHAT track tag. See also www.livechatinc.com --><!-- end livechat_footer -->
 			</div>
 
@@ -292,52 +296,52 @@ src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=
 	
 	<!-- nav maps -->
 	<map name="headerMap">
-		<area shape="rect" coords="2,1,116,57" class="bindByAnchor" href="#!category?navcat=.004" alt='Tiki Decor' title='Tiki Decor' />
-		<area shape="rect" coords="124,1,270,57" class="bindByAnchor" href="#!category?navcat=.nautical_signs" alt='Nautical Decor' title='Nautical Decor' />
-		<area shape="rect" coords="276,1,394,57" class="bindByAnchor" href="#!category?navcat=.90" alt='Surf Decor' title='Surf Decor' />
-		<area shape="rect" coords="398,1,523,57" class="bindByAnchor" href="#!category?navcat=.pirate_decor" alt='Pirate Decor' title='Pirate Decor' />
-		<area shape="rect" coords="525,1,665,57" class="bindByAnchor" href="#!category?navcat=.beach_signs" alt='Beach Decor' title='Beach Decor' />
-		<area shape="rect" coords="668,1,806,57" class="bindByAnchor" href="#!category?navcat=.coastal_decor" alt='Coastal Decor' title='Coastal Decor' />
-		<area shape="rect" coords="808,1,972,57" class="bindByAnchor" href="#!category?navcat=.skull_and_bones_decor" alt='Skull n Bones Decor' title='Skull n Bones Decor' />
+		<area shape="rect" coords="2,1,116,57" href="#!category/004" alt='Tiki Decor' title='Tiki Decor' />
+		<area shape="rect" coords="124,1,270,57" href="#!category/nautical_signs" alt='Nautical Decor' title='Nautical Decor' />
+		<area shape="rect" coords="276,1,394,57" href="#!category/90" alt='Surf Decor' title='Surf Decor' />
+		<area shape="rect" coords="398,1,523,57" href="#!category/pirate_decor" alt='Pirate Decor' title='Pirate Decor' />
+		<area shape="rect" coords="525,1,665,57" href="#!category/beach_signs" alt='Beach Decor' title='Beach Decor' />
+		<area shape="rect" coords="668,1,806,57" href="#!category/coastal_decor" alt='Coastal Decor' title='Coastal Decor' />
+		<area shape="rect" coords="808,1,972,57" href="#!category/skull_and_bones_decor" alt='Skull n Bones Decor' title='Skull n Bones Decor' />
 	</map>
 	
 	<map name='zfooter_Map'>
-		<area shape='rect' coords='26,41,102,52' class="bindByAnchor" href="#!company?show=return" alt='Return Policy' title='Return Policy' rel='nofollow' />
-		<area shape='rect' coords='26,56,102,70' class="bindByAnchor" href="#!company?show=contact" alt='Contact Us' title='Contact Us' rel='nofollow' />
-		<area shape='rect' coords='26,72,102,86' class="bindByAnchor" href="#!company?show=shipping" alt='Shipping' title='Shipping' rel='nofollow' />
-		<area shape='rect' coords='26,89,102,102' class="bindByAnchor" href="#!customer?show=orders" alt='Tracking' title='Tracking' rel='nofollow' />
-		<area shape='rect' coords='26,102,102,117' class="bindByAnchor" href="#!category?navcat=.002" alt='Services' title='Services' rel='nofollow' />
+		<area shape='rect' coords='26,41,102,52' href="#!company/return" alt='Return Policy' title='Return Policy' rel='nofollow' />
+		<area shape='rect' coords='26,56,102,70' href="#!company/contact" alt='Contact Us' title='Contact Us' rel='nofollow' />
+		<area shape='rect' coords='26,72,102,86' href="#!company/shipping" alt='Shipping' title='Shipping' rel='nofollow' />
+		<area shape='rect' coords='26,89,102,102' href="#!customer/orders" alt='Tracking' title='Tracking' rel='nofollow' />
+		<area shape='rect' coords='26,102,102,117' href="#!category/002" alt='Services' title='Services' rel='nofollow' />
 
-		<area shape='rect' coords='133,40,208,51' class="bindByAnchor" href="#!company?show=contact" alt='Locate Us' title='Locate Us' rel='nofollow' />
-		<area shape='rect' coords='133,58,208,69' class="bindByAnchor" href="#!company?show=about" alt='About Us' title='About Us' rel='nofollow' />
-		<area shape='rect' coords='133,71,208,86' class="bindByAnchor" href="#!cart" alt='View Cart' title='View Cart' rel='nofollow' />
-		<area shape='rect' coords='133,87,208,103' class="bindByAnchor" href="#!company?show=faq" alt='faq' title='faq' rel='nofollow' />
-		<area shape='rect' coords='133,101,208,117' class="bindByAnchor" href="#!company?show=privacy" alt='Privacy' title='Privacy' rel='nofollow' />
+		<area shape='rect' coords='133,40,208,51' href="#!company/contact" alt='Locate Us' title='Locate Us' rel='nofollow' />
+		<area shape='rect' coords='133,58,208,69' href="#!company/about" alt='About Us' title='About Us' rel='nofollow' />
+		<area shape='rect' coords='133,71,208,86' href="#!cart" alt='View Cart' title='View Cart' rel='nofollow' />
+		<area shape='rect' coords='133,87,208,103' href="#!company/faq" alt='faq' title='faq' rel='nofollow' />
+		<area shape='rect' coords='133,101,208,117' href="#!company/privacy" alt='Privacy' title='Privacy' rel='nofollow' />
 
-		<area shape='rect' coords='241,40,353,57' class="bindByAnchor" href="#!customer?show=myaccount" alt='Wholesale' title='Wholesale' rel='nofollow' />
-		<area shape='rect' coords='241,59,353,73' class="bindByAnchor" href="#!category?navcat=.shipping_policy" alt='Drop Shipping' title='Drop Shipping' rel='nofollow' />
-		<area shape='rect' coords='241,75,353,89' class="bindByAnchor" href="#!category?navcat=.affiliates" alt='Affiliate Program' title='Affiliate Program' rel='nofollow' />
+		<area shape='rect' coords='241,40,353,57' href="#!customer/myaccount" alt='Wholesale' title='Wholesale' rel='nofollow' />
+		<area shape='rect' coords='241,59,353,73' href="#!category/shipping_policy" alt='Drop Shipping' title='Drop Shipping' rel='nofollow' />
+		<area shape='rect' coords='241,75,353,89' href="#!category/affiliates" alt='Affiliate Program' title='Affiliate Program' rel='nofollow' />
 
-		<area shape='rect' coords='420,42,520,56' class="bindByAnchor" href="#!category?navcat=.001" alt='Learning Center' title='Learning Center' />
-		<area shape='rect' coords='420,58,520,73' class="bindByAnchor" href="#!category?navcat=.tiki_topics" alt='Decor Topics' title='Decor Topics' />
-		<area shape='rect' coords='420,75,520,90' class="bindByAnchor" href="#!category?navcat=.design_assistant" alt='Design Center' title='Design Center' />
+		<area shape='rect' coords='420,42,520,56' href="#!category/001" alt='Learning Center' title='Learning Center' />
+		<area shape='rect' coords='420,58,520,73' href="#!category/tiki_topics" alt='Decor Topics' title='Decor Topics' />
+		<area shape='rect' coords='420,75,520,90' href="#!category/design_assistant" alt='Design Center' title='Design Center' />
 
 		<area shape='rect' coords='563,40,628,55' href='http://www.facebook.com/pages/Tikimaster-The-Store-Of-Hawaii/79606002155/' alt='Facebook' title='Facebook' target='facebook' />
 		<area shape='rect' coords='563,57,628,71' href='http://twitter.com/kamakani' alt='Twitter' title='Twitter @kamakani' target='twitter' />
 		<area shape='rect' coords='563,72,627,89' href='http://blog.tikimaster.com' alt='Blog' title='Blog' target='blog' />
-		<area shape='rect' coords='563,91,627,105' class="bindByAnchor" href="#!category?navcat=.media" alt='Tikimaster In the Media' title='Tikimaster In the Media' />
+		<area shape='rect' coords='563,91,627,105' href="#!category/media" alt='Tikimaster In the Media' title='Tikimaster In the Media' />
 
-		<area shape='rect' coords='640,40,706,56' class="bindByAnchor" href="#!category?navcat=.tiki_videos" alt='Videos' title='Videos' />
-		<area shape='rect' coords='640,58,706,71' href='http://static.zoovy.com/rss/tikimaster/912278.xml' alt='rss' title='rss' target='rss' />
-		<area shape='rect' coords='639,73,706,90' class="bindByAnchor" href="#!category?navcat=.wishlist" alt='Wishlist' title='Wishlist' rel='nofollow' />
+		<area shape='rect' coords='640,40,706,56' href="#!category/tiki_videos" alt='Videos' title='Videos' />
+		<area shape='rect' coords='640,58,706,71' href='/rss/tikimaster/912278.xml' alt='rss' title='rss' target='rss' />
+		<area shape='rect' coords='639,73,706,90' href="#!category/wishlist" alt='Wishlist' title='Wishlist' rel='nofollow' />
 
 	</map>
 
 
 	<map name="bannerMap">
-		<area shape="rect" coords="1,1,282,77" class="bindByAnchor" href="#!product?pid=GIFTCERTIFICATE" alt='Gift Cards' title='Gift Cards' />
-		<area shape="rect" coords="287,3,544,78" href="http://www.carvingemporium.com/c=t7BKQo9adl3Wk8HLerPU4TG8D/" alt='Home Decor Stores' title='Home Decor Stores' />
-		<area shape="rect" coords="548,2,941,77" class="bindByAnchor" href="#!category?navcat=.affiliates" alt='Business Opportunities' title='Business Opportunities' />
+		<area shape="rect" coords="1,1,282,77" href="#!product/GIFTCERTIFICATE" alt='Gift Cards' title='Gift Cards' />
+		<area shape="rect" coords="287,3,544,78" href="http://www.carvingemporium.com/" alt='Home Decor Stores' title='Home Decor Stores' />
+		<area shape="rect" coords="548,2,941,77" href="#!category/affiliates" alt='Business Opportunities' title='Business Opportunities' />
 	</map>
 	
 	<!-- /nav maps -->
@@ -359,9 +363,49 @@ src="https://chat.livechatinc.net/licence/1018178/script.cgi?lang=en&amp;groups=
 *************************************************************************************************************
 **
 **
+**										C A R T   M E S S A G E   U I      S T A R T S      H E R E
+**
+** A mechanism where buyers and merchants can communicate in real time.
+**
+*************************************************************************************************************
+-->
+
+
+
+<div id='cartMessenger' class='displayNone seoStrip' data-app-role='cartMessenger' title="help">
+	<form novalidate='novalidate' onSubmit="return false">
+		<div class='messageHistoryContainer'>
+			<section data-app-role='messageHistory'></section>
+		</div>
+		<fieldset data-app-role='messageInput' class='smallButton messageInputContainer displayNone'>
+			<textarea name='message' required='required' class='fullWidth' rows='5' placeholder='send a message'></textarea>
+			<button class='applyButton' data-app-click='cart_message|chatPostExec' data-app-role='messageSubmitButton'>Send Message</button>
+		</fieldset>
+		<input type='text' placeholder='first name' name='bill/firstname' value='' data-tlc="bind $var 'bill.firstname'; apply --select=$var;" data-app-blur='cco|cartSetAttrib' />
+		<section data-app-role='messageCommands' class='messageCommandsContainer'>
+		<button class='applyButton displayNone show4ActiveChat' data-app-click="quickstart|cartMessagePageSend" title='Show the associate what page I am on.'>Send Page</button>
+		<button data-app-click="cart_message|cartCSRShortcutExec" class='applyButton hide4ActiveChat'>Cart Shortcut</button><!-- if the buyer is already on the phone w/ the merchant, they could use this so the admin can access the cart -->
+		</section>
+	</form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!--
+*************************************************************************************************************
+**
+**
 **										T E M P L A T E S      S T A R T      H E R E
 **
-** template id's are specified within myria.js and loaded, then interpolated with dynamic data from the api.
+** template id's are specified within quickstart.js and loaded, then interpolated with dynamic data from the api.
 **
 *************************************************************************************************************
 -->
@@ -385,12 +429,9 @@ COMMONLY EDITED TEMPLATES
 <!--
 the homepageTemplate template is loaded into mainContentArea by default when the application loads
 -->
-<div id='homepageTemplate' class='homeTemplate'>
+<div id="homepageTemplate" class="homeTemplate">
 	
 	<div id="leftNav">
-		<!--ul id='tier1categories'></ul-->
-		
-		<!--ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul-->
 		
 		<ul>
 		<li data-catsafeid=".003">
@@ -503,73 +544,60 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 		</li>
 		</ul>
 		
-		<!--img class="pointer catLink block center" onClick="return showContent('category',{'navcat':'.thatchandbamboo'});" src='img/logos/2009_logos/thatchandbamboo.jpg' width='140' height='71' alt="Thatch &amp; Bamboo" title="Thatch &amp; Bamboo" /-->
-		<a href="http://www.koamaster.com"><img class="pointer catLink block center" src='img/logos/2009_logos/koamaster2.jpg' width='140' height='51' alt="Koamaster.com" title="Koamaster.com" /></a>
-		<!--a href="http://www.tikizilla.com/category/beach_signs/"><img class="pointer catLink block center" src='img/logos/2009_logos/beach_signs2.jpg' width='140' height='80' alt="Tikizilla - Beach signs" title="Tikizilla - Beach signs" /></a-->
+
+		<a href="http://www.koamaster.com" target='_blank'><img class="pointer catLink block center" src="img/logos/2009_logos/koamaster2.jpg" alt="Koamaster.com" title="Koamaster.com" height="51" width="140"></a>
+
 	</div>
 	
 	
 	<div id="mainCenter">
 		<div class="decoratorHoriz"></div>
-		<div id="slideshowNav"></div>
-		<div id="wideSlideshow" 
-			data-cycle-fx=fade
-			data-cycle-timeout=3000
-			data-cycle-pager="#slideshowNav"
-			data-cycle-pager-template="<a href=#> {{slideNum}} </a>"
-			>
-			<!-- empty element for pager links -->
-			<!--img class="pointer" onClick="return showContent('category',{'navcat':'.03'});" src='img/homepage/slideshow/tikis_home3.jpg' width='512' height='384' alt="Tiki Signs" title="Tiki Signs" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.05.kim_taylor_reece_collection'});" src='img/homepage/slideshow/kim_taylor_reece_home.jpg' width='512' height='384' alt="Kim Taylor Reece Collection" title="Kim Taylor Reece Collection" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.tiki_bar'});" src='img/homepage/slideshow/tikibar_tikimaster.jpg' width='512' height='384' alt="Tiki Bar" title="Tiki Bar" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.koamaster'});" src='img/homepage/slideshow/hawaiian_koa_mainpic08.jpg' width='512' height='384' alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.americana'});" src='img/homepage/slideshow/americana_decor2.jpg' width='512' height='384' alt="Americana Decor" title="Americana Decor" /-->
-			<!--img class="pointer" onClick="return showContent('company',{'show':'return'});" src='img/homepage/slideshow/ups_special2_512x340.jpg' width='512' height='340' alt="The Ultimate Tiki Shop Of Hawaii" title="The Ultimate Tiki Shop Of Hawaii" /-->
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.beach_signs.nautical_flag_letters'});" src='img/homepage/slideshow/nautical_flags_home2009b_512x340.jpg' width='512' height='340' alt="Nautical Alphabet Letters" title="Nautical Alphabet Letters" />
-			<!--img class="pointer" onClick="return showContent('category',{'navcat':'.004.bishop_museum_tikis'});" src='img/homepage/slideshow/tikis0391_512x340.jpg' width='512' height='340' alt="Carved tiki bishop museum" title="Carved tiki bishop museum" /-->
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.green__collection.mirrors'});" src='img/homepage/slideshow/tikis0702_512x340.jpg' width='512' height='340' alt="Driftwood mirrors recycle green product" title="Driftwood mirrors recycle green product" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.03.aloha_tropical'});" src='img/homepage/slideshow/tikis0602_512x340.jpg' width='512' height='340' alt="Aloha carved wood signs Hawaii" title="Aloha carved wood signs Hawaii" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.koamaster'});" src='img/homepage/slideshow/koa_oar_03015_512x340.jpg' width='512' height='340' alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" />
-			<img class="pointer" onClick="return showContent('category',{'navcat':'.coastal_decor.wall_decor.nautical_decor'});" src='img/homepage/slideshow/coastal_decor_home1_512x340.jpg' width='512' height='340' alt="Coastal Decor, Nautical Decor, Cottage Lifestyle" title="Coastal Decor, Nautical Decor, Cottage Lifestyle" />
+
+		<div id="wideSlideshow" data-app-role='homepageSlideshowContainer' class="clearfix marginBottom" data-cycle-log="false" data-cycle-fx="scrollHorz" data-cycle-timeout="5000" data-cycle-speed="1000" data-cycle-slides="div.slide" data-cycle-swipe="true" data-cycle-prev=".prev" data-cycle-next=".next" data-cycle-pause-on-hover="true" data-cycle-pager-template="<span>{{slideNum}}</span>">
+			<nav class="cycle-pager"></nav>
+			<div class='slide'><a href="#!category/beach_signs.nautical_flag_letters"><img src="img/homepage/slideshow/nautical_flags_home2009b_512x340.jpg" alt="Nautical Alphabet Letters" title="Nautical Alphabet Letters" height="340" width="512"></a></div>
+			<div class='slide'><a href="#!categorygreen__collection.mirrors/"><img src="img/homepage/slideshow/tikis0702_512x340.jpg" alt="Driftwood mirrors recycle green product" title="Driftwood mirrors recycle green product" height="340" width="512"></a></div>
+			<div class='slide'><a href="#!category/03.aloha_tropical"><img src="img/homepage/slideshow/tikis0602_512x340.jpg" alt="Aloha carved wood signs Hawaii" title="Aloha carved wood signs Hawaii" height="340" width="512"></a></div>
+			<div class='slide'><a href="#!category/koamaster"><img src="img/homepage/slideshow/koa_oar_03015_512x340.jpg" alt="Koa Paddles And Weapons" title="Koa Paddles And Weapons" height="340" width="512"></a></div>
+			<div class='slide'><a href="#!category/coastal_decor.wall_decor.nautical_decor"><img src="img/homepage/slideshow/coastal_decor_home1_512x340.jpg" alt="Coastal Decor, Nautical Decor, Cottage Lifestyle" title="Coastal Decor, Nautical Decor, Cottage Lifestyle" height="340" width="512"></a></div>
 		</div>
+
 		<div class="decoratorHoriz"></div>
 		
     <div id="dealOfTheWeek">
-    	<!--img class="pointer" onClick="return showContent('category',{'navcat':'.temp_deal_of_week'});" src="img/tiki__02227_512x340.jpg" width="512" height="340" alt="DEAL OF THE WEEK" title="Deal Of The Week" /-->
-    	<img class="pointer" onClick="return showContent('category',{'navcat':'.temp_deal_of_week'});" src="img/tm_card_banner_xmas2013-512x340.jpg" width="512" height="340" alt="DEAL OF THE WEEK" title="Deal Of The Week" />
-    	<div class="pointer gift-card-top" onClick="return showContent('category',{'navcat':'.temp_deal_of_week'});" title="Get TikiMaster Gift Cards!"></div>
-    	<div class="pointer gift-card1" onClick="showContent('product',{'pid':'TM-25-4-20'})" title="$30 Gift Card for $25"></div>
-    	<div class="pointer gift-card2" onClick="showContent('product',{'pid':'TM-100-4-75'})" title="$120 Gift Card for $100"></div>
-    	<div class="pointer gift-card3" onClick="showContent('product',{'pid':'TM-50-4-40'})" title="$60 Gift Card for $50"></div>
-    	<div class="pointer gift-card4" onClick="showContent('product',{'pid':'TM-200-4-140'})" title="$180 Gift Card for $150"></div>
+
+    	<a href="#!category/temp_deal_of_week"><img class="pointer" src="img/tm_card_banner_xmas2013-512x340.jpg" alt="DEAL OF THE WEEK" title="Deal Of The Week" height="340" width="512"></a>
+    	<a class="pointer gift-card1" href="#!product/TM-25-4-20" title="$30 Gift Card for $25"></a>
+    	<a class="pointer gift-card2" href="#!product/TM-100-4-75" title="$120 Gift Card for $100"></a>
+    	<a class="pointer gift-card3" href="#!product/TM-50-4-40" title="$60 Gift Card for $50"></a>
+    	<a class="pointer gift-card4" href="#!product/TM-200-4-140" title="$180 Gift Card for $150"></a>
     </div>
 	</div>
 	
 	<div id="mainRight1">
-		<!--ul id='homeProdSearchNewArrivals' data-bind="var: list($new_arrivals.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplateResultsNewArrivals;" class='listStyleNone clearfix noPadOrMargin newProductList'></ul-->
-		
-		<ul id='homeProdSearchNewArrivals' data-bind='var: elastic-native({"mode":"elastic-native","filter":{"term":{"tags":"IS_NEWARRIVAL"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNewArrivals;' class='listStyleNone clearfix noPadOrMargin newProductList randomList itemsPerPage3'></ul>
+	
+		<ul data-tlc="quickstart#searchbytag --tag='IS_NEWARRIVAL' --size='3' --templateid='productListTemplateResultsNewArrivals';" id="homeProdSearchNewArrivals" class="listStyleNone clearfix noPadOrMargin newProductList randomList itemsPerPage3"></ul>
 	</div>
 	
 	<div id="mainRight2">
 		
 		<div class="infoBlock pointer">
-			<a class="bindByAnchor" href="#!category?navcat=.thatchandbamboo" title="Bamboo decor">
-				<img class="block center" src="img/logos/2009_logos/bamboo360.jpg" width="130" height="40" alt="Bamboo decor" />
+			<a href="#!category/thatchandbamboo" title="Bamboo decor">
+				<img class="block center" src="img/logos/2009_logos/bamboo360.jpg" alt="Bamboo decor" height="40" width="130">
 				<p>We are one of the largest distributor of bamboo poles online, bamboo stakes for agriculture, or decorative moso bamboo poles for home decor. With warehouses in California and Florida we guarantee very competitive prices. Looking for thatch? Our best seller is the 57 foot roll ...</p>
 			</a>
 		</div>
 		
 		<div class="infoBlock pointer" title="Drop Shipping">
 			<a href="http://www.source-tropical.com/category/tikidiscovery.menu.drop_ship/">
-				<img class="block center" src="img/logos/2009_logos/dropship.jpg" width="130" height="40" alt="Drop Shipping" />
-				<p>If you are just beginning your own wholesale/retail business and don't have the money or the space to keep your own inventory, you may be interested in our &quot;drop shipping&quot; method. This sales method allows you to begin your own business Without Using Any Of Your Own Cash.</p>
+				<img class="block center" src="img/logos/2009_logos/dropship.jpg" alt="Drop Shipping" height="40" width="130">
+				<p>If you are just beginning your own wholesale/retail business and don't have the money or the space to keep your own inventory, you may be interested in our "drop shipping" method. This sales method allows you to begin your own business Without Using Any Of Your Own Cash.</p>
 			</a>
 		</div>
 		
 		<div class="infoBlock pointer">
-			<a class="bindByAnchor" href="#!category?navcat=.tiki_topics" title="Tiki Topics">
-				<img class="block center" src="img/logos/2009_logos/tapa_hawaii01.jpg" width="130" height="40" alt="Tiki Topics" />
+			<a href="#!category/tiki_topics" title="Tiki Topics">
+				<img class="block center" src="img/logos/2009_logos/tapa_hawaii01.jpg" alt="Tiki Topics" height="40" width="130">
 				<p>We have Tiki carvers throughout Hawaii and the different areas of the Pacific. We specialize also in custom Tiki carving, Tiki bar, Hawaiian canoes, restaurant Decor, Koa Paddles and Tropical Decor. All finishing and quality control is done in Honolulu.</p>
 			</a>
 		</div>
@@ -584,7 +612,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor_dark floatLeft topRound">Best Sellers!</div>
 		</div>
 		<div class="prodBlockContent zcolor_dark">
-			<ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
+			<ul data-tlc="bind $var '.@products'; store_prodlist#productlist  --hidesummary='1' --withreviews='1' --templateid='homepageProductListTemplate'  --legacy;" class="randomList"></ul>
 		</div>
 	</div>
 	
@@ -593,7 +621,7 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor floatLeft topRound">Island Perfume &amp; Cologne</div>
 		</div>
 		<div class="prodBlockContent zcolor">
-			<ul data-bind="var: list($aloha_top.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
+			<ul data-tlc="bind $var '.$aloha_top.@products'; store_prodlist#productlist  --hidesummary='1' --withreviews='1' --templateid='homepageProductListTemplate'  --legacy;" class="randomList"></ul>
 		</div>
 	</div>
 	
@@ -602,46 +630,28 @@ the homepageTemplate template is loaded into mainContentArea by default when the
 	 		<div class="zcolor_light floatLeft topRound">Surf's Up Collection!</div>
 		</div>
 		<div class="prodBlockContent zcolor_light">
-			<ul data-bind="var: list($surf_new.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: homepageProductListTemplate; hide_summary:1; withReviews:1;" class="randomList"></ul>
+			<ul data-tlc="bind $var '.$surf_new.@products'; store_prodlist#productlist  --hidesummary='1' --withreviews='1' --templateid='homepageProductListTemplate'  --legacy;" class="randomList"></ul>
 		</div>
 	</div>
 	
-	<p class="normal">Your "One-Stop-Tiki Shop" for Tiki Products, 
-		<a class="bindByAnchor" href="#!category?navcat=.01.tiki_bar" title="Tiki bar">Tiki bar</a>, 
-		<a class="bindByAnchor" href="#!category?navcat=.05.2" title="Koa outrigger paddles">Koa outrigger paddles</a> 
+	<p class="normal">Your &quot;One-Stop-Tiki Shop&quot; for Tiki Products, 
+		<a href="#!category/01.tiki_bar" title="Tiki bar">Tiki bar</a>, 
+		<a href="#!category/05.2" title="Koa outrigger paddles">Koa outrigger paddles</a> 
 		and Island Lifestyle Decor! As one of Hawaii's finest manufacturer and online gift catalog companies, we offer a large selection of products such as: 
-		<a class="bindByAnchor" href="#!category?navcat=.004.bishop_museum_tikis" title="Tikis">Tikis</a>, 
+		<a href="#!category/004.bishop_museum_tikis" title="Tikis">Tikis</a>, 
 		Tiki masks, 
-		<a class="bindByAnchor" href="#!product?pid=ISLANDTIKIBARNA" title="Tiki bar">Tiki bar</a>, 
-		<a class="bindByAnchor" href="#!category?navcat=.05.21" title="Koa art">Koa art</a>, 
-		<a class="bindByAnchor" href="#!category?navcat=.05.3" title="Polynesian art">Polynesian art</a>, 
+		<a href="#!product/ISLANDTIKIBARNA" title="Tiki bar">Tiki bar</a>, 
+		<a href="#!category/05.21" title="Koa art">Koa art</a>, 
+		<a href="#!category/05.3" title="Polynesian art">Polynesian art</a>, 
 		tropical decor, surf decor products, 
-		<a class="bindByAnchor" href="#!category?navcat=.nautical_signs" title="Nautical decor">Nautical decor</a>, 
+		<a href="#!category/nautical_signs" title="Nautical decor">Nautical decor</a>, 
 		skull and bones accessories, pirate wall decor, island lifestyle products and more...
 	</p>
 	<p class="normal">
 	We have Tiki carvers throughout Hawaii and the different areas of the Pacific who carve tiki statues and Tiki gods, tiki totems and masks, fabricate koa canoe paddles and make other Hawaiian crafts. Our tiki sculptures are all quality woodcarvings, each piece is hand carved and hand rubbed to give a beautiful finish. All finishing and quality control is done in Kailua, Hawaii.
 	</p>
 		
-	<!--ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul-->
-
-	<!--ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; hide_summary:1; items_per_page:4; before:<h2>Featured Items</h2>; withReviews:1;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
-	<!--p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
-
-<!-- a sample of how to format an elastic native search in a data-bind -->
-	<!--ul id='homeProdSearchBestSellers' data-bind='var: elastic-native({"size":"4","mode":"elastic-native","filter":{"term":{"tags":"IS_BESTSELLER"}}}); format: productSearch; extension: myRIA; loadsTemplate: productListTemplateResultsNoPreview; before:<h2>Best Sellers</h2>;' class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
-
-	<!--a href="#" onClick="return showContent('search',{'TAG':'IS_BESTSELLER'});">See all Best Sellers</a-->
-
-<!-- a sample of how to get a 'list' src onto the page. -->
-	<!--ul data-bind="var: list($models.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul>
-	
-	<ul data-bind="var: list($wishlist.@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 25;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul-->
-
-
 </div>
-
-
 
 
 
@@ -654,117 +664,113 @@ used to organize content when a category is clicked.
 each of the 'sections' are used to load another template. don't change the id.
 don't modify the 'data-templateid' unless you are changing template names and updating everywhere appropriate.
 -->
-<div id='categoryTemplate' class='loadingBG categoryTemplate'>
+<div id="categoryTemplate" class=" categoryTemplate">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
+	
 
 	<div class="catHeader greenHeader">
-		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+		<h2 data-tlc="bind $var '.%page.page_title'; if (is $var --notblank;) {{apply --append;}};"></h2>
 		
 		<!--p></p-->
-		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+		<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootCats'  --legacy;"></ul><!-- outputs a list of subcategories -->
 	</div>
 
-	<!--img data-bind="var: category(%page.banner1); format: banner; editor: banner; height:250; width:750; extension: myRIA;" src='images/blank.gif' alt='' /-->
 
-	<!--p data-bind="var: category(%page.keywords); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
-	
-	<!--h2 data-bind="var: category(%page.header); format: text; editor: text;"></h2-->
-
-	<!--p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
-
-	<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul><!-- outputs a list of subcategories -->
+	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplate'  --legacy;" class="listStyleNone fluidList clearfix noPadOrMargin categoryList"></ul><!-- outputs a list of subcategories -->
 
 	<!--ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 30;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul--><!-- outputs the product list -->
-	<ul data-bind="var: category(@products); format: infiniteProductList; extension:prodlist_infinite; loadsTemplate: productListTemplate; items_per_page: 30;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul><!-- outputs infinite product list -->
+	<ul data-tlc="bind $var '.@products'; prodlist_infinite#infiniteproductlist  --itemsperpage='30' --templateid='productListTemplate'  --legacy;" class="listStyleNone fluidList clearfix noPadOrMargin productList"></ul><!-- outputs infinite product list -->
 	
-	<p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"></p>
-	<p data-bind="var: category(%page.description2); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"></p>
+	<p data-tlc="bind $var '.%page.description'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};" class="normal"></p>
+	<p data-tlc="bind $var '.%page.description2'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};" class="normal"></p>
 
 
 </div><!-- END categoryTemplate -->
 
 
 
-<div id='categoryTemplateShowSubCats' class='loadingBG categoryTemplate'>
+
+
+
+<div id="categoryTemplateShowSubCats" class=" categoryTemplate">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 
 	<div class="catHeader">
-		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
+		<h2 data-tlc="bind $var '.%page.page_title'; if (is $var --notblank;) {{apply --append;}};"></h2>
 		
-		<!--p></p-->
-		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+		<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootCats'  --legacy;"></ul><!-- outputs a list of subcategories -->
 	</div>
 
-	<!--img data-bind="var: category(%page.banner1); format: banner; editor: banner; height:250; width:750; extension: myRIA;" src='images/blank.gif' alt='' /-->
 
-	<!--p data-bind="var: category(%page.keywords); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
-	
-	<!--h2 data-bind="var: category(%page.header); format: text; editor: text;"></h2-->
+	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplate'  --legacy;" class="listStyleNone fluidList clearfix noPadOrMargin categoryList"></ul><!-- outputs a list of subcategories -->
 
-	<!--p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;"></p-->
 
-	<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplate; detail:max;" class='listStyleNone fluidList clearfix noPadOrMargin categoryList'></ul><!-- outputs a list of subcategories -->
-
-	<!--ul data-bind="var: category(@products); format: productList; editor: finder; extension: store_prodlist; loadsTemplate: productListTemplate; withReviews:1; items_per_page: 30;" class='listStyleNone fluidList clearfix noPadOrMargin productList'></ul--><!-- outputs the product list -->
-
-	<p data-bind="var: category(%page.description); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"></p>
-	<p data-bind="var: category(%page.description2); format:wiki; wikiFormats:myRIA; editor: textarea;" class="normal"></p>
+	<p data-tlc="bind $var '.%page.description'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};" class="normal"></p>
+	<p data-tlc="bind $var '.%page.description2'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};" class="normal"></p>
 
 
 </div><!-- END categoryTemplateShowSubCats -->
 
 
+
+
+
 <!-- /////////////// VIDEOS TEMPLATES - TRANSFERRED FROM OLD WEBSITE \\\\\\\\\\\\\\\ -->
-<div id='categoryTemplateVideos' class='loadingBG categoryTemplate'>
+<div id="categoryTemplateVideos" class=" categoryTemplate">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 
 	<div class="catHeader greenHeader">
 		<h2>Videos</h2>
-		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+		<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootCats'  --legacy;"></ul><!-- outputs a list of subcategories -->
 	</div>
 	
 	<table cellspacing="0" cellpadding="0" border="0" align="center">
 	<tbody><tr>
-		<td valign="top" width="33%"><a class="bindByAnchor" href="#category?navcat=.videos.product_videos"><img src="img/tm11_c_vidsplash_prodvids-321x366.png" width="321" height="366" alt="product videos" border="0"></a></td>
-		<td valign="top" width="33%"><a class="bindByAnchor" href="#category?navcat=.videos.hawaii_videos"><img src="img/tm11_c_vidsplash_hawaiivids-321x366.png" width="321" height="366" alt="hawaii videos" border="0"></a></td>
-		<td valign="top" width="33%"><a class="bindByAnchor" href="#category?navcat=.videos.how_to_videos"><img src="img/tm11_c_vidsplash_howtovids-321x366.png" width="321" height="366" alt="how to videos" border="0"></a></td>
+		<td valign="top" width="33%"><a href="#!category/videos.product_videos"><img src="img/tm11_c_vidsplash_prodvids-321x366.png" width="321" height="366" alt="product videos" border="0"></a></td>
+		<td valign="top" width="33%"><a href="#!category/videos.hawaii_videos"><img src="img/tm11_c_vidsplash_hawaiivids-321x366.png" width="321" height="366" alt="hawaii videos" border="0"></a></td>
+		<td valign="top" width="33%"><a href="#!category/videos.how_to_videos"><img src="img/tm11_c_vidsplash_howtovids-321x366.png" width="321" height="366" alt="how to videos" border="0"></a></td>
 	</tr>
 	<tr>
 		<td colspan="2" valign="top" class="ztxt"></td>
 		<td valign="top"></td>
 	</tr>
 	</tbody></table>
-	<br />
+	<br>
 
 </div><!-- END categoryTemplateVideos -->
 
 
-<div id='categoryTemplateVideosList' class='loadingBG categoryTemplate alignCenter'>
+
+
+
+<div id="categoryTemplateVideosList" class=" categoryTemplate alignCenter">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 
 	<!--div class="catHeader greenHeader">
 		<h2 data-bind="var: category(%page.page_title); format: text; editor: text;"></h2>
 		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul>
 	</div!-->
-	<br />
-	<object width="853" height="480"><param name="movie" value="//www.youtube.com/v/A1F0qpDSZJc?version=3&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/A1F0qpDSZJc?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="853" height="480" allowscriptaccess="always" allowfullscreen="true"></embed></object>
-	<br />
-	<br />
+	<br>
+	<object width="853" height="480"><param name="movie" value="//www.youtube.com/v/A1F0qpDSZJc?version=3&amp;hl=en_US"><param name="allowFullScreen" value="true"><param name="allowscriptaccess" value="always"><embed src="//www.youtube.com/v/A1F0qpDSZJc?version=3&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" height="480" width="853"></object>
+	<br>
+	<br>
 	
 </div><!-- END categoryTemplateVideosList -->
 
 
-<div id='categoryTemplateVideosWatch' class='loadingBG categoryTemplate'>
+
+
+<div id="categoryTemplateVideosWatch" class=" categoryTemplate">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 
 	<div class="catHeader greenHeader">
 		<h2>Videos</h2>
-		<ul data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootCats; detail:max;"></ul><!-- outputs a list of subcategories -->
+		<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootCats'  --legacy;"></ul><!-- outputs a list of subcategories -->
 	</div>
 
 </div><!-- END categoryTemplateVideosWatch -->
@@ -776,20 +782,20 @@ don't modify the 'data-templateid' unless you are changing template names and up
 
 
 <!-- /////////////// AFFILIATES TEMPLATES \\\\\\\\\\\\\\\\\ -->
-<div id='categoryTemplateAffiliates' class='loadingBG categoryTemplateAffiliates'>
+<div id="categoryTemplateAffiliates" class=" categoryTemplateAffiliates">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 
-	<table cellspacing='0' cellpadding='0' border='0' width='100%' style='margin:15px 0;'>
-	<tr>
-		<td valign='top' width='50%'>
+	<table style="margin:15px 0;" border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td valign="top" width="50%">
 
-	<div style='margin-bottom:10px;'><img src='img/tm_c_aff_header-269x39.png' width='269' height='39' alt='tikimaster affiliate program' /></div>
+	<div style="margin-bottom:10px;"><img src="img/tm_c_aff_header-269x39.png" alt="tikimaster affiliate program" height="39" width="269"></div>
 
 
-	<div style='padding:10px; text-align:left; width:auto;' class='zbox zbox_body'>
+	<div style="padding:10px; text-align:left; width:auto;" class="zbox zbox_body">
 
-		<!-- begin text area --><div style='margin-bottom:10px;'><p>Sell Tikimaster.com from your Web site! As a Tikimaster.com affiliate, you can sell Tikis from all over the Pacific, true Hawaiian weapons made of Koa, Polynesian art and more and
+		<!-- begin text area --><div style="margin-bottom:10px;"><p>Sell Tikimaster.com from your Web site! As a Tikimaster.com affiliate, you can sell Tikis from all over the Pacific, true Hawaiian weapons made of Koa, Polynesian art and more and
 	<b>earn 15% on all sales made during all user sessions</b>
 	originating from a link on your site! This is a free program that can earn you 
 	money by placing Tikimaster.com banners on your site. When users click on your 
@@ -797,7 +803,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	Join now it's Fast, Free and Easy! 
 	<br>
 	</p>
-	<p><a  class="wikilink wikilink_category bindByAnchor"  title="Click here"  href="#!category?navcat=.affiliates.program-details">Click here</a> for more details.
+	<p><a class="wikilink wikilink_category bindByAnchor" title="Click here" href="#!category/affiliates.program-details">Click here</a> for more details.
 	<br>
 	</p>
 	<p>Established in 2000, Tikimaster.com has become a reliable source for Tikis, 
@@ -815,57 +821,57 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	our affiliation program.
 	<br>
 	</p>
-	<p><a  target="blank"  class="wikilink wikilink_popup"  title="JOIN NOW!"  href="http://www.shareasale.com/newsignup.cfm">JOIN NOW!</a>
+	<p><a target="blank" class="wikilink wikilink_popup" title="JOIN NOW!" href="http://www.shareasale.com/newsignup.cfm">JOIN NOW!</a>
 	</p></div><!-- end text area -->	
 
 
-		<div><img src='img/tm_c_aff_newlinks-507x29.png' width='507' height='29' alt='' border='0'  usemap="#affMap" /></div>	
+		<div><img src="img/tm_c_aff_newlinks-507x29.png" alt="" usemap="#affMap" border="0" height="29" width="507"></div>	
 
 
 	</div>
 
 
 	<map name="affMap">
-		<area shape="rect" coords="1,0,141,25" href="http://www.shareasale.com/newsignup.cfm" alt='click here to join now' title='click here to join now' target='affiliate'>
-		<area shape="rect" coords="181,0,371,26" class="bindByAnchor" href="#!category?navcat=.affiliates.program-details" alt='Click here for program details' title='click here for program details'>
-		<area shape="rect" coords="404,2,505,27" class="bindByAnchor" href="#!category?navcat=.affiliates.contract" alt='Click here for detailed contract' title='click here for detailed contract'>
+		<area shape="rect" coords="1,0,141,25" href="http://www.shareasale.com/newsignup.cfm" alt="click here to join now" title="click here to join now" target="affiliate">
+		<area shape="rect" coords="181,0,371,26" href="#!category/affiliates.program-details" alt="Click here for program details" title="click here for program details">
+		<area shape="rect" coords="404,2,505,27" href="#!category/affiliates.contract" alt="Click here for detailed contract" title="click here for detailed contract">
 	</map>
 
 		</td>
-		<td valign='top' width='50%' class='ztxt'>
-		<div style='margin-left:40px;'>
+		<td class="ztxt" valign="top" width="50%">
+		<div style="margin-left:40px;">
 	<!-- this is 12 instead of 10 because the other header is 39px tall, not 37 -->
-	<div style='margin-bottom:12px;'><img src='img/tm_c_tmaffs_header-322x37.png' width='322' height='37' alt='' border='0' /></div>
+	<div style="margin-bottom:12px;"><img src="img/tm_c_tmaffs_header-322x37.png" alt="" border="0" height="37" width="322"></div>
 
-	<div style='padding:10px; text-align:left; width:auto; margin-bottom:10px;' class='zbox zbox_body'>
+	<div style="padding:10px; text-align:left; width:auto; margin-bottom:10px;" class="zbox zbox_body">
 
-	<p>If you are already a Tikimaster.com affiliate, login below. Enter your Affiliate Id Number and password to access your administration page. Forgot your password? <a href='https://shareasale.com/a-lostusername.cfm' target='affiliate'>Click here</a> to have your password emailed to you.</p>
+	<p>If you are already a Tikimaster.com affiliate, login below. Enter your Affiliate Id Number and password to access your administration page. Forgot your password? <a href="https://shareasale.com/a-lostusername.cfm" target="affiliate">Click here</a> to have your password emailed to you.</p>
 
 
 
 
 	<form id="form1" name="form1" method="post" action="https://shareasale.com/a-login.cfm">
-	<input type='hidden' name='step2' value='True' />
-	<input type="hidden" name="demeaning" value="bourbon" />
-	<input type="hidden" name="lent" value="forging" />
-	<input type="hidden" name="jq1" value="1" />
+	<input name="step2" value="True" type="hidden">
+	<input name="demeaning" value="bourbon" type="hidden">
+	<input name="lent" value="forging" type="hidden">
+	<input name="jq1" value="1" type="hidden">
 
 
-	<div style='margin-bottom:3px;'>
-	<label for='username'>Username: </label>
-	<input type="text" style="width: 250px;" class="loginForms" id="username" name="username" />
+	<div style="margin-bottom:3px;">
+	<label for="username">Username: </label>
+	<input style="width: 250px;" class="loginForms" id="username" name="username" type="text">
 	</div>
 
 
-	<div style='margin-bottom:3px;'>
-	<label for='password'>Password: </label>
-	<input type="password" name="password" id="password" class="loginForms" style="width:250px;" />
+	<div style="margin-bottom:3px;">
+	<label for="password">Password: </label>
+	<input name="password" id="password" class="loginForms" style="width:250px;" type="password">
 	</div>
 
-	<div><input type='submit' class='zform_button' value='Sign In' /></div>
-	<br />
+	<div><input class="zform_button" value="Sign In" type="submit"></div>
+	<br>
 
-	<a href='https://shareasale.com/a-login.cfm' target='affiliate'>Secure Login</a> | <a href='https://shareasale.com/a-lostusername.cfm' target='affiliate'>Recover Lost Password</a>
+	<a href="https://shareasale.com/a-login.cfm" target="affiliate">Secure Login</a> | <a href="https://shareasale.com/a-lostusername.cfm" target="affiliate">Recover Lost Password</a>
 
 	<!--
 	sign up: 	
@@ -879,54 +885,60 @@ don't modify the 'data-templateid' unless you are changing template names and up
 		</div>
 		</td>
 	</tr>
-	</table>
+	</tbody></table>
 
 </div> <!-- End categoryTemplateAffiliates -->
 
 
-<div id='categoryTemplateAffiliatesSignUp' class='loadingBG categoryTemplateAffiliates'>
-	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
 
-	<div style='margin:15px 0; padding:10px; text-align:left; width:auto;' class='zbox zbox_body'>The affiliate signup form has moved. Please 
-	<a  target="blank"  class="wikilink wikilink_popup"  title="click here"  href="http://www.shareasale.com/newsignup.cfm">click here</a> to sign up.</div>
+
+
+<div id="categoryTemplateAffiliatesSignUp" class=" categoryTemplateAffiliates">
+	
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
+
+	<div style="margin:15px 0; padding:10px; text-align:left; width:auto;" class="zbox zbox_body">The affiliate signup form has moved. Please 
+	<a target="blank" class="wikilink wikilink_popup" title="click here" href="http://www.shareasale.com/newsignup.cfm">click here</a> to sign up.</div>
 
 </div><!-- End categoryTemplateAffiliatesSignUp -->
 
 
-<div id='categoryTemplateAffiliatesLinkExchange' class='loadingBG categoryTemplateAffiliates'>
+<div id="categoryTemplateAffiliatesLinkExchange" class=" categoryTemplateAffiliates">
 	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 
-	<div style='margin:15px 0; padding:10px; text-align:left; width:auto;' class='zbox zbox_body'>
+	<div style="margin:15px 0; padding:10px; text-align:left; width:auto;" class="zbox zbox_body">
 
 	<font class="ztxt"><h2>List of Exchange links</h2>
 	<ul>
-	<li> <a  class="wikilink wikilink_url"  title="The Furniture Machine Directory"  href="http://directory.thefurnituremachine.com">The Furniture Machine Directory</a></li>
-	<li> <a  class="wikilink wikilink_url"  title="100BestAffiliatePrograms"  href="http://www.100best-affiliate-programs.com">100BestAffiliatePrograms</a></li>
-	<li> <a  class="wikilink wikilink_url"  title="A La Maison Du Parc"  href="http://www.alamaisonduparc-honfleur.com">A La Maison Du Parc</a> - -  La Maison Du Park (Private house in the park) ... A charming guest house from the 18th Century, our large guest rooms look at a century-old park that overlooks a magnificent Araucaria tree. Ideally located in the center of Honfleur, you will be able to discover our charming city on foot.</li>
-	<li> <a  class="wikilink wikilink_url"  title="Paradise For You"  href="http://p-for-you.biz/">Paradise For You</a> - - Travel and destination information for vacations, accommodations, hotels, rental cars, air, and activities.</li>
-	<li> <a  class="wikilink wikilink_url"  title="Global Index Directory"  href="http://www.ghinmeca.com/">Global Index Directory</a></li>
-	<li> <a  class="wikilink wikilink_url"  title="Seo friendly web directory"  href="http://www.777media.com" id="RBB5961"">Seo friendly web directory</a></li>
-	<li> <a  class="wikilink wikilink_url"  title="Wedding Photographers"  href="http://www.party-wedding.info" id="RBB5961"">Wedding Photographers</a></li>
-	<li> <a  class="wikilink wikilink_url"  title="Best Swimming Pool Filters"  href="http://www.poolfilters.biz/">Best Swimming Pool Filters</a> - - Poolfilters.biz is Manufacturers and suppliers of Swimming pool products, pool filters, pool pumps, pool heaters, pool cleaners and manufacturers of spas, spa products</li>
-	<li> <a  class="wikilink wikilink_url"  title="Polynesian Cultural Center"  href="http://polynesia.com/">Polynesian Cultural Center</a> - Your one-stop source for Luau tickets, information, party products, recipes, music.</li>
-	<li> <a  class="wikilink wikilink_url"  title="LinkPartners.com"  href="http://www.linkpartners.com">LinkPartners.com</a> - The Easy Way to Find Link Swap Partners</li>
-	<li> <a  class="wikilink wikilink_url"  title="Affiliate Seeking"  href="http://www.affiliateseeking.com">Affiliate Seeking</a></li>
+	<li> <a class="wikilink wikilink_url" title="The Furniture Machine Directory" href="http://directory.thefurnituremachine.com">The Furniture Machine Directory</a></li>
+	<li> <a class="wikilink wikilink_url" title="100BestAffiliatePrograms" href="http://www.100best-affiliate-programs.com">100BestAffiliatePrograms</a></li>
+	<li> <a class="wikilink wikilink_url" title="A La Maison Du Parc" href="http://www.alamaisonduparc-honfleur.com">A La Maison Du Parc</a> - -  La Maison Du Park (Private house in the park) ... A charming guest house from the 18th Century, our large guest rooms look at a century-old park that overlooks a magnificent Araucaria tree. Ideally located in the center of Honfleur, you will be able to discover our charming city on foot.</li>
+	<li> <a class="wikilink wikilink_url" title="Paradise For You" href="http://p-for-you.biz/">Paradise For You</a> - - Travel and destination information for vacations, accommodations, hotels, rental cars, air, and activities.</li>
+	<li> <a class="wikilink wikilink_url" title="Global Index Directory" href="http://www.ghinmeca.com/">Global Index Directory</a></li>
+	<li> <a class="wikilink wikilink_url" title="Seo friendly web directory" href="http://www.777media.com" id="RBB5961" "="">Seo friendly web directory</a></li>
+	<li> <a class="wikilink wikilink_url" title="Wedding Photographers" href="http://www.party-wedding.info" id="RBB5961" "="">Wedding Photographers</a></li>
+	<li> <a class="wikilink wikilink_url" title="Best Swimming Pool Filters" href="http://www.poolfilters.biz/">Best Swimming Pool Filters</a> - - Poolfilters.biz is Manufacturers and suppliers of Swimming pool products, pool filters, pool pumps, pool heaters, pool cleaners and manufacturers of spas, spa products</li>
+	<li> <a class="wikilink wikilink_url" title="Polynesian Cultural Center" href="http://polynesia.com/">Polynesian Cultural Center</a> - Your one-stop source for Luau tickets, information, party products, recipes, music.</li>
+	<li> <a class="wikilink wikilink_url" title="LinkPartners.com" href="http://www.linkpartners.com">LinkPartners.com</a> - The Easy Way to Find Link Swap Partners</li>
+	<li> <a class="wikilink wikilink_url" title="Affiliate Seeking" href="http://www.affiliateseeking.com">Affiliate Seeking</a></li>
 	</ul></font>
 	</div>
 </div><!-- End categoryTemplateAffiliatesLinkExchange -->
 
 
-<div id='categoryTemplateAffiliatesContract' class='loadingBG categoryTemplateAffiliates'>
-	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
 
-	<div style='margin:15px 0; padding:10px; text-align:left; width:auto;' class='zbox zbox_body'><p><h2>Please read the agreement document below before registering.</h2>
+
+
+<div id="categoryTemplateAffiliatesContract" class=" categoryTemplateAffiliates">
+	
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
+
+	<div style="margin:15px 0; padding:10px; text-align:left; width:auto;" class="zbox zbox_body"><p></p><h2>Please read the agreement document below before registering.</h2>
 	<br>
-	</p>
-	<p><a  target="blank"  class="wikilink wikilink_popup"  title="I accept 
-	these terms and wish to register."  href="http://www.shareasale.com/newsignup.cfm">I accept 
+	<p></p>
+	<p><a target="blank" class="wikilink wikilink_popup" title="I accept 
+	these terms and wish to register." href="http://www.shareasale.com/newsignup.cfm">I accept 
 	these terms and wish to register.</a>
 
 	<br>
@@ -989,29 +1001,31 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	Any affiliate suspected of a relationship, formal or informal, with any provider of spyware or parasitic software (as judged by any interference with the operation by design of MERCHANT and/or its partner sites) is subject to punitive actions by MERCHANT, without notice, including but not limited to: suspension of affiliate account; termination of affiliate account; withholding of payments to affiliate; and public notification of affiliate's suspected malfeasance. MERCHANT encourages affiliates to report suspicions of such relationships; and, should substantial proof, as judged by MERCHANT, be provided, MERCHANT reserves the right to assign a value equal to unpaid monies earned by the offending affiliate (or a part thereof) to the reporting affiliate as a bounty. 
 	<br>
 	</p>
-	<p><a  target="blank"  class="wikilink wikilink_popup"  title="I accept 
-	these terms and wish to register."  href="http://www.shareasale.com/newsignup.cfm">I accept 
+	<p><a target="blank" class="wikilink wikilink_popup" title="I accept 
+	these terms and wish to register." href="http://www.shareasale.com/newsignup.cfm">I accept 
 	these terms and wish to register.</a>
 	</p></div>
 </div><!-- End categoryTemplateAffiliatesContract -->
 
 
-<div id='categoryTemplateAffiliatesProgramDetails' class='loadingBG categoryTemplateAffiliates'>
-	
-	<ul class='breadcrumb clearfix noPadOrMargin fluidList' data-bind='var: category(id); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
 
-	<div style='margin:15px 0; padding:10px; text-align:left; width:auto;' class='zbox zbox_body'><p><h2>Program Details</h2>
+
+<div id="categoryTemplateAffiliatesProgramDetails" class=" categoryTemplateAffiliates">
+	
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
+
+	<div style="margin:15px 0; padding:10px; text-align:left; width:auto;" class="zbox zbox_body"><p></p><h2>Program Details</h2>
 	<br>
 	<h3>What does it mean to be a Tikimaster.com Affiliate?</h3>
 	<br>
-	</p>
+	<p></p>
 	<p>You'll earn 8% on all sales made during all user sessions originating from a link on your site.
 	<br>
 	</p>
 	<p>You'll earn referral fees on all of the products that Tikimaster.com offers.
 	<br>
 	</p>
-	<p><ul>
+	<p></p><ul>
 	<li>You can offer products in context with the subject of your   site and individual pages. You can add links to recipes or any other content   on your site.</li>
 	</ul>
 	<br>
@@ -1023,7 +1037,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	<li>Participation is free, fast and simple. Put up one link or an   entire store. The choice is up to you.</li>
 	</ul>
 	<br>
-	</p>
+	<p></p>
 	<p>All you need to do is sign up and add a Tikimaster.com Product Icon to your Web site to start earning referral fees!
 	<br>
 	</p>
@@ -1036,13 +1050,13 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	Tikimaster.com provides personalized affiliate support   services for all your needs. We are dedicated to providing you, our   affiliates, the merchandising, marketing and technical support that will make   a difference to YOUR bottom line. 
 	<br>
 	</p>
-	<p><h3>Why Should I Become a Tikimaster.com Affiliate?</h3>
+	<p></p><h3>Why Should I Become a Tikimaster.com Affiliate?</h3>
 	<br>
 	<b>You'll make money.</b>
 	<br>
 	Members of the Tikimaster.com Affiliate Network receive a percentage of the   sale price of every product they sell. There is no minimum. And your   commission is credited to you every time an order is placed from a link on   your site.
 	<br>
-	</p>
+	<p></p>
 	<p><b>Competitive Prices.</b>
 	<br>
 	We offer "everyday low prices" on all of the products that we sell. By joining   the Tikimaster.com Affiliate Network, you can offer your users the finest   values available on thousands of products.
@@ -1062,7 +1076,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	Just by becoming a Tikimaster.com Affiliate you'll be enhancing your site by providing your users with the ease and convenience of shopping for a huge selection of Hawaiian products and specialty foods at "everyday low prices" directly from your site. By providing our top quality products at everyday low prices, you will increase traffic to your site.
 	<br>
 	</p>
-	<p><h3>Become a Tikimaster.com Affiliate Now by following just three simple steps:</h3>
+	<p></p><h3>Become a Tikimaster.com Affiliate Now by following just three simple steps:</h3>
 	<br>
 	<ul>
 	<li>Read the Tikimaster.com Affiliate Network Agreement online.</li>
@@ -1070,11 +1084,13 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	<li>Once we accept your application, we'll provide you with all the tools you need.</li>
 	</ul>
 	<br>
-	</p>
-	<p><h2>Aloha From All Of Us At  Tikimaster.com!</h2>
-	</p></div>
+	<p></p>
+	<p></p><h2>Aloha From All Of Us At  Tikimaster.com!</h2>
+	<p></p></div>
 
 </div><!-- End categoryTemplateAffiliatesProgramDetails -->
+
+
 
 <!-- /////////////// END AFFILIATES TEMPLATES \\\\\\\\\\\\\\\\\ -->
 
@@ -1084,26 +1100,29 @@ don't modify the 'data-templateid' unless you are changing template names and up
 
 <!-- used to display a category within a 'list', usually in the body of a category or the homepage. -->
 <ul>
-<li id='categoryListTemplate'>
-	<div onClick="showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});" class='pointer'>
-		<div class='thumbContainer'><img src='img/blank-229x171.gif' class='catThumb' alt='' data-bind='var: category(%meta.CAT_THUMB); format:imageURL;' width='229' height='171' /></div>
-		<div class='catName white2LGray'><span data-bind='var: category(pretty); format:catText; extension: myRIA;'></span></div>
-	</div>
+<li id="categoryListTemplate">
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';">
+		<div class="thumbContainer"><img data-tlc="bind $var '.%meta.CAT_THUMB'; if (is $var --notblank;) {{ apply --img --media=$var --width=229 --height=171 --bgcolor='#ffffff' --replace;}};" src="img/blank-229x171.gif" class="catThumb" alt="" height="171" width="229"></div>
+		<div class="catName white2LGray"><span data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy;"></span></div>
+	</a>
 </li>
 
 
-<li id='categoryListTemplateRootCats' onMouseOver="app.ext.tikimaster.a.showDropDown($(this));" onMouseOut="app.ext.tikimaster.a.hideDropDown($(this));" class='pointer'>
-	<div onClick="showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});">
+<li id="categoryListTemplateRootCats" onmouseover="myApp.ext.tikimaster.a.showDropDown($(this));" onmouseout="myApp.ext.tikimaster.a.hideDropDown($(this));" class="pointer">
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';">
 		<!--div class='thumbContainer'><img src='blank.gif' class='catThumb' alt='' data-bind='var: category(%meta.CAT_THUMB); format:imageURL;' width='35' height='35' /></div-->
-		<div class='catName'><span data-bind='var: category(pretty); format:catText; extension: myRIA;'></span></div>
-	</div>
-	<ul class="displayNone dropdown" data-bind="var: category(@subcategoryDetail); format: categoryList; extension: store_navcats; loadsTemplate: categoryListTemplateRootSubCats; detail:max;"></ul>
+		<div class="catName"><span data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy;"></span></div>
+	</a>
+	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootSubCats'  --legacy;" class="displayNone dropdown"></ul>
 </li>
 
-<li id='categoryListTemplateRootSubCats' class='subCatName pointer' onClick="app.ext.tikimaster.a.hideDropDownOnSelect($(this).parent().parent()); return showContent('category',{'navcat':$(this).attr('data-catsafeid')});" data-bind='var: category(pretty); format:catText; extension: myRIA;'>
+<li id="categoryListTemplateRootSubCats" class="subCatName" data-tlc="bind $pretty '.pretty'; if(is $pretty --null;) {{apply --hide;}};">
+	<a href="" data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy; bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" data-app-click="tikimaster|hideDropDownOnSelect"></a>
 </li>
 
 </ul>
+
+
 
 
 
@@ -1111,30 +1130,20 @@ don't modify the 'data-templateid' unless you are changing template names and up
 <!--
 Used for the product in a product list (prodlist), usually in the body of a category or the homepage.
 the loadingBG class is removed (must be that classname) when the template is translated.
-remember to NOT put the button inside the 'onclick' container or two events will occur onclick.
+remember to NOT put the button inside the 'href' container or two events will occur onclick.
 -->
-<li id='productListTemplate' class='loadingBG' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
+<li id="productListTemplate" class="loadingBG" onmouseover="$('.quickView',$(this)).show();" onmouseout="$('.quickView').hide();">
+	<button class="floatRight pointer quickView displayNone" data-app-click="quickstart|quickviewShow" data-loadstemplate="productTemplateQuickView">Quickview</button>
 
-	<button class='floatRight pointer quickView displayNone' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">Quickview</button>
-
-	<div onClick="showContent('product',{'pid':$(this).attr('data-pid')})" data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='pointer'>
-		<div class='prodThumbContainer w312h234' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
-		<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='312' height='234' />
+	<a data-tlc="bind $pid '.pid'; bind $seo '.%attribs.zoovy:prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class='blockLink'>
+		<div data-tlc="bind $var '.pid'; quickstart#addpicslider  --legacy;" class="prodThumbContainer w312h234">
+		<img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; if (is $var --notblank;) {{ apply --img --media=$var --width=312 --height=234 --bgcolor='#ffffff' --replace;}};" src="img/blank.gif" class="prodThumb" alt="" height="234" width="312">
 		</div>
 
-		<h5 data-bind='var: product(zoovy:prod_name); format:truncText; numCharacters:75;'></h5>
-		<span class='description hideInMinimalMode' data-bind='var: product(zoovy:prod_desc); format:truncHTML; extension:tikimaster; numCharacters: 110; '></span>
-		<h6 data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; className:price;'></h6>
-		
-		<!--span data-bind='var: reviews(reviews.average); format:addClass; className:review_;' class='reviewSprite'></span-->
-<!-- 	<span data-bind='var: reviews(reviews.total); format:text; pretext: from ;posttext: reviews; className:numReviews;'></span> -->
-	</div>
-	
-	<!--form data-bind='var: product(pid); format:atcForm; extension:store_product;' class='prodViewerAddToCartForm clearfix' action='#' onSubmit="app.ext.myRIA.u.addItemToCart($(this),{'action':'modal'}); return false;">
-		<input type='hidden' name='qty' value='1' />
-		<button data-bind='format:addToCartButton; extension:myRIA; useParentData:true;'>more details</button>
-	</form-->
-	
+		<h5 data-tlc="bind $var '.%attribs.zoovy:prod_name'; if (is $var --notblank;) {{format --truncate='75'; apply --append;}};"></h5>
+		<span data-tlc="bind $var '.%attribs.zoovy:prod_desc'; tikimaster#striphtml; format --truncate='110'; apply --append;" class="description hideInMinimalMode"></span>
+		<h6 data-tlc="bind $var '.%attribs.zoovy:base_price'; if (is $var --notblank;) {{format --currency='USD'; apply --add --class='price'; apply --append;}};"></h6>
+	</a>
 </li>
 
 
@@ -1142,81 +1151,70 @@ remember to NOT put the button inside the 'onclick' container or two events will
 for product lists with addToCart feature (accessories, for example)
 container ul should have lineItemProdlist class on it instead of productList
 -->
-<li id='productListTemplateATC' class='loadingBG  ' >
-	<div data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;'>
+<li id="productListTemplateATC" class="loadingBG  ">
+	<div data-tlc="bind $var '.pid'; apply --attrib='data-pid'; ">
 
-		<div class='prodThumbContainer w120h120 floatLeft'>
-		<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='120' height='120' />
+		<div class="prodThumbContainer w120h120 floatLeft">
+		<img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=120 --bgcolor='#ffffff' --replace;}};" src="img/blank.gif" class="prodThumb" alt="" height="120" width="120">
 		</div>
 
-		<h5 data-bind='var: product(zoovy:prod_name); format:text;'></h5>
+		<h5 data-tlc="bind $var '.%attribs.zoovy:prod_name'; if (is $var --notblank;) {{apply --append;}};"></h5>
 
-		<h6 data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; className:price; pretext: Our Price: ;'></h6>
+		<h6 data-tlc="bind $var '.%attribs.zoovy:base_price'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Our Price: '; apply --add --class='price'; apply --append;}};"></h6>
 
-		<span data-bind='var: reviews(reviews.average); format:addClass; className:review_;' class='reviewSprite'></span>
+		<span data-tlc="bind $var '.reviews.average'; if(is $var --notblank;) {{ apply --class='review_'; }}; if (is $var --notblank;) {{apply --add --class='review_'; apply --append;}};" class="reviewSprite"></span>
 	
-		<form data-bind='var: product(pid); format:atcForm; extension:store_product;' class='prodViewerAddToCartForm clearfix' action='#' onSubmit="app.ext.myRIA.u.addItemToCart($(this)); return false;">
+		<form data-tlc="bind $var '.pid'; store_product#atcform  --legacy; apply --append;" class="prodViewerAddToCartForm clearfix" action="#" data-app-submit="quickstart|productAdd2Cart" data-show="modal">
 	
-			<fieldset data-bind='var: product(pid); format:atcVariations; extension:store_product;' class='borderNone'></fieldset>
-			<fieldset data-bind='useParentData:true; format:atcQuantityInput; extension:store_product; pretext:Quantity: ; defaultValue:0;' class='borderNone'></fieldset>
+			<fieldset data-tlc="bind $var '.pid'; store_product#atcvariations  --legacy; apply --append;" class="borderNone"></fieldset>
+			<fieldset data-tlc="bind $var '.'; store_product#atcquantityinput  --defaultvalue='0' --legacy;" class="borderNone"></fieldset>
 	
-			<input type='submit' value='Add to Cart' class='ui-button ui-button-text ui-corner-all ui-state-default addToCartButton displayNone' data-bind='var: product(pid); format:addToCartButton; extension:store_product;'  />
+			<input data-tlc="bind $var '.pid'; store_product#addtocartbutton  --legacy; apply --append;" value="Add to Cart" class="applyButton addtocartbutton displayNone" type="submit">
 		</form>
 
 	</div>
 </li>
 
 
-<li id='productListTemplateBuyerList' class='loadingBG clearfix' >
-	<div data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' >
+<li id="productListTemplateBuyerList" class="loadingBG floatLeft marginRight marginBottom">
+	<div data-tlc="bind $var '.pid'; apply --attrib='data-pid';">
 
-		<div class='prodThumbContainer w160h160 floatLeft'>
-			<div class='ui-widget ui-widget-content ui-corner-all'>
-				<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='160' height='160' />
-				<div class='buttonList ui-widget ui-widget-header ui-corner-all alignCenter'>
+		<div class="prodThumbContainer marginBottom">
+			<div class="ui-widget ui-widget-content ui-corner-all">
+				<img data-tlc="bind $var '.%attribs.zoovy:prod_thumb'; if(is $var --blank;){{bind $var '.%attribs.zoovy:prod_image1';}}; if(is $var --notblank;){{apply --img --media=$var --width=120 --height=120 --bgcolor='#ffffff' --replace;}};" src="blank.gif" class="prodThumb" alt="" height="120" width="120">
+				<div class="smallButtonList ui-widget ui-widget-header ui-corner-all alignCenter">
 
-<button class='ui-state-default ui-corner-all' title='add item to cart' onClick="showContent('product',{'pid':$(this).closest('[data-pid]').attr('data-pid')});">
-<span class="ui-icon ui-icon-cart"></span>
-</button>
-
-<button class='ui-state-default ui-corner-all' title='more information' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">
-<span class="ui-icon ui-icon-info"></span>
-</button>
-
-<button class='ui-state-default ui-corner-all' title='write a review for this item' onClick="app.ext.store_crm.u.showReviewFrmInModal({'pid':$(this).closest('[data-pid]').attr('data-pid'),'templateID':'reviewFrmTemplate'});">
-<span class="ui-icon ui-icon-star"></span>
-</button>
-
-<button class='ui-state-default ui-corner-all' title='remove item from list' onClick="app.ext.myRIA.a.removeItemFromBuyerList({'stid':$(this).closest('[data-pid]').attr('data-pid'),'listID':$(this).closest('[data-buyerlistid]').attr('data-buyerlistid')},{'parentID':$(this).closest('li').attr('id')});">
-<span class="ui-icon ui-icon-trash"></span>
-</button>
+<a data-tlc="bind $var '.'; store_routing#seoanchor --type='product' --seo; apply --attrib='href';" class='applyButton' data-text='false' data-icon-primary='ui-icon-cart'>Add To Cart</a>
+<a href='#' data-app-click="quickstart|quickviewShow" class='applyButton' data-text='false' data-icon-primary='ui-icon-info' data-loadstemplate='productTemplate'>Details</a>
+<a href='#' data-app-click="store_crm|productReviewShow" class='applyButton' data-text='false' data-icon-primary='ui-icon-star'>Write Review</a>
+<a href='#' data-app-click="store_crm|productBuyerListRemoveExec" class='applyButton' data-text='false' data-icon-primary='ui-icon-trash'>Remove From List</a>
 
 				</div>
 			</div>
 		</div>
-		<span data-bind='var: reviews(reviews.average); format:addClass; className:review_;' class='reviewSprite floatRight' ></span>
+		
+		<span data-tlc="bind $var '.reviews.average'; if(is $var --notblank) {{format --prepend='review_'; apply --add --class=$var; }};" class="reviewSprite floatRight"></span>
 
-		<h5 data-bind='var: product(zoovy:prod_name); format:text;'></h5>
+		<h5 data-tlc="bind $var '.%attribs.zoovy:prod_name'; if (is $var --notblank;) {{apply --append;}};"></h5>
 
-		<h6 data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; className:price; pretext: Our Price: ;'></h6>
+		<h6 data-tlc="bind $var '.%attribs.zoovy:base_price';  if (is $var --notblank;) {{format --currency='USD'; format --prepend='Our Price: ';  apply --append;}};"></h6>
 
 
 	</div>
 </li>
 
 
-<li id='homepageProductListTemplate' class='loadingBG relative' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
+<li id="homepageProductListTemplate" class="loadingBG relative" onmouseover="$('.quickView',$(this)).show();" onmouseout="$('.quickView').hide();">
 
-	<button class='pointer quickView displayNone' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">Quickview</button>
+	<button class="pointer quickView displayNone" data-app-click="quickstart|quickviewShow" data-loadstemplate="productTemplateQuickView">Quickview</button>
 
-	<div onClick="showContent('product',{'pid':$(this).attr('data-pid')})" data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='pointer'>
-		<div class='prodThumbContainer w236h177' data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'>
-		<img src='img/blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='236' height='177' />
+	<a data-tlc="bind $pid '.pid'; bind $seo '.%attribs.zoovy:prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+		<div data-tlc="bind $var '.pid'; quickstart#addpicslider  --legacy;" class="prodThumbContainer w236h177">
+		<img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; if (is $var --notblank;) {{ apply --img --media=$var --width=236 --height=177 --bgcolor='#ffffff' --replace;}};" src="img/blank.gif" class="prodThumb" alt="" height="177" width="236">
 		</div>
-		<!--p data-bind='var: product(zoovy:prod_desc); format:truncWiki; numCharacters:165; extension:tikimaster; wikiFormats:myRIA;'></p-->
-		<!--p data-bind='var: product(zoovy:prod_desc); format:truncText; numCharacters:165;'></p-->
-		<p data-bind='var: product(zoovy:prod_desc); format:truncHTML; numCharacters:165; extension:tikimaster;'></p>
+		<p data-tlc="bind $var '.%attribs.zoovy:prod_desc'; tikimaster#striphtml; format --truncate='165'; apply --append;"></p>
 		
+	</a>
 </li>
 
 </ul>
@@ -1229,50 +1227,46 @@ container ul should have lineItemProdlist class on it instead of productList
 <!--
 Used for the product in a product list (prodlist), usually in the body of a category or the homepage.
 the loadingBG class is removed (must be that classname) when the template is translated.
-remember to NOT put the button inside the 'onclick' container or two events will occur onclick.
+remember to NOT put the button inside the 'href' container or two events will occur onclick.
 
 SANITY -> if you change the height and width of this image, change the .minimalMode .searchResultsProduct in qs_styles.css to match
 -->
-<li id='productListTemplateResults' class='loadingBG searchResultsProduct ' onMouseOver="$('.quickView',$(this)).show();" onMouseOut="$('.quickView').hide();" >
-	<button class='floatRight pointer quickView displayNone' onClick="quickView('product',{'templateID':'productTemplateQuickView','pid':$(this).closest('[data-pid]').attr('data-pid')});">Quickview</button>
+<li id="productListTemplateResults" class="loadingBG searchResultsProduct " onmouseover="$('.quickView',$(this)).show();" onmouseout="$('.quickView').hide();">
+	<button class="floatRight pointer quickView displayNone" data-app-click="quickstart|quickviewShow" data-loadstemplate="productTemplateQuickView">Quickview</button>
 	
-	<!--div onClick="app.ext.myRIA.a.handleProdPreview($(this).parent().attr('data-pid'));" class='pointer'-->
-	<div onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')})"  class='pointer'>
-		<div class='prodThumbContainer w312h234'>
-		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='312' height='234' />
+	<a data-tlc="bind $pid '.pid'; bind $seo '.%attribs.zoovy:prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+		<div class="prodThumbContainer w312h234">
+		<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=312 --height=234 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="234" width="312">
 		</div>
 
-		<h5 class='hideInMinimalMode' data-bind='var: product(prod_name); format:text;'></h5>
-		<span class='description hideInMinimalMode' data-bind='var: product(description); format:truncHTML; extension:tikimaster; numCharacters: 100;'></span>
-		<h6 class='hideInMinimalMode' data-bind='var: product(base_price); format:money; isElastic:1; currencySign: $;  hideZero:true; className:price; pretext: Our Price: ;'></h6>
-	</div>
+		<h5 data-tlc="bind $var '.prod_name'; if (is $var --notblank;) {{apply --append;}};" class="hideInMinimalMode"></h5>
+		<span data-tlc="bind $var '.description'; tikimaster#striphtml; format --truncate='100'; apply --append;" class="description hideInMinimalMode"></span>
+		<h6 data-tlc="bind $var '.base_price'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Our Price: '; apply --add --class='price'; apply --append;}};" class="hideInMinimalMode"></h6>
+	</a>
 
 </li>
 
-<li id='productListTemplateResultsNoPreview' class='loadingBG searchResultsProduct ' >
-	<div onClick="return showContent('product', {'pid' : $(this).parent().attr('data-pid')});" class='pointer'>
-		<div class='prodThumbContainer w120h120'>
-		<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='120' height='120' />
+<li id="productListTemplateResultsNoPreview" class="loadingBG searchResultsProduct ">
+	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+		<div class="prodThumbContainer w120h120">
+		<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=120 --height=120 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="120" width="120">
 		</div>
 
-		<h5 class='hideInMinimalMode' data-bind='var: product(prod_name); format:truncText; numCharacters:75;'></h5>
+		<h5 data-tlc="bind $var '.prod_name'; if (is $var --notblank;) {{format --truncate='75'; apply --append;}};" class="hideInMinimalMode"></h5>
 
-		<h6 class='hideInMinimalMode' data-bind='var: product(base_price); fformat:money; currencySign: $;  hideZero:true; className:price;'></h6>
-	</div>
-	<div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details
+		<h6 data-tlc="bind $var '.base_price'; if (is $var --notblank;) {{math --div='100'; format --currency='USD'; apply --append;}};" class="hideInMinimalMode"></h6>
+	</a>
+	<a data-tlc="bind $pid '.pid'; bind $seo '.%attribs.zoovy:prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="hideInMinimalMode pointer moreDetails">more details</a>
 </li>
 
 
-<li id='productListTemplateResultsNewArrivals' class='loadingBG searchResultsNewProduct ' >
-	<div onClick="return showContent('product', {'pid' : $(this).parent().attr('data-pid')});" class='pointer'>
-		<div class='prodThumbContainer w140h93'>
-			<img src='img/blank.gif' class='prodThumb center block' alt='' data-bind='var: product(images); format:imageURL;isElastic:1;bgcolor:ffffff;' width='140' height='93' />
+<li id="productListTemplateResultsNewArrivals" class="loadingBG searchResultsNewProduct ">
+	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+		<div class="prodThumbContainer w140h93">
+			<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=140 --height=93 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="93" width="140">
 		</div>
-
-		<span class='description hideInMinimalMode' data-bind='var: product(description); format:truncHTML; numCharacters: 150; extension:tikimaster; '></span>
-	</div>
-	<!--div class='hideInMinimalMode pointer moreDetails' onClick="showContent('product',{'pid':$(this).parent().attr('data-pid')});">more details</div-->
-
+		<div data-tlc="bind $var '.description';  if (is $var --notblank;) {{ format --truncate='150'; apply --append;}};" class="description hideInMinimalMode"></div>
+	</a>
 </li>
 
 </ul>
@@ -1302,158 +1296,91 @@ this will likely become more flexible in the future. ###
 -->
 
 
-<div id='productTemplate' class='productPage'>
+<div id="productTemplate" class="productPage">
 
-<ul class='clearfix noPadOrMargin fluidList breadcrumb' data-bind='var: session(session.recentCategories.0); format:breadcrumb; extension:store_navcats; loadsTemplate: breadcrumbTemplate;'></ul>
+<ul data-tlc="bind $var '.session.recentCategories.0'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="clearfix noPadOrMargin fluidList breadcrumb"></ul>
 
-<table class='prodViewerContainer'>
-<tr>
-	<td class='imageContainer'>
+<table class="prodViewerContainer">
+<tbody><tr>
+	<td class="imageContainer">
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).attr("data-pid")});' class='pointer clearfix'  data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;'>
+<div data-tlc="bind $var '.pid'; apply --attrib='data-pid'; " onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).attr(&quot;data-pid&quot;)});" class="pointer clearfix">
 
-	<div data-bind="var: product(zoovy:prod_is_tags); format:addTagSpans;" class='tagsContainer'></div>
-	<img src='img/blank.gif' class='prodBigImage' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='640' height='480' />
+	<img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; if (is $var --notblank;) {{ apply --img --media=$var --width=640 --height=480 --bgcolor='#8e7a47' --replace;}};" src="img/blank.gif" class="prodBigImage" alt="" height="480" width="640">
 
 </div>
 
-	<div data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='prodThumbs'>
+	<div data-tlc="bind $var '.pid'; apply --attrib='data-pid'; " class="prodThumbs">
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"2"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image2); format:imageURL;' alt='' width='120' height='90' /></div>
+<div onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).parent().attr(&quot;data-pid&quot;),&quot;int&quot;:&quot;2&quot;});" class="pointer displayNone" data-tlc="bind $var '.%attribs.zoovy:prod_image2'; if (is $var --notblank;) {{ apply --show;}};"><img data-tlc="bind $var '.%attribs.zoovy:prod_image2'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=90 --bgcolor='#ffffff' --replace;}};" src="blank.gif" alt="" height="90" width="120"></div>
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"3"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image3); format:imageURL;' alt=''  width='120' height='90' /></div>
+<div onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).parent().attr(&quot;data-pid&quot;),&quot;int&quot;:&quot;3&quot;});" class="pointer displayNone" data-tlc="bind $var '.%attribs.zoovy:prod_image3'; if (is $var --notblank;) {{ apply --show;}};"><img data-tlc="bind $var '.%attribs.zoovy:prod_image3'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=90 --bgcolor='#ffffff' --replace;}};" src="blank.gif" alt="" height="90" width="120"></div>
 
-<div onClick='app.ext.store_product.u.showPicsInModal({"pid":$(this).parent().attr("data-pid"),"int":"4"});' class='pointer'><img src='blank.gif' data-bind='var: product(zoovy:prod_image4); format:imageURL;' alt='' width='120' height='90' /></div>
+<div onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).parent().attr(&quot;data-pid&quot;),&quot;int&quot;:&quot;4&quot;});" class="pointer displayNone" data-tlc="bind $var '.%attribs.zoovy:prod_image4'; if (is $var --notblank;) {{ apply --show;}};"><img data-tlc="bind $var '.%attribs.zoovy:prod_image4'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=90 --bgcolor='#ffffff' --replace;}};" src="blank.gif" alt="" height="90" width="120"></div>
+
+<div onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).parent().attr(&quot;data-pid&quot;),&quot;int&quot;:&quot;5&quot;});" class="pointer displayNone" data-tlc="bind $var '.%attribs.zoovy:prod_image5'; if (is $var --notblank;) {{ apply --show;}};"><img data-tlc="bind $var '.%attribs.zoovy:prod_image5'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=90 --bgcolor='#ffffff' --replace;}};" src="blank.gif" alt="" height="90" width="120"></div>
+
+<div onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).parent().attr(&quot;data-pid&quot;),&quot;int&quot;:&quot;6&quot;});" class="pointer displayNone" data-tlc="bind $var '.%attribs.zoovy:prod_image6'; if (is $var --notblank;) {{ apply --show;}};"><img data-tlc="bind $var '.%attribs.zoovy:prod_image6'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=90 --bgcolor='#ffffff' --replace;}};" src="blank.gif" alt="" height="90" width="120"></div>
+
+<div onclick="myApp.ext.store_product.u.showPicsInModal({&quot;pid&quot;:$(this).parent().attr(&quot;data-pid&quot;),&quot;int&quot;:&quot;7&quot;});" class="pointer displayNone" data-tlc="bind $var '.%attribs.zoovy:prod_image7'; if (is $var --notblank;) {{ apply --show;}};"><img data-tlc="bind $var '.%attribs.zoovy:prod_image7'; if (is $var --notblank;) {{ apply --img --media=$var --width=120 --height=90 --bgcolor='#ffffff' --replace;}};" src="blank.gif" alt="" height="90" width="120"></div>
+
 
 	</div>
 
 	</td>
 
-	<td class='prodSummaryContainer marginBottom no_underline'>
-	<h1 data-bind='var: product(zoovy:prod_name); format:text;'></h1>
+	<td class="prodSummaryContainer marginBottom no_underline">
+	<h1 data-tlc="bind $var '.%attribs.zoovy:prod_name'; if (is $var --notblank;) {{apply --append;}};"></h1>
 
 	<hgroup>
-		<h4 class='basePrice' data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; pretext: Price: ;'></h4>
-		<h5 class='stid' data-bind='var: product(pid); format:text; pretext: Sku: ;'></h5>
-		<!--h5 data-bind='var: product(zoovy:prod_mfg); format:searchLink; extension:myRIA; pretext: Mfg: ;'></h5-->
-		<!--h5 data-bind='var: product(zoovy:prod_mfgid); format:text; pretext: Mfg ID: ;'></h5-->
+		<h4 data-tlc="bind $var '.%attribs.zoovy:base_price'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Price: '; apply --append;}};" class="basePrice"></h4>
+		<h5 data-tlc="bind $var '.pid'; if (is $var --notblank;) {{format --prepend='Sku: '; apply --append;}};" class="stid"></h5>
 	</hgroup>
 
-	<!--div class='priceContainer marginBottom'>
-		<h4 class='basePrice' data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; pretext: Our Price: ;'></h4>
-		<h5 class='prodMSRP' data-bind='var: product(zoovy:prod_msrp); format:money; currencySign: $;  hideZero:true; pretext: MSRP: ;'></h5>
-		<span class='savings'>
-			<span class='savingsDifference' data-bind='var: product(pid); format:priceRetailSavingsDifference; extension:myRIA; pretext: You save: ;'></span>
-			<span class='savingsPercentage' data-bind='var: product(pid); format:priceRetailSavingsPercentage; extension:myRIA; pretext: (; posttext:);'></span>
-		</span>
-	</div-->
 	<div class="socialLinks"></div>
 
-
-	<!--table class='marginBottom fullWidth gridTable' data-app-role='childrenSiblingsContainer'>
-		<tbody data-bind="var: product(zoovy:grp_children); format:productList; extension:store_prodlist; loadsTemplate:productListTemplateChildren;hide_summary:true; withInventory:1; withVariations:1;"></tbody>
-	</table-->
-
-	<div data-app-role='timeInTransit' class='displayNone'></div>
-
-	<form data-bind='var: product(pid); format:atcForm; extension:store_product;' class='prodViewerAddToCartForm clearfix' action='#' onSubmit="app.ext.myRIA.u.addItemToCart($(this), {'action':'modal'}); return false;">
-
-		<fieldset data-bind='var: product(pid); format:atcVariations; extension:store_product;' class='borderNone'></fieldset>
-		<fieldset data-bind='useParentData:true; format:atcQuantityInput; extension:store_product; pretext:Quantity: ; defaultValue:1;' class='borderNone displayNone'></fieldset>
+	<div data-app-role="timeInTransit" class="displayNone"></div>
 
 
-		<div data-bind='var: product(zoovy:ship_latency); format:text; pretext:Normally Ships Within ;posttext: day(s);' class='latency marginBottom'>Normally Ships Within 1-2 Days.</div>
-		<!-- add to cart button -->
-		<input type='submit' value='' class='ui-button ui-button-text ui-corner-all ui-state-default addToCartButton displayNone' data-bind='var: product(pid); format:addToCartButton; extension:store_product;'  />
+	<form data-tlc="bind $var '.pid'; store_product#atcform  --legacy; apply --append;" class="prodViewerAddToCartForm clearfix marginBottom" action="#" data-app-submit="quickstart|productAdd2Cart" data-show="modal">
+
+		<fieldset data-tlc="bind $var '.pid'; store_product#atcvariations  --legacy; apply --append;" class="borderNone"></fieldset>
+		<fieldset data-tlc="bind $var '.'; store_product#atcquantityinput  --defaultvalue='1' --legacy;" class="borderNone displayNone"></fieldset>
+		<div data-tlc="bind $var '.%attribs.zoovy:ship_latency'; if (is $var --notblank;) {{apply --empty; format --prepend='Normally Ships Within '; format --append=' day(s)'; apply --append;}};" class="latency marginBottom">Normally Ships Within 1-2 Days.</div>
+		<div class='marginBottom'><input data-tlc="bind $var '.pid'; store_product#addtocartbutton  --legacy;" value="Add to Cart" class="addtocartbutton displayNone" type="submit"></div>
 	</form>
 
-	<div data-bind='var:product(zoovy:prod_cpsiawarning); format:cpsiaWarning; extension:myRIA;'></div>
-	<div data-bind='var:product(zoovy:qty_price);format:quantityDiscounts; extension:store_product; pretext:Quantity Discounts:; className:marginBottom;'></div>
+	<div data-tlc="bind $var '.%attribs.zoovy:prod_cpsiawarning'; quickstart#cpsiawarning  --legacy;"></div>
+	<div data-tlc="bind $var '.%attribs.zoovy:qty_price'; store_product#quantitydiscounts  --classname='marginBottom' --legacy;"></div>
 
-	<section class='marginBottom'>
-		<span data-bind='var: reviews(reviews.average); format:addClass; className:review_;' class='reviewSprite'></span>
-		<span data-bind='var: reviews(reviews.total); format:text;posttext: from ;posttext: reviews; className:numReviews;'></span>
+	<section class="marginBottom">
+		<span data-tlc="bind $var '.reviews.average'; if(is $var --notblank;) {{ apply --class='review_'; }}; if (is $var --notblank;) {{apply --add --class='review_'; apply --append;}};" class="reviewSprite"></span>
+		<span data-tlc="bind $var '.reviews.total'; if (is $var --notblank;) {{format --append=' from '; apply --add --class='numReviews'; apply --append;}};"></span>
 	</section>
 
-	<menu data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;' class='CRMButtonMenu'>
+	<menu data-tlc="bind $var '.pid'; apply --attrib='data-pid'; " class="CRMButtonMenu">
 
-	<a href='#' onClick='app.ext.store_crm.u.showReviewFrmInModal({"pid":$(this).parent().attr("data-pid"),"templateID":"reviewFrmTemplate"}); return false;'>Write Review</a>	|
-
-	<a href='#' onClick="app.ext.myRIA.a.add2BuyerList({sku:$(this).parent().attr('data-pid'),'listid':'wishlist'}); return false;">Add to Wishlist</a>
+		<a href="#" data-app-click="store_crm|productReviewShow">Write Review</a>	|
+	
+		<a href="#" data-app-click="quickstart|productAdd2List" data-listid="wishlist">Add to Wishlist</a>
 
 	</menu>
 	
 	<div class="prodDesc">
-		<div data-bind='var: product(zoovy:prod_desc); format:wiki; wikiFormats:myRIA;'></div>
-		<div data-bind='var: product(zoovy:prod_detail); format:wiki; wikiFormats:myRIA;'></div>
-		<div data-bind='var: product(zoovy:prod_features); format:wiki; wikiFormats:myRIA;'></div>
+		<div data-tlc="bind $var '.%attribs.zoovy:prod_desc'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};"></div>
+		<div data-tlc="bind $var '.%attribs.zoovy:prod_detail'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};"></div>
+		<div data-tlc="bind $var '.%attribs.zoovy:prod_features'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};"></div>
 	</div>
 
 	<div class="prodReviewContainer">
-		<ul class='listStyleNone clearfix productReviewsList' data-bind="var: reviews(reviews.@reviews); format:processList; loadsTemplate:productReviewsTemplateDetailNoTab;"></ul>
+		<ul data-tlc="bind $var '.reviews.@reviews'; controller#loop --templateid='productReviewsTemplateDetailNoTab'; if (is $var --notblank;) {{apply --append;}};" class="listStyleNone clearfix productReviewsList"></ul>
 	</div>
 
 	</td>
 </tr>
-<tr>
-	<td colspan='2' class="tabbedProductContentTD">
-<!--
-the tabs are built in an onComplete.  ID's are added based on sku AND index, so the index (order) of the tabs MUST match the order of the tabContent divs
-or the tab clicked won't open the right content.
-It's done this way because ID's hard coded into template are bad mojo (templates are recycled) and because using data-binds to add id's caused some serious issues
--->
-<!--div class='prodTabs tabbedProductContent'>
-
-	<ul class='tabs'>
-		<li class='prodDescTab'><a href='#prodDesc'>Description</a></li>
-		<li class='prodDetailTab displayNone' data-bind='var: product(zoovy:prod_detail); format:showIfSet;'><a href='#prodSpecs'>Specs</a></li>
-		<li class='prodFeaturesTab displayNone' data-bind='var: product(zoovy:prod_features); format:showIfSet;'><a href='#prodFeatures'>Features</a></li>
-		<li class='prodReviewsTab'><a href='#prodReviews'>Reviews</a></li>
-		<li class='prodVideoTab displayNone' data-bind='var: product(youtube:videoid); format:showIfSet;'><a href='#prodVideo'>Video</a></li>
-		<li class='prodAccessoriesTab displayNone' data-bind='var: product(zoovy:accessory_products); format:showIfSet;'><a href='#prodAccessories'>Accessories</a></li>
-	</ul>
-
-	<div class='tabContent' data-anytab-content='prodDesc'>
-		<div data-bind='var: product(zoovy:prod_desc); format:wiki; wikiFormats:myRIA;'></div>
-	</div>
-
-	<div class='tabContent' data-anytab-content='prodSpecs'>
-		<div data-bind='var: product(zoovy:prod_detail); format:wiki; wikiFormats:myRIA;'></div>
-	</div>
-
-	<div class='tabContent' data-anytab-content='prodFeatures'>
-		<div data-bind='var: product(zoovy:prod_features); format:wiki; wikiFormats:myRIA;'></div>
-	</div>
-
-
-	<div  class='tabContent' data-anytab-content='prodReviews'>
-
-		<div class='clearfix alignRight'>
-			<button class='ui-button-text ui-button ui-state-default ui-corner-all' onClick='app.ext.store_crm.u.showReviewFrmInModal({"pid":$(this).attr("data-pid"),"templateID":"reviewFrmTemplate"});' data-bind='var:product(pid);format:assignAttribute; attribute:data-pid;'>Write Review</button>
-		</div>
-
-		<ul class='listStyleNone clearfix productReviewsList' data-bind="var: reviews(reviews.@reviews); format:processList; loadsTemplate:productReviewsTemplateDetail;"></ul>
-
-	</div>
-
-	<div class='tabContent' data-anytab-content='prodVideo'>
-		<div data-bind='var: product(youtube:videoid); format:youtubeVideo;'></div>
-	</div>
-
-	<div class='tabContent' data-anytab-content='prodAccessories'>
-<ul class='listStyleNone fluidList clearfix noPadOrMargin lineItemProdlist' data-bind="var: product(zoovy:accessory_products); format:productList; extension:store_prodlist;loadsTemplate:productListTemplateATC;hide_pagination:true;hide_summary:true; withReviews:1; withInventory:1; withVariations:1;"></ul>
-	</div>
-
-
-
-
-</div--><!-- end prodTabs -->
-
-	</td>
-</tr>
-</table>
-<div class='prodlistRelatedContainer'>
-	<ul class='listStyleNone fluidList clearfix noPadOrMargin productList' data-bind="var: product(zoovy:related_products); format:productList; extension:store_prodlist;loadsTemplate:productListTemplate;hide_pagination:true;hide_summary:true; before:<h2>Similar Items</h2>; withReviews:1;"></ul>
+</tbody></table>
+<div class="prodlistRelatedContainer">
+	<ul data-tlc="bind $var '.%attribs.zoovy:related_products'; store_prodlist#productlist  --hidepagination='true' --hidesummary='true' --before='<h2>Similar Items</h2>' --withreviews='1' --templateid='productListTemplate'  --legacy;" class="listStyleNone fluidList clearfix noPadOrMargin productList"></ul>
 </div>
 
 
@@ -1462,52 +1389,47 @@ It's done this way because ID's hard coded into template are bad mojo (templates
 
 
 
-<!-- a template used for a quickview link off of a category page -->
-<div id='productTemplateQuickView'>
 
-<table class='prodViewerContainer'>
-<tr>
-	<td class='imageContainer'>
+
+<!-- a template used for a quickview link off of a category page -->
+<div id="productTemplateQuickView">
+
+<table class="prodViewerContainer">
+<tbody><tr>
+	<td class="imageContainer">
 <div>
 
-	<div data-bind="var: product(zoovy:prod_is_tags); format:addTagSpans;" class='tagsContainer'></div>
-	<div data-bind='var:product(pid); format:addPicSlider; extension:myRIA;'><img src='blank.gif' class='prodBigImage' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='500' height='375' /></div>
+	<div data-tlc="bind $var '.%attribs.zoovy:prod_is_tags'; quickstart#addtagspans; if (is $var --notblank;) {{apply --append;}};" class="tagsContainer"></div>
+	<div data-tlc="bind $var '.pid'; quickstart#addpicslider  --legacy;"><img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; if (is $var --notblank;) {{ apply --img --media=$var --width=500 --height=375 --bgcolor='#ffffff' --replace;}};" src="blank.gif" class="prodBigImage" alt="" height="375" width="500"></div>
 
 </div>
 
 	</td>
 
-	<td class='prodSummaryContainer marginBottom no_underline'>
-	<h1 data-bind='var: product(zoovy:prod_name); format:text;'></h1>
+	<td class="prodSummaryContainer marginBottom no_underline">
+	<h1 data-tlc="bind $var '.%attribs.zoovy:prod_name'; if (is $var --notblank;) {{apply --append;}};"></h1>
 
-	<div class='priceContainer'>
-		<h4 class='basePrice' data-bind='var: product(zoovy:base_price); format:money; currencySign: $;  hideZero:true; pretext: Price: ;'></h4>
-		<h6 class='ztable_row_small stid' data-bind='var: product(pid); format:text; className: stid; pretext: Sku#: ;'></h6>
-		<!--h5 class='prodMSRP' data-bind='var: product(zoovy:prod_msrp); format:money; currencySign: $;  hideZero:true; pretext: MSRP: ;'></h5>
-		<span class='savings'>
-			<span class='savingsDifference' data-bind='var: product(pid); format:priceRetailSavingsDifference; extension:myRIA; pretext: You save: ;'></span>
-			<span class='savingsPercentage' data-bind='var: product(pid); format:priceRetailSavingsPercentage; extension:myRIA; pretext: (; posttext:);'></span>
-		</span-->
+	<div class="priceContainer">
+		<h4 data-tlc="bind $var '.%attribs.zoovy:base_price'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Price: '; apply --append;}};" class="basePrice"></h4>
+		<h6 data-tlc="bind $var '.pid'; if (is $var --notblank;) {{format --prepend='Sku#: '; apply --add --class='stid'; apply --append;}};" class="ztable_row_small stid"></h6>
 	</div>
 
-	<div data-bind='var: product(zoovy:ship_latency); format:text;pretext:Normally ships in ;posttext: day(s);' class='latency'></div>
+	<div data-tlc="bind $var '.%attribs.zoovy:ship_latency'; if (is $var --notblank;) {{format --prepend='Normally ships in '; format --append=' day(s)'; apply --append;}};" class="latency"></div>
 
-	<form data-bind='var: product(pid); format:atcForm; extension:store_product;' class='prodViewerAddToCartForm clearfix' action='#' onSubmit="app.ext.myRIA.u.addItemToCart($(this), {'action':'modal'}); return false;">
+	<form data-tlc="bind $var '.pid'; store_product#atcform  --legacy; apply --append;" class="prodViewerAddToCartForm clearfix marginBottom" action="#" data-app-submit="quickstart|productAdd2Cart" data-show="inline">
 
-		<fieldset data-bind='var: product(pid); format:atcVariations; extension:store_product;' class='borderNone'></fieldset>
-		<fieldset data-bind='useParentData:true; format:atcQuantityInput; extension:store_product; pretext:Quantity: ; defaultValue:1;' class='borderNone displayNone'></fieldset>
-
-		<div data-bind='var: product(zoovy:ship_latency); format:text; pretext:Normally Ships Within ;posttext: day(s);' class='latency marginBottom'>Normally Ships Within 1-2 Days.</div>
-		<!-- add to cart button -->
-		<input type='submit' value='' class='ui-button ui-button-text ui-corner-all ui-state-default addToCartButton displayNone' data-bind='var: product(pid); format:addToCartButton; extension:store_product;'  />
+		<fieldset data-tlc="bind $var '.pid'; store_product#atcvariations  --legacy; apply --append;" class="borderNone"></fieldset>
+		<fieldset data-tlc="bind $var '.'; store_product#atcquantityinput  --defaultvalue='1' --legacy;" class="borderNone"></fieldset>
+		<div data-tlc="bind $var '.%attribs.zoovy:ship_latency'; if (is $var --notblank;) {{apply --empty; format --prepend='Normally Ships Within '; format --append=' day(s)'; apply --append;}};" class="latency marginBottom">Normally Ships Within 1-2 Days.</div>
+		<div class='marginBottom'><input data-tlc="bind $var '.pid'; store_product#addtocartbutton  --legacy;" value="Add to Cart" class="addtocartbutton displayNone" type="submit"></div>
 	</form>
 	
-	<section class='marginBottom'>
-		<span data-bind='var: reviews(reviews.average); format:addClass; className:review_;' class='reviewSprite'></span>
-		<span data-bind='var: reviews(reviews.total); format:text;posttext: from ;posttext: reviews; className:numReviews;'></span>
+	<section class="marginBottom">
+		<span data-tlc="bind $var '.reviews.average'; if(is $var --notblank;) {{ apply --class='review_'; }}; if (is $var --notblank;) {{apply --add --class='review_'; apply --append;}};" class="reviewSprite"></span>
+		<span data-tlc="bind $var '.reviews.total'; if (is $var --notblank;) {{format --append=' from '; apply --add --class='numReviews'; apply --append;}};"></span>
 	</section>
 
-	<div class="prodDesc" data-bind='var: product(zoovy:prod_desc); format:wiki; wikiFormats:myRIA;'></div>
+	<div data-tlc="bind $var '.%attribs.zoovy:prod_desc'; if (is $var --notblank;) {{render --wiki='quickstart'; apply --append;}};" class="prodDesc"></div>
 
 	</td>
 </tr>
@@ -1518,7 +1440,7 @@ It's done this way because ID's hard coded into template are bad mojo (templates
 
 	</td>
 </tr-->
-</table>
+</tbody></table>
 
 
 </div><!-- productTemplateQuickView -->
@@ -1576,78 +1498,100 @@ if you change these, you should move them above this comment so that when you (o
 
 <!--  used in breadcrumb -->
 <ul>
-	<li id='breadcrumbTemplate' onMouseOver="app.ext.tikimaster.a.showDropDown($(this));" onMouseOut="app.ext.tikimaster.a.hideDropDown($(this));" class='pointer'>
-		<a href='#' onClick="return showContent('category',{'navcat':$(this).parent().attr('data-catsafeid')});" data-bind='var: category(pretty); format:catText; extension: myRIA;'></a>
+	<li id="breadcrumbTemplate" data-tlc="bind $var '.@subcategoryDetail.length';  if(is $var --gte='1';) {{apply --add --class='hasSubcats';}};" onMouseOver="myApp.ext.tikimaster.a.showDropDown($(this));" onMouseOut="myApp.ext.tikimaster.a.hideDropDown($(this));" data-app-role='bcListParent'>
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category'; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy; apply --append;"></a>
+	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootSubCats'  --legacy;" class="dropdown displayNone"></ul>
 	</li>
 </ul>
 
 
 
 
-<!-- loadingBG needed on this for app init (content may take a moment to load) -->
-<div id='companyTemplate' class='clearfix loadingBG'>
 
-	<div class='sideline' >
-<nav id='companyNav'>
-<ul class='listStyleNone noPadOrMargin'>
-	<li><a href='#company?show=about'>About Us</a></li>
-	<li><a href='#company?show=contact'>Contact Information</a></li>
-	<li><a href='#company?show=faq'>FAQ</a></li>
-	<li><a href='#company?show=payment'>Payment Policy</a></li>
-	<li><a href='#company?show=privacy'>Privacy Statement</a></li>
-	<li><a href='#company?show=return'>Return Policy</a></li>
-	<li><a href='#company?show=shipping'>Shipping Information</a></li>
+
+
+
+
+<div id="companyTemplate" class="clearfix">
+
+	<div class="sideline">
+<nav id="companyNav">
+<ul class="listStyleNone noPadOrMargin">
+<!-- these are generated via javascript, based on the quickstart.pages object. -->
 </ul>
 </nav>
 	</div>
 
-	<div class='mainColumn'>
+	<div class="mainColumn">
 <!-- .textContentArea is used as a selector in quickstart.js because article tag type isn't ie8 friendly -->
-		<div id='aboutArticle' class='textContentArea article'>
+		<div id="aboutArticle" class="textContentArea article">
 			<h1>About Us</h1>
-			<!--div data-bind='var: profile(zoovy:about); format:wiki; wikiFormats:myRIA;' id='aboutUsContent'></div-->
-			TIKIMASTER.COM:<br/>
-      KAILUA, Hawaii (O'ahu)<br/>
-      Toll Free: 877-677-4440
+			<div>
+
+<h3>TikiMaster.com:</h3>
+<address>
+Kamakani Enterprises, Inc.<br>
+KAPA'A QUARRY INDUSTRIAL PARK<br>
+905 Kalanianaole HWY, Building 28C<br>
+Kailua HI 96734 (turn right after All Pool &amp; Spa Building)<br>
+PH: (808) 781-3126 or (808) 263-TIKI (8454)
+</address>
+
+<p>A division of Kamakani Enterprises, Inc - The Virtual Store of Hawaii - is a rapidly growing online source for Hawaiian and Island Lifestyle products. We specialize in custom carvings from Tiki mask, Tiki sculpture to totem poles and much more. Established in 2000, Tikimaster.com has grown to be one of the most recognized brands its field for Hawaiiana and Tiki style products - a name you can trust. We offer you the best possible online shopping experience in the true Aloha spirit. We are here to help you any way we can.</p>
+
+<p>We specialized in the following products: Carved Tikis, totem poles, Hawaiiana products, Tiki masks, luau party supply, Tiki bar supply, tapa cloth, Koa wood, gift baskets and more...</p>
+
+
+			</div>
 		</div>
 
 
-		<div id='contactArticle' class='displayNone textContentArea'>
+		<div id="contactArticle" class="displayNone textContentArea">
 			<h1>Contact Information</h1>
-			Toll Free: 877-677-4440
-			<form action='#' onSubmit="app.calls.appSendMessage.init($(this).serializeJSON(),{'callback':'showMessaging','parentID':'contactFormMessaging','message':'Thank you, your message has been sent'},'immutable'); app.model.dispatchThis('immutable');  return false;" id='contactForm' name='contactForm'>
+			<div class="companyAddress">
+<h3>TikiMaster.com:</h3>
+<address>
+Kamakani Enterprises, Inc.<br>
+KAPA'A QUARRY INDUSTRIAL PARK<br>
+905 Kalanianaole HWY, Building 28C<br>
+Kailua HI 96734 (turn right after All Pool &amp; Spa Building)<br>
+PH: (808) 781-3126 or (808) 263-TIKI (8454)
+</address>
+			</div>
+
+			<form action="#" data-app-submit="store_crm|contactFormSubmit" name="contactForm" class='alignedForm'>
+			<input name="msgtype" value="feedback" type="hidden">
 			<fieldset>
 				<legend>Contact Us</legend>
-				<div id='contactFormMessaging'></div>
-				<div><label for='contactFormSender'>Email Address: </label><input type='email' name='sender' required='required' id='contactFormSender' /></div>
-				<div><label for='contactFormSubject'>Subject: </label><input type='text' name='subject' id='contactFormSubject' /></div>
-				<div><label for='contactFormOID'>Order ID: </label><input type='text' name='OID' id='contactFormOID' /></div>
-				<div><label for='contactFormBody'>Message: </label><textarea name='body' required='required' id='contactFormBody'></textarea></div>
-				<div class='alignRight'><input type='submit' class='ui-button-text ui-button ui-state-default ui-corner-all' value='Send Message' />
-				</div>
+				<div id="contactFormMessaging"></div>
+				<label><span class="prompt">Email Address</span><input name="sender" required type="email" class='alignInput'></label>
+				<label><span class="prompt">Subject</span><input name="subject" required type="text" class='alignInput'></label>
+				<label><span class="prompt">Order ID</span><input name="OID" type="text" class='alignInput'></label>
+				<label><span class="prompt">Message</span><textarea name="body" required rows='6' class='alignInput'></textarea></label>
+				<div class="alignRight"><input class="applyButton" value="Send Message" type="submit"></div>
 			</fieldset>
 			</form>
-			<!--div data-bind='var: profile(zoovy:contact); format:wiki; wikiFormats:myRIA;' id='contactContent'></div-->
 		</div>
 
 
-
-		<div id='faqArticle' class='displayNone textContentArea'>
+		<!-- faq are generated through the faq manager in the admin UI. do not add content in the faqContent area -->
+		<div id="faqArticle" class="displayNone textContentArea">
 			<h1>Frequently Asked Questions</h1>
-			<div id='faqContent' class='loadingBG ui-accordion ui-widget ui-helper-reset ui-accordion-icons appAccordianesque'></div>
+			<div id="faqContent" class=" ui-accordion ui-widget ui-helper-reset ui-accordion-icons appAccordianesque"></div>
 		</div>
 
 
 
-		<div class='displayNone textContentArea' id='paymentArticle'>
+		<div class="displayNone textContentArea" id="paymentArticle">
 			<h1>Payment Policy</h1>
-			<!--div data-bind='var: profile(zoovy:payment_policy); format:wiki; wikiFormats:myRIA;' id='paymentContent'></div-->
-			Aloha e Komo Mai to Tikimaster.com!<br/>
-			  We accept major credit cards and Paypal! Please feel free to contact me if you need additional information! Aloha from all of us at Tikimaster.com!
+			<div>
+			<p>Aloha e Komo Mai to Tikimaster.com!<br/>
+			  We accept major credit cards and Paypal! Please feel free to contact me if you need additional information! Aloha from all of us at Tikimaster.com!</p>
+			</div>
 		</div>
 
 
-		<div class='displayNone textContentArea' id='privacyArticle'>
+		<div class="displayNone textContentArea" id="privacyArticle">
 			<h1>Privacy Statement</h1>
 	<h4>About this Privacy Policy:</h4>
 	<p>The entire site, or at least specific portions of this site are assisted by Zoovy technology. Zoovy has created this privacy policy as a template for customers who are using Zoovy technology with their websites. Zoovy in no way takes responsibility for the accuracy or enforcement of this policy. For a copy of Zoovy's privacy policy (which does not necessarily apply to the customers of its customers) visit http://www.zoovy.com/legal</p>
@@ -1691,44 +1635,39 @@ if you change these, you should move them above this comment so that when you (o
 
 
 
-		<div class='displayNone textContentArea' id='returnArticle'>
+		<div class="displayNone textContentArea" id="returnArticle">
 			<h1>Return Policy</h1>
-			<!--div data-bind='var: profile(zoovy:return_policy); format:wiki; wikiFormats:myRIA;' id='returnContent'></div-->
-			  <b>Terms of Sale</b><br>
-        The following Terms of Sale will govern the sale between  Tikimaster.com  (the  Seller)  and you, our Customer, for any item purchased from our website.  By buying from us, you agree to these terms. <br><br>
+			<div>
 
+<h3>Terms of Sale</h3>
+<p>The following Terms of Sale will govern the sale between  Tikimaster.com  (the  Seller)  and you, our Customer, for any item purchased from our website.  By buying from us, you agree to these terms. </p>
 
-        <b>Payments</b><br>
-        We accept the following methods of payment: major credit cards (Visa, MasterCard, Discovery, AmericanExpress, JCB and more), Paypal, company checks.  We prefer payment by major credit cards.<br><br>
+<h3>Payments</h3>
+<p>We accept the following methods of payment: major credit cards (Visa, MasterCard, Discovery, AmericanExpress, JCB and more), Paypal, company checks.  We prefer payment by major credit cards.</p>
 
+<h3>Price</h3>
+<p>All prices are listed in US Dollars, unless otherwise indicated.  All applicable state, local, federal, and international taxes and fees apply.</p>
 
-        <b>Price</b><br>
-        All prices are listed in US Dollars, unless otherwise indicated.  All applicable state, local, federal, and international taxes and fees apply.<br><br>
+<h3>Shipping and Delivery</h3>
+<p>We currently ship all over the world except in high risk countries.  Shipping and handling charges apply to all orders, unless otherwise specified.  Shipping charges will be calculated in your shopping cart, and may vary according to the number or weight of items shipped, carrier used, destination of order, and whether you requested expedited delivery.</p>
+<p>We ship items within 2 business days of payment clearance.  All delivery dates are estimates and are not guaranteed.</p>
 
+<h3>Refunds and Returns</h3>
+<p>If you are not satisfied with your order for any reason, you may return it for a full refund within 5 days of receipt.  Shipping is not refundable, and you will bear the cost of return shipping.  Items must be returned in the condition in which they arrived and in their original packaging. A 20% restocking fee may be applied.</p>
+<p>We accept returns only with a return authorization.  In order to obtain a return authorization, you must contact Tikimaster.com at (877) 677-4440 within 5 days of receipt.</p>
 
-        <b>Shipping and Delivery</b><br>
-        We currently ship all over the world except in high risk countries.  Shipping and handling charges apply to all orders, unless otherwise specified.  Shipping charges will be calculated in your shopping cart, and may vary according to the number or weight of items shipped, carrier used, destination of order, and whether you requested expedited delivery.<br><br>
+<h5>Bamboo and thatch products are none returnable</h5>
 
-
-        We ship items within 2 business days of payment clearance.  All delivery dates are estimates and are not guaranteed.<br><br>
-
-
-
-
-        <b>Refunds and Returns</b><br>
-        If you are not satisfied with your order for any reason, you may return it for a full refund within 5 days of receipt.  Shipping is not refundable, and you will bear the cost of return shipping.  Items must be returned in the condition in which they arrived and in their original packaging. A 20% restocking fee may be applied.<br>
-        We accept returns only with a return authorization.  In order to obtain a return authorization, you must contact Tikimaster.com at (877) 677-4440 within 5 days of receipt.<br><br/>
-
-
-        <b>Bamboo and thatch products are none returnable</b>
+			</div>
 		</div>
 
 
 
-		<div class='displayNone textContentArea' id='shippingArticle'>
+		<div class="displayNone textContentArea" id="shippingArticle">
 			<h1>Shipping Information</h1>
-			<!--div data-bind='var: profile(zoovy:shipping_policy); format:wiki; wikiFormats:myRIA;' id='shippingContent'></div-->
-			WE SHIP EVERYDAY!!! Tikimaster ships all over the world! The published shipping cost is for the USA. If you live outside the USA, simply email us and we will gladly give you a quote based on your location.
+			<div>
+			<p>WE SHIP EVERYDAY!!! Tikimaster ships all over the world! The published shipping cost is for the USA. If you live outside the USA, simply email us and we will gladly give you a quote based on your location.</p>
+			</div>
 		</div>
 
 	</div>
@@ -1737,65 +1676,78 @@ if you change these, you should move them above this comment so that when you (o
 
 
 
-<!-- loadingBG needed on this for app init (content may take a moment to load) -->
-<div id='customerTemplate' class='clearfix'>
 
-	<div class='sideline' >
-	<nav id='customerNav'>
-	<ul class='listStyleNone noPadOrMargin'>
-<!-- before restoring this, test cuz news form on left was causing some conflicts
-		<li><a href='#customer?show=subscriberLists'>Newsletter Subscription</a></li> -->
-		<li><a href='#customer?show=myaccount'>My Account</a></li>
-		<li><a href='#customer?show=changepassword'>Change Password</a></li>
-		<li><a href='#customer?show=orders'>Order History</a></li>
-		<li><a href='#customer?show=lists'>Manage Lists</a></li>
-		<li class='hideIfLoggedOut'><a href="#" onClick="app.ext.myRIA.u.handleLogoutActions(); return false;">Log Out</a></li>
+
+
+<div id="customerTemplate" class="clearfix smallButton">
+
+	<div class="sideline">
+	<nav id="customerNav">
+	<ul class="listStyleNone noPadOrMargin">
+		<li><a href='#!customer/subscriberLists'>Newsletter Subscription</a></li>
+		<li><a href="#!customer/myaccount">My Account</a></li>
+		<li><a href="#!customer/changepassword">Change Password</a></li>
+		<li><a href="#!customer/orders">Order History</a></li>
+		<li><a href="#!customer/lists">Manage Lists</a></li>
+		<li class="hideIfLoggedOut"><a href="#!customer/logout">Log Out</a></li>
 	</ul>
 	</nav>
 	</div>
 
-	<div class='mainColumn'>
+	<div class="mainColumn">
 <!-- .textContentArea is used as a selector because IE8 doesn't play well  with tag type article as a selector -->
 
 <!--
-newsletterArticle is used for buyers who are not logged in or do not have an account.
-subscribeListsArticle is used for authenticated buyers
+newsletterArticle is intended for buyers who are not logged in or do not have an account.
 -->
-		<div id='newsletterArticle' class='displayNone textContentArea'>
+		<div id="newsletterArticle" class="displayNone textContentArea">
 			<h1>Subscribe to our Newsletter and Save!</h1>
-			<div data-bind="format:loadsTemplate; loadsTemplate:subscribeFormTemplate;"></div>
+			<form action="#" name="subscribeFrm" data-app-submit="quickstart|subscribeSubmit" class='alignedForm'>
+				<fieldset class="userInfo borderNone">
+					<label>
+					<input placeholder="email address" maxlength="50" size="30" required name="email" value="" type="email" data-tlc="bind $var '.customer.login'; if(is $var --notblank;) {{apply --select=$var;}};">
+					</label>
+				</fieldset>
+				
+				<fieldset data-tlc="apply --empty; bind $var '.@lists'; controller#loop --templateid='subscriberListItemTemplate'; apply --append;" class="borderNone subscriberLists"></fieldset>
+			
+				<input class="applyButton" value="Subscribe" type="submit">
+			
+			</form>
 		</div>
-
-		<div id='subscriberListsArticle' class='displayNone textContentArea'>
+<!--
+subscribeListsArticle is used for authenticated buyers.
+-->
+		<div id="subscriberListsArticle" class="displayNone textContentArea">
 			<h1>Manage your Subscriptions</h1>
-<!-- save onchange -->
-<form action='#' name='subscribeFrm'>
 
-<fieldset data-bind="var:newsletters(@lists); format:subscribeCheckboxes; extension:store_crm;" class='borderNone subscriberLists'></fieldset>
-
-</form>
+			<form action="#" name="subscribeFrm" data-app-submit="store_crm|buyerUpdate" class='alignedForm' onSubmit="return false">
+				<!-- buyer is logged in. Don't need email/name inputs -->
+				<fieldset data-update-verb='tags' data-tlc="apply --empty; bind $tags '.%info.@tags'; bind $var '.@lists'; controller#loop --templateid='subscriberListItemTemplate'; apply --append;" class="borderNone subscriberLists"></fieldset>
+				<input class="applyButton" value="Subscribe" type="submit">
+			</form>
 
 		</div>
 
-		<div id='myaccountArticle' class='displayNone textContentArea'>
+		<div id="myaccountArticle" class="displayNone textContentArea">
 			<h1>My Account</h1>
 
 			<section>
 
-<div class='billAddressContainer' data-app-role='addressContainer' data-app-addresstype='bill'>
-	<div class='marginBottom'>
-		<button class='floatRight' data-app-event='myRIA|showBuyerAddressAdd'>Add New Billing Address</button>
+<div class="billAddressContainer" data-app-role="addressContainer" data-app-addresstype="bill">
+	<div class="marginBottom">
+		<button class="floatRight applyButton" data-icon-primary="ui-icon-plus" data-app-click="quickstart|showBuyerAddressAdd">New Billing Address</button>
 		<h2>Billing Address(es)</h2>
 	</div>
-	<div class='billAddresses' data-bind="var: buyer(@bill); format:processList; loadsTemplate:billAddressTemplate;"></div>
+	<div data-tlc="bind $var '.@bill'; controller#loop --templateid='billAddressTemplate'; if (is $var --notblank;) {{apply --empty; apply --append;}};" class="billAddresses"></div>
 </div>
 
-<div class='shipAddressContainer' data-app-role='addressContainer' data-app-addresstype='ship'>
-	<div class='marginBottom'>
-		<button class='floatRight' data-app-event='myRIA|showBuyerAddressAdd'>Add New Shipping Address</button>
+<div class="shipAddressContainer" data-app-role="addressContainer" data-app-addresstype="ship">
+	<div class="marginBottom">
+		<button class="floatRight applyButton" data-icon-primary="ui-icon-plus" data-app-click="quickstart|showBuyerAddressAdd">New Shipping Address</button>
 		<h2>Shipping Address(es)</h2>
 	</div>
-	<div class='billAddresses' data-bind="var: buyer(@ship); format:processList; loadsTemplate:shipAddressTemplate;"></div>
+	<div data-tlc="bind $var '.@ship'; controller#loop --templateid='shipAddressTemplate'; if (is $var --notblank;) {{apply --empty; apply --append;}};" class="billAddresses"></div>
 </div>
 
 
@@ -1805,46 +1757,42 @@ subscribeListsArticle is used for authenticated buyers
 		</div>
 
 
-		<div id='ordersArticle' class='displayNone textContentArea'>
+		<div id="ordersArticle" class="displayNone textContentArea">
 			<h1>Order History</h1>
-			<div data-bind="var: orders(@orders); format:processList; loadsTemplate:orderLineItemTemplate;" data-app-role='orderList' class='ui-accordion ui-widget ui-helper-reset ui-accordion-icons '></div>
+			<div data-tlc="bind $var '.@orders'; controller#loop --templateid='orderLineItemTemplate'; if (is $var --notblank;) {{apply --append;}};" data-app-role="orderList" class="ui-accordion ui-widget ui-helper-reset ui-accordion-icons "></div>
 		</div>
 
 
-		<div id='invoiceArticle' class='displayNone textContentArea'>
-			<div data-bind="format:loadsTemplate; loadsTemplate: invoiceTemplate; useParentData:true;"></div>
+		<div id="invoiceArticle" class="displayNone textContentArea">
+			<div data-tlc="bind $var '.'; transmogrify --dataset=$var --templateid='invoiceTemplate'; apply --append;" data-bind="format:loadsTemplate; loadsTemplate: invoiceTemplate; useParentData:true;"></div>
 		</div>
 
 
 
-		<div id='changepasswordArticle' class='displayNone textContentArea'>
+		<div id="changepasswordArticle" class="displayNone textContentArea">
 			<h1>Change Password</h1>
-			<div id='changepasswordContainer'>
-
-<form action='#' id='changePasswordForm' name='changePasswordForm' onSubmit="app.ext.store_crm.u.handleChangePassword('changePasswordForm',{'callback':'showMessaging','message':'Thank you, your password has been changed','targetID':'changepasswordContainer'}); return false">
-<fieldset class='borderNone'>
-
-<div class='marginBottom'><label for='changePassword'>Password</label><input type='password' name='password' id='changePassword' size='35' /></div>
-<div class='marginBottom'><label for='changePassword2'>Confirm Password</label><input type='password' name='password2' id='changePassword2' size='35' /></div>
-<div class='marginBottom'><input type='submit' value='Change Password' class='loadingButton ui-button-text ui-button ui-state-default ui-corner-all'></div>
-
-</fieldset>
-</form>
-			</div>
+			<form action="#" name="changePasswordForm" data-app-submit="quickstart|passwordChangeSubmit" class='alignedForm'>
+			<fieldset class="borderNone">
+			<p>For passwords, we recommend using mixed case, at least one number and one special character.</p>
+			<div class="messaging"></div>
+			<label><span class="prompt">Password</span><input name="password" size="35" required type="password" data-minlength='8'></label>
+			<label><span class="prompt">Confirm Password</span><input name="password2" required size="35" type="password" data-minlength='8'></label>
+			<div class='alignCenter'><input value="Change Password" class="loadingButton applyButton" type="submit"></div>
+			</fieldset>
+			</form>
 		</div>
 
-		<div id='listsArticle' class='displayNone textContentArea'>
+		<div id="listsArticle" class="displayNone textContentArea">
 			<h1>List Manager</h1>
-			<div id='listsContainer' class='prodlist loadingBG'></div>
 
-			<div id='listEditorContainer' class='displayNone loadingBG'></div><!-- editor for a given list gets added here -->
+			<div class='applyAccordion' data-tlc="apply --empty; bind $var '.@lists'; controller#loop --templateid='buyerListTemplate'; apply --append; bind $content '.@lists'; controller#loop --templateid='buyerListProdlistContainerTemplate'; apply --append;"></div>
 
 		</div>
 
-		<div id='forgetmeArticle' class='displayNone textContentArea'>
+		<div id="forgetmeArticle" class="displayNone textContentArea">
 			<h1>Your 'Forget Me' list</h1>
 			<p>Items on this list will not show up anywhere on the site. Use it for items you never want to see again. If you add an item to the list by mistake, use this page to remove it from the list and it will start re-appearing during your shopping experience.</p>
-			<ul id='forgetmeContainer' class='prodlist loadingBG'>
+			<ul id="forgetmeContainer" class="prodlist ">
 			</ul>
 		</div>
 
@@ -1853,25 +1801,43 @@ subscribeListsArticle is used for authenticated buyers
 </div>
 
 
+<ul>
+
+<li id='subscriberListItemTemplate'>
+	<label data-tlc="bind $var '.EXEC_SUMMARY'; apply --attrib='title';" >
+	<input type='checkbox'  data-tlc="bind $id '.ID'; format --prepend='USER#SUB'; apply --attrib='name'; set $checked ''; store_crm#buyersubscribe --id=$id; if(is $checked --notblank;) {{ apply --attrib='checked';}};" />
+	<span data-tlc="bind $var '.NAME'; apply --append;"></span>
+</li>
+
+</ul>
+
+<h2 id='buyerListTemplate' data-tlc="bind $id '.id'; apply --append; bind $items '.items'; if (is $items --notblank;) {{format --prepend=' (' --append=')'; apply --append;}};"></h2>
 
 
 
-<div id='searchTemplate' class='searchResultsPage clearfix'>
-
-	<!-- the div is use to show a detailed view of a product. should be hidden by default. -->
-	<div class='previewProductDetail displayNone'></div>
-
-	<div class='previewListContainer'>
-		<!-- productListTemplateResults gets loaded into here -->
-		<ul id='resultsProductListContainer' class='listStyleNone fluidList noPadOrMargin productList'></ul>
-	</div>
-
+<div id='buyerListProdlistContainerTemplate' class='buyerList' data-tlc="bind $id '.id'; apply --attrib='data-buyerlistid';">
+	<!--
+	the UL is generated automatically because the tlc bind is specific to the list id. trying to use tlc to generate tlc would probably get me committed.
+	the div is NOT added dynamically so the accordion can be generated.
+	-->
 </div>
 
 
 
 
 
+
+<div id="searchTemplate" class="searchResultsPage clearfix">
+
+	<!-- the div is use to show a detailed view of a product. should be hidden by default. -->
+	<div class="previewProductDetail displayNone"></div>
+
+	<div class="previewListContainer">
+		<!-- productListTemplateResults gets loaded into here -->
+		<ul id="resultsProductListContainer" class="listStyleNone fluidList noPadOrMargin productList"></ul>
+	</div>
+
+</div>
 
 
 
@@ -1884,37 +1850,37 @@ onclicks are recursive, so only add it to the parent element.
 .mpControlsPagination is used to 'hide' the pagination portion of the header if pagination is disabled.
 -->
 
-<div id='mpControlSpec' class='mpControlContainer'>
-	<div class='mpControls ui-widget ui-state-default ui-corner-top'>
+<div id="mpControlSpec" class="mpControlContainer">
+	<div class="mpControls ui-widget ui-state-default ui-corner-top">
 
-<span class="mpControlsPagination ui-state-active ui-corner-all floatRight paging pointer" data-role='next' title="next page">
+<span class="mpControlsPagination ui-state-active ui-corner-all floatRight paging pointer" data-role="next" title="next page">
 	<span class="ui-icon ui-icon-circle-triangle-e"></span>
 </span>
 
-<div class='floatRight ddUlMenu mpControlsPagination'>
+<div class="floatRight ddUlMenu mpControlsPagination">
 <ul>
 	<li>
 
-	<a href='#' onClick='return false;'>
-	<span data-bind='var:prodlistmeta(page_in_focus); format:text; pretext: page ;'></span>
-	<span data-bind='var:prodlistmeta(total_page_count); format:text; pretext: of ;'></span>	</a>
-	<ul data-bind='var:prodlistmeta(total_page_count); format:mpPagesAsListItems; extension:store_prodlist;' class='ui-widget-content ui-corner-bottom'></ul>
+	<a href="#" onclick="return false;">
+		<span data-tlc="bind $var '.page_in_focus'; format --prepend='page '; if (is $var --notblank;) {{apply --append;}};"></span>
+		<span data-tlc="bind $var '.total_page_count'; format --prepend='of '; if (is $var --notblank;) {{apply --append;}};"></span>
+	</a>
+	<ul data-tlc="bind $var '.total_page_count'; store_prodlist#mppagesaslistitems  --legacy; apply --append;" class="ui-widget-content ui-corner-bottom"></ul>
 	</li>
 </ul>
 </div>
 
-<span class="mpControlsPagination ui-state-active ui-corner-all floatRight paging pointer" data-role='previous' title="previous page">
+<span class="mpControlsPagination ui-state-active ui-corner-all floatRight paging pointer" data-role="previous" title="previous page">
 	<span class="ui-icon ui-icon-circle-triangle-w"></span>
 </span>
 
 
-<span data-bind='var:prodlistmeta(page_start_point); format:text; pretext:items ;'></span>
-<span data-bind='var:prodlistmeta(page_end_point); format:text; pretext: - ;'></span>
-<span data-bind='var:prodlistmeta(total_product_count); format:text; pretext: of ;'></span>
+<span data-tlc="bind $var '.page_start_point'; format --prepend='items '; if (is $var --notblank;) {{apply --append;}};"></span>
+<span data-tlc="bind $var '.page_end_point'; format --prepend='- '; if (is $var --notblank;) {{apply --append;}};"></span>
+<span data-tlc="bind $var '.total_product_count'; format --prepend='of '; if (is $var --notblank;) {{apply --append;}};"></span>
 
 	</div><!-- /.mpControls -->
 </div><!-- /#mpControlSpec -->
-
 
 
 
@@ -1950,89 +1916,74 @@ sticky, so they're fixed. Makes it easier on the designer and the developer.
 So the cart template should contain these two elements and the extension should contain these two templates.
 -->
 
-<div id='cartTemplate' class='loadingBG'>
+<div id="cartTemplate" class="clearfix"><!-- template role gets added by the myApp. don't add it yourself -->
 
-<form id='cartTemplateForm' action='#' onSubmit='return false'>
-<table class='cartContainer'>
-<tr>
-	<td class='cartStuffContainer'>
-	<ul id='cartStuffList' data-bind="var: cart(@ITEMS); format:stuffList; loadsTemplate:productListTemplateCart;" class='listStyleNone fluidList clearfix noPadOrMargin productList lineItemProdlist'></ul>
-	</td>
+<form action="#" onsubmit="return false">
 
-	<td class='cartSummaryTotalsContainer'>
-	<div class='ui-widget ui-widget-content ui-helper-clearfix ui-corner-all'>
-		<h2 class='ui-widget-header ui-helper-clearfix ui-corner-all ui-header'>Cart Totals</h2>
-		<div class='cartSummaryContainer'>
+<div class="cartStuffContainer">
+	<ul data-tlc="bind $var '.@ITEMS'; controller#loop --templateid='productListTemplateCart'; if (is $var --notblank;) {{apply --append;}};" class="listStyleNone fluidList clearfix noPadOrMargin productList lineItemProdlist"></ul>
+</div>
 
-<section id='cartTemplateCostSummary' class='cartSummary'>
+<div class="cartSummaryTotalsContainer">
+	<div class="ui-widget ui-corner-all">
+		<div class='ui-widget-header ui-corner-top ui-header smallPadding smallButton'>
+			<button class='applyButton cartRefreshButton' data-text='false' data-icon-primary='ui-icon-refresh' data-app-click="cco|cartFetchExec">Refresh Cart</button>
+			<h2>Cart Totals</h2>
+		</div>
+		<div class="cartSummaryContainer stdPadding ui-widget-content clearfix">
 
-	<div data-bind="var: cart(sum/items_total); format:money; className:orderSubtotal; hideZero:false; currencySign: $; pretext:Subtotal: ; "></div>
+<section class="cartSummary marginBottom">
 
-	<div data-bind='var: cart(sum/tax_total); format:money; className:orderTax; hideZero:true;currencySign: $; pretext:Tax: ; '></div>
+	<div data-tlc="bind $var '.sum.items_total'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Subtotal: '; apply --add --class='orderSubtotal'; apply --append;}};"></div>
 
-	<div data-bind='var: cart(want/shipping_id); format:shipInfoById; className:orderShipping; hideZero:false; extension:store_cart;'></div>
+	<div data-tlc="bind $var '.sum.tax_total'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Tax: '; apply --add --class='orderTax'; apply --append;}};"></div>
 
-	<div data-bind='var: cart(sum/order_total); format:money; className:orderTotal; hideZero:false; currencySign: $; pretext:Order Total: ; '></div>
+	<div data-tlc="cco#shipinfobyid  --legacy;" class="orderShipping" data-bind="useParentData:true; format:shipinfobyid; extension:cco;"></div>
 
-	<div data-bind='var: cart(sum/gfc_total); format:money; className:orderGiftcardTotal; hideZero:false; currencySign: $; pretext:Giftcard(s): ; '></div>
-	<div data-bind='var: cart(sum/pnt_total); format:money; className:rewardPointsTotal; hideZero:false; currencySign: $; pretext:Reward Points: ; '></div>
-	<div data-bind='var: cart(sum/rmc_total); format:money; className:returnsCreditTotal; hideZero:false; currencySign: $; pretext:Returns Credit: ; '></div>
+	<div data-tlc="bind $var '.sum.order_total'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Order Total: '; apply --add --class='orderTotal'; apply --append;}};"></div>
 
-	<div data-bind='var: cart(sum/balance_due_total); format:orderBalance; className:orderBalanceDue; hideZero:false; currencySign: $; pretext:Estimated Total: ; extension:store_cart;'></div>
+	<div data-tlc="bind $var '.sum.gfc_total'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Giftcard(s): '; apply --add --class='orderGiftcardTotal'; apply --append;}};"></div>
+	<div data-tlc="bind $var '.sum.pnt_total'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Reward Points: '; apply --add --class='rewardPointsTotal'; apply --append;}};"></div>
+	<div data-tlc="bind $var '.sum.rmc_total'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Returns Credit: '; apply --add --class='returnsCreditTotal'; apply --append;}};"></div>
+
+	<div data-tlc="bind $var '.sum.balance_due_total'; cco#orderbalance  --classname='orderBalanceDue' --hidezero='false' --currencysign='$' --legacy;"></div>
 
 </section>
 
-<section id='cartTemplateShippingContainer'>
+<section data-app-role="cartTemplateShippingContainer" class="marginBottom cartTemplateShippingContainer">
 	<h3>Shipping:</h3>
-	<ul class='noPadOrMargin listStyleNone cartShipMethods' data-bind='var: cart(@SHIPMETHODS); format:shipMethodsAsRadioButtons; extension:store_cart;'></ul>
+
+	<div class="cartZipCodeContainer marginBottom">
+		<label>Zip/Postal Code:
+		<input data-tlc="bind $var '.ship.postal'; if(is $var --blank) {{bind $var '.bill.postal'; }}; apply --select=$var; " size="6" name="ship/postal" value="" maxlength="10" data-app-blur="cco|cartZipUpdateExec" type="text"></label>
+	</div>
+
+	<ul data-tlc="order_create#shipmethodsasradiobuttons  --legacy;" class="noPadOrMargin listStyleNone" data-bind="useParentData:true; format:shipmethodsasradiobuttons; extension: order_create;" data-app-role="shipMethodsUL"></ul>
 </section>
 
-<section class='stdMargin'>
+<section class="marginBottom">
 
-	<div class='cartZipCodeContainer'>
-	<label for='data-ship_zip'>Zip/Postal Code:</label>
-	<input type='text' size='6'  name='ship/postal' id='data-ship_zip' value='' data-bind='var: cart(ship/postal); format:popVal;' maxlength='10' onChange="app.calls.cartSet.init({'ship/postal':this.value, 'ship/region':''});
-	app.ext.store_cart.u.updateCartSummary();
-	app.ext.store_cart.calls.cartShippingMethodsWithUpdate.init();
-	app.model.dispatchThis('immutable');"  />
-	</div>
-
-
-
-	<!-- some buttons that are alternatives to checkout. fewer is better -->
-	<menu class='cartAltButtonsContainer noPadOrMargin'>
-	<button class='ui-button-text ui-button ui-state-default ui-corner-all continueShoppingButton' onClick="$('#modalCart').dialog('close');">Continue Shopping</button>
-	</menu>
-
-	<div class='checkoutButtonsContainer'>
-    <div class="ui-state-default alignCenter paymentMethodsIcons">
-      <img src="img/cart_payment_methods-240x48.png" />
-      <span class="alignLeft">
-        Proceed to our 1-page secure checkout.<br/>
-        We accept Visa, MasterCard, Discover, AMEX,<br/> 
-        PayPal, Money orders and Cashiers checks by Mail.
-      </span>
-    </div>
-		<span title='proceed to secure checkout'><button class='ui-button ui-button-text ui-state-focus ui-corner-all checkoutButton' onClick="showContent('checkout',{});" onMouseOver="app.ext.tikimaster.u.checkoutButtonMouseover()" onMouseOut="app.ext.tikimaster.u.checkoutButtonMouseout()">Store Checkout</button></span>
-    <span class="spacer">or</span>
-		<span id='paypalECButton' data-bind='var: cart(cart/cartid); format:paypalECButton;'></span>
-
-		<!--span id='googleCheckoutButton' class='pointer' data-bind='var: cart(sum/items_total); format:googleCheckoutButton;'></span>
-
-		<span id='amazonCheckoutButton' class='pointer' data-bind='var: cart(cart/cartid); format:amazonCheckoutButton;'></span-->
-
-	</div>
+	
 
 </section>
 
 		</div>
-	</div>
-	</td>
-</tr>
+		<div class="ui-state-default cartButtons stdPadding clearfix">
+			<!-- spans are set around the buttons so each element has one consitent tag type around it -->
+			<span class="continueShoppingSpan thisButton"><button class="applyButton continueShoppingButton" data-app-click="quickstart|dialogCloseExec">Continue Shopping</button></span>
+	
+			<span id="inStoreCheckoutButton" class='thisButton' title="proceed to secure checkout">
+				<a class="applyButton ui-state-highlight checkoutButton" href='#!checkout'>Store Checkout</a>
+			</span>
+	
+			<span data-tlc="bind $var '.cart.cartid'; cco#paypalecbutton  --legacy;" id="paypalecbutton" class="thisButton"></span>
+	
+		</div>
 
-</table>
+	</div>
+</div>
 </form>
-</div><!-- /cartTemplate -->
+</div>
 
 
 
@@ -2043,28 +1994,31 @@ So the cart template should contain these two elements and the extension should 
 
 <!-- cart line-item template -->
 <ul>
-	<li id='productListTemplateCart' class='padMargBorderBottom clearfix'>
+	<li id="productListTemplateCart" class="padMargBorderBottom clearfix">
 
-		<button class='floatRight removeButton' data-bind='format:removeItemBtn; extension:store_cart; useParentData:true;' >Remove Item From Cart</button>
-		<button class='floatRight moveToWishlist marginRight' data-bind='format:moveToWishlistButton; extension:myRIA; useParentData:true;' >Move to Wishlist</button>
+		<button data-tlc="cco#cartitemremovebutton  --legacy;" class="floatRight removeButton" data-bind="format:cartitemremovebutton; extension:cco; useParentData:true;" data-app-click="cco|cartItemRemove">Remove Item From Cart</button>
+		<button data-tlc="quickstart#movetowishlistbutton  --legacy;" class="floatRight moveToWishlist marginRight" data-bind="format:moveToWishlistButton; extension:quickstart; useParentData:true;">Move to Wishlist</button>
 
-		<div class='floatLeft'><img src='blank.gif' class='prodThumb w75h75' alt='' data-bind='var: product(zoovy:prod_image1); defaultVar: product(%attribs.zoovy:prod_image1); format:imageURL;' width='75' height='75' /></div>
 
-		<h4 data-bind='var: product(prod_name); format:text; '></h4>
+		<div class="floatLeft"><img data-tlc="bind $var '.%attribs.zoovy:prod_thumb'; if(is $var --blank;){{bind $var '.%attribs.zoovy:prod_image1';}}; if(is $var --notblank;){{apply --img --media=$var --width=75 --height=75 --bgcolor='#ffffff' --replace;}};" src="blank.gif" class="prodThumb" alt="" height="75" width="75"></div>
 
-		<div class='ztable_row_small stid' data-bind='var: product(sku); format:text; className: stid; pretext: Sku: ;'></div>
+		<h4 data-tlc="bind $var '.prod_name'; if (is $var --notblank;) {{apply --append;}};"></h4>
+
+		<div data-tlc="bind $var '.sku'; format --prepend='Sku: '; if (is $var --notblank;) {{apply --append;}};" class="ztable_row_small stid"></div>
 
 		<div>
-		qty: <input type='number' class='qtyInput numberInput' onChange="app.ext.store_cart.u.updateCartQty($(this)); app.model.dispatchThis('immutable');"  data-bind='format:cartItemQty;extension:store_cart;useParentData:true;' />
-		<button class='displayNone'>update</button><!-- here to stop 'enter' in input above from closing modal -->
-		<span data-bind='var: product(price); format:money; currencySign: $;  hideZero:false; pretext: x ;' ></span>
-		<span data-bind='var: product(extended); format:money; currencySign: $; hideZero:false; pretext: = ;'></span>
+		qty: <input data-tlc="cco#cartitemqty  --legacy;" class="qtyInput numberInput" data-app-change="cco|cartItemUpdateExec" data-bind="format:cartItemQty;extension:cco;useParentData:true;" name="quantity" type="number">
+		<button class="displayNone">update</button><!-- here to stop 'enter' in input above from closing modal -->
+		<span data-tlc="bind $var '.price'; if (is $var --notblank;) {{ format --currency='USD'; format --prepend=' x '; apply --append;}};"></span>
+		<span data-tlc="bind $var '.extended'; if (is $var --notblank;) {{format --currency='USD';  format --prepend='= '; apply --append;}};"></span>
 
 		</div>
 
-		<div class='ztable_row_small prodOptions' data-bind='var: variations(%options); format:selectedOptionsDisplay;'></div>
+		<div data-tlc="bind $var '.%options'; controller#selectedoptionsdisplay --legacy;  if (is $var --notblank;) {{apply --append;}};" class="ztable_row_small prodOptions"></div>
 	</li>
 </ul>
+
+
 
 
 
@@ -2075,20 +2029,20 @@ used on a product layout. Some product have 'children' which may represent the s
 -->
 
 <table>
-<tr id='productListTemplateChildren'>
-	<td><img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='45' height='45' /></td>
-	<td data-bind='var: product(amz:grp_varvalue); defaultVar: product(zoovy:prod_name); format:text;'></td>
+<tbody><tr id="productListTemplateChildren">
+	<td><img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; apply --img --media=$var --width=45 --height=45 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodThumb" alt="" height="45" width="45"></td>
+	<td data-tlc="bind $var '.%attribs.amz:grp_varvalue'; if(is $var --blank) {{bind $var 'product(zoovy:prod_name)';}}; if (is $var --notblank;) {{apply --append;}};"></td>
 	<td>
-	<form data-bind='var: product(pid); format:atcForm; extension:store_product;' class='prodViewerAddToCartForm clearfix' action='#' onSubmit="app.ext.myRIA.u.addItemToCart($(this)); return false;">
+	<form data-tlc="bind $var '.pid'; store_product#atcform  --legacy; apply --append;" class="prodViewerAddToCartForm clearfix" action="#" data-app-submit="quickstart|productAdd2Cart" data-show="modal">
 
-		<fieldset data-bind='var: product(pid); format:atcVariations; extension:store_product;' class='borderNone'></fieldset>
-		<fieldset data-bind='useParentData:true; format:atcQuantityInput; extension:store_product; pretext:Quantity: ; defaultValue:0;' class='borderNone'></fieldset>
+		<fieldset data-tlc="bind $var '.pid'; store_product#atcvariations  --legacy; apply --append;" class="borderNone"></fieldset>
+		<fieldset data-tlc="bind $var '.'; store_product#atcquantityinput  --defaultvalue='0' --legacy;" class="borderNone"></fieldset>
 
-		<input type='submit' value='Add to Cart' class='ui-button ui-button-text ui-corner-all ui-state-default addToCartButton displayNone' data-bind='var: product(pid); format:addToCartButton; extension:store_product;'  />
+		<input data-tlc="bind $var '.pid'; store_product#addtocartbutton  --legacy; apply --append;" value="Add to Cart" class="applyButton addtocartbutton displayNone" type="submit">
 	</form>
 	</td>
 </tr>
-</table>
+</tbody></table>
 
 
 
@@ -2096,29 +2050,18 @@ used on a product layout. Some product have 'children' which may represent the s
 
 <!-- individual review template -->
 <ul>
-	<li id='productReviewsTemplateDetail' class='reviewLineItem clearfix'>
-	<ul class='prodReviewInfo'>
-		<li data-bind='var:review(RATING); format:addClass; format:addClass; className:review_;' class='reviewSprite'></li>
-		<li data-bind='var:review(CUSTOMER_NAME); format:text;'></li>
-		<li data-bind='var:review(LOCATION); format:text; pretext:of ;'></li>
-		<li data-bind='var:review(CREATED_GMT); format:unix2mdy; pretext:on ;'></li>
+	<li id="productReviewsTemplateDetail" class="reviewLineItem clearfix">
+	<ul class="prodReviewInfo">
+		<li data-tlc="bind $var '.RATING'; if(is $var --notblank) {{format --prepend='review_'; apply --add --class=$var; }};" class="reviewSprite"></li>
+		<li data-tlc="bind $var '.CUSTOMER_NAME'; if (is $var --notblank;) {{apply --append;}};"></li>
+		<li data-tlc="bind $var '.LOCATION'; format --prepend='of '; if (is $var --notblank;) {{apply --append;}};"></li>
+		<li data-tlc="bind $var '.CREATED_GMT'; if (is $var --notblank;) {{datetime --out='mdy'; format --prepend='on '; apply --append;}};"></li>
 
 	</ul>
 	<blockquote>
-		<h2 data-bind='var:review(SUBJECT); format:text;'></h2>
-		<p data-bind='var:review(MESSAGE); format:text; ;'></p>
+		<h2 data-tlc="bind $var '.SUBJECT'; if (is $var --notblank;) {{apply --append;}};"></h2>
+		<p data-tlc="bind $var '.MESSAGE'; if (is $var --notblank;) {{apply --append;}};"></p>
 	</blockquote>
-	</li>
-	
-	<li id='productReviewsTemplateDetailNoTab' class='reviewLineItem clearfix'>
-		Review from<br /><span data-bind='var:review(CUSTOMER_NAME); format:text;' class="custName"></span>
-		<span data-bind='var:review(LOCATION); format:text; pretext:of ;' class="custLocation"></span>
-		<div data-bind='var:review(RATING); format:addClass; format:addClass; className:review_;' class='reviewSprite rating'></div>
-		
-		<div class="reviewText">
-			<h4 data-bind='var:review(SUBJECT); format:text;'></h4>
-			<p data-bind='var:review(MESSAGE); format:text; ;'></p>
-		</div>
 	</li>
 </ul>
 
@@ -2126,21 +2069,22 @@ used on a product layout. Some product have 'children' which may represent the s
 
 
 <!-- image viewer template -->
-<div id='imageViewerTemplate'>
+<div id="imageViewerTemplate">
 
 <table>
-<tr>
-	<td><img src='blank.gif' class='prodBigImage' alt='' data-bind='var: product(zoovy:prod_image1); format:imageURL;' width='500' height='500' /></td>
+<tbody><tr>
+	<td><img data-tlc="bind $var '.%attribs.zoovy:prod_image1'; apply --img --media=$var --width=500 --height=500 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodBigImage" alt="" height="500" width="500"></td>
 	<td>
-	<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image2); format:imageURL;' width='100' height='100' />
-	<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image3); format:imageURL;' width='100' height='100' />
-	<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image4); format:imageURL;' width='100' height='100' />
-	<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image5); format:imageURL;' width='100' height='100' />
-	<img src='blank.gif' class='prodThumb' alt='' data-bind='var: product(zoovy:prod_image6); format:imageURL;' width='100' height='100' />
+	<img data-tlc="bind $var '.%attribs.zoovy:prod_image2'; apply --img --media=$var --width=100 --height=100 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodThumb" alt="" height="100" width="100">
+	<img data-tlc="bind $var '.%attribs.zoovy:prod_image3'; apply --img --media=$var --width=100 --height=100 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodThumb" alt="" height="100" width="100">
+	<img data-tlc="bind $var '.%attribs.zoovy:prod_image4'; apply --img --media=$var --width=100 --height=100 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodThumb" alt="" height="100" width="100">
+	<img data-tlc="bind $var '.%attribs.zoovy:prod_image5'; apply --img --media=$var --width=100 --height=100 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodThumb" alt="" height="100" width="100">
+	<img data-tlc="bind $var '.%attribs.zoovy:prod_image6'; apply --img --media=$var --width=100 --height=100 --bgcolor='#ffffff' --replace;" src="blank.gif" class="prodThumb" alt="" height="100" width="100">
 	</td>
 </tr>
-</table>
+</tbody></table>
 </div>
+
 
 
 
@@ -2153,72 +2097,40 @@ used on a product layout. Some product have 'children' which may represent the s
 used for store_crm.js
 -->
 
-<div id='reviewFrmTemplate'>
+<div id="reviewFrmTemplate" class='alignedForm'>
 
-<form name="reviewFrm" id="reviewFrm" action="#" onSubmit="app.ext.store_crm.u.handleReviews('reviewFrm'); return false;">
-<input type='hidden' name='pid' id='reviewsPid' value='' data-bind='var: product(pid); format:popVal;' />
-
-<label for='reviewsCustomerName'>Your Name:</label>
-<input type="text" name="CUSTOMER_NAME" id='reviewsCustomerName' value="" MAXLENGTH="30" />
-<br>
-
-<label for='reviewsLocation'>Location:</label>
-<input type="text" MAXLENGTH="30" name="LOCATION" id='reviewsLocation' value="" />
-<br>
-
-<label for='reviewsSubject'>Subject:</label>
-<input type="text" MAXLENGTH="60" name="SUBJECT" id='reviewsSubject' />
-<br>
+<form name="reviewFrm" action="#" data-app-submit="store_crm|productReviewSubmit">
+<input data-tlc="bind $var '.pid'; apply --select=$var; if (is $var --notblank;) {{apply --append;}};" name="pid" id="reviewsPid" value="" type="hidden">
 
 
-<label for='reviewsMessage'>Review:</label>
-<textarea name="MESSAGE" id='reviewsMessage'></textarea>
-<br>
+<label><span class="prompt">Your Name</span><input name="CUSTOMER_NAME" value="" maxlength="30" required type="text" class='alignInput'></label>
 
-<label for='reviewsRating'>Score:</label>
-<select name="RATING" id='reviewsRating'>
-	<option value="10">5</option>
-	<option value="9">4.5</option>
-	<option value="8">4</option>
-	<option value="7">3.5</option>
-	<option value="6">3</option>
-	<option value="5">2.5</option>
-	<option value="4">2</option>
-	<option value="3">1.5</option>
-	<option value="2">1</option>
-	<option value="1">.5</option>
-</select>
-<br>
+<label><span class="prompt">Location</span><input maxlength="30" name="LOCATION" value="" type="text" class='alignInput'></label>
 
-<input type="submit" value="Submit Review" class='ui-button-text ui-button ui-state-default ui-corner-all' />
+<label><span class="prompt">Subject</span><input maxlength="60" name="SUBJECT" type="text" class='alignInput'></label>
+
+<label><span class="prompt">Review</span><textarea required name="MESSAGE" class='alignInput'></textarea></label>
+
+<label>
+	<span class="prompt">Score</span>
+	<select name="RATING" id="reviewsRating">
+		<option value="10">5</option>
+		<option value="9">4.5</option>
+		<option value="8">4</option>
+		<option value="7">3.5</option>
+		<option value="6">3</option>
+		<option value="5">2.5</option>
+		<option value="4">2</option>
+		<option value="3">1.5</option>
+		<option value="2">1</option>
+		<option value="1">.5</option>
+	</select>
+</label>
+
+<button class="applyButton floatRight marginTop">Submit Review</button>
 
 </form>
 </div>
-
-
-
-
-
-<div id='subscribeFormTemplate'>
-<form action='#' name='subscribeFrm' onSubmit="app.ext.store_crm.u.handleSubscribe($(this)); return false">
-
-<fieldset class='userInfo borderNone'>
-<div>
-<input type='email' placeholder='email address' maxlength='50' size='30' required='required' name='login' value='' />
-</div>
-
-<div>
-<input type='text' placeholder='full name' maxlength='50' size='30' required='required' name='fullname' value='' />
-</div>
-</fieldset>
-
-<fieldset data-bind="var:newsletters(@lists); format:subscribeCheckboxes; extension:store_crm;" class='borderNone subscriberLists'></fieldset>
-
-<input type='submit' class='ui-button-text ui-button ui-state-default ui-corner-all' value='Subscribe' />
-
-</form>
-</div>
-
 
 
 
@@ -2226,15 +2138,15 @@ used for store_crm.js
 
 <!-- used in the /customer section for order view -->
 
-<section id='orderLineItemTemplate' class='appAccordianesque' data-bind='var:order(ORDERID);format:assignAttribute; attribute:data-orderid;'>
+<section data-tlc="bind $var '.ORDERID'; apply --attrib='data-orderid';" id="orderLineItemTemplate" class="appAccordianesque" data-app-role="orderLineitemContainer">
 
-	<div data-app-role='orderHeader' onClick="app.ext.myRIA.u.showOrderDetails($(this).parent());" class='ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom' >
+	<div data-app-role="orderHeader" data-app-click="quickstart|orderDetailShow" class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom">
 	<span class="ui-icon ui-icon-triangle-1-e floatLeft marginRight"></span>
-	<span data-bind='var:order(ORDERID);format:text;pretext:Order ID: ;'></span>
-	<span data-bind='var:order(MODIFIED_GMT);format:unix2mdy; pretext: Placed on ;'></span>
+	<span data-tlc="bind $var '.ORDERID'; if (is $var --notblank;) {{ format --prepend='Order ID: ';apply --append;}};"></span>
+	<span data-tlc="bind $var '.MODIFIED_GMT'; if (is $var --notblank;) {{datetime --out='mdy'; format --prepend='Placed on '; apply --append;}};"></span>
 	</div>
 
-	<div data-app-role='orderContents' class='ui-accordion-content ui-helper-reset displayNone ui-widget-content '></div>
+	<div data-app-role="orderContents" class="ui-accordion-content ui-helper-reset displayNone ui-widget-content "></div>
 
 </section>
 
@@ -2245,22 +2157,21 @@ used for store_crm.js
 
 
 
+<section id="faqTopicTemplate">
 
-<section  id='faqTopicTemplate'>
-
-	<div class='ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom' data-bind='var:faq(TOPIC_ID);format:assignAttribute; attribute:data-topicid;' onClick="app.ext.myRIA.a.showFAQbyTopic($(this).attr('data-topicid'));">
+	<div class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-top ui-corner-bottom" data-app-click="quickstart|faqDetailShow">
 	<span class="ui-icon ui-icon-triangle-1-e floatLeft marginRight"></span>
-	<span data-bind='var:faq(TOPIC_TITLE);format:text;'></span>
+	<span data-tlc="bind $var '.TOPIC_TITLE'; if (is $var --notblank;) {{apply --append;}};"></span>
 	</div>
 
-	<div data-bind='var:faq(TOPIC_ID);format:assignAttribute; attribute:id; valuePretext:faqDetails4Topic_;' class='ui-accordion-content ui-helper-reset ui-widget-content displayNone'></div>
+	<div data-tlc="bind $var '.TOPIC_ID'; format --prepend='faqDetails4Topic_'; apply --attrib='id';" class="ui-accordion-content ui-helper-reset ui-widget-content displayNone"></div>
 
 </section>
 
 
-<div id='faqQnATemplate'>
-	<div class='faqQuestion' data-bind="var:faq(QUESTION); format:text;"></div>
-	<div class='faqAnswer' data-bind="var:faq(ANSWER); format:text;"></div>
+<div id="faqQnATemplate">
+	<div data-tlc="bind $var '.QUESTION'; if (is $var --notblank;) {{apply --append;}};" class="faqQuestion"></div>
+	<div data-tlc="bind $var '.ANSWER'; if (is $var --notblank;) {{apply --append;}};" class="faqAnswer"></div>
 </div>
 
 
@@ -2272,41 +2183,40 @@ The 'data-action' attribute is used to assign an onclick.
 
 -->
 
-<address id='billAddressTemplate' class='ui-widget ui-widget-content ui-corner-all marginBottom '>
-	<button data-app-event="myRIA|showBuyerAddressUpdate" class='floatRight'>edit</button>
-	<div class='addressFullname'>
-		<span data-bind="var: address(bill/firstname);format:text;"  title='first name'></span>
-		<span data-bind="var: address(bill/lastname);format:text;"  title='last name'></span>
+<address id="billAddressTemplate" class="ui-widget ui-widget-content ui-corner-all marginBottom ">
+	<button data-app-click="quickstart|showBuyerAddressUpdate" class="floatRight applyButton">edit</button>
+	<div class="addressFullname">
+		<span data-tlc="bind $var '.bill/firstname'; if (is $var --notblank;) {{apply --append;}};" title="first name"></span>
+		<span data-tlc="bind $var '.bill/lastname'; if (is $var --notblank;) {{apply --append;}};" title="last name"></span>
 	</div>
-	<div class='address'>
-		<div data-bind="var: address(bill/address1);format:text;"  title='address'></div>
-		<div data-bind="var: address(bill/address2);format:text;"  title='address 2'></div>
+	<div class="address">
+		<div data-tlc="bind $var '.bill/address1'; if (is $var --notblank;) {{apply --append;}};" title="address"></div>
+		<div data-tlc="bind $var '.bill/address2'; if (is $var --notblank;) {{apply --append;}};" title="address 2"></div>
 
-		<span data-bind="var: address(bill/city);format:text;"  title='city'></span>,
-		<span data-bind="var: address(bill/region);format:text;"  title='state'></span>.
-		<span data-bind="var: address(bill/postal);format:text;"  title='zip'></span>
-		<div data-bind="var: address(bill/countrycode);format:text;" title='country'></div>
-
+		<span data-tlc="bind $var '.bill/city'; if (is $var --notblank;) {{format --append=', '; apply --append;}};" title="city"></span>
+		<span data-tlc="bind $var '.bill/region'; if (is $var --notblank;) {{format --append='. '; apply --append;}};" title="state"></span>
+		<span data-tlc="bind $var '.bill/postal'; if (is $var --notblank;) {{apply --append;}};" title="zip"></span>
+		<div data-tlc="bind $var '.bill/countrycode'; if (is $var --notblank;) {{apply --append;}};" title="country"></div>
 	</div>
 
 </address>
 
 
 <!-- used in the my account area -->
-<address id='shipAddressTemplate' class='ui-widget ui-widget-content ui-corner-all marginBottom '>
-	<button data-app-event="myRIA|showBuyerAddressUpdate" class='floatRight'>edit</button>
-	<div class='addressFullname'>
-		<span data-bind="var: address(ship/firstname);format:text;"  title='first name'></span>
-		<span data-bind="var: address(ship/lastname);format:text;"  title='last name'></span>
+<address id="shipAddressTemplate" class="ui-widget ui-widget-content ui-corner-all marginBottom ">
+	<button data-app-click="quickstart|showBuyerAddressUpdate" class="floatRight applyButton">edit</button>
+	<div class="addressFullname">
+		<span data-tlc="bind $var '.ship/firstname'; if (is $var --notblank;) {{apply --append;}};" title="first name"></span>
+		<span data-tlc="bind $var '.ship/lastname'; if (is $var --notblank;) {{apply --append;}};" title="last name"></span>
 	</div>
-	<div class='address'>
-		<div data-bind="var: address(ship/address1);format:text;"  title='address'></div>
-		<div data-bind="var: address(ship/address2);format:text;"  title='address 2'></div>
+	<div class="address">
+		<div data-tlc="bind $var '.ship/address1'; if (is $var --notblank;) {{apply --append;}};" title="address"></div>
+		<div data-tlc="bind $var '.ship/address2'; if (is $var --notblank;) {{apply --append;}};" title="address 2"></div>
 
-		<span data-bind="var: address(ship/city);format:text;"  title='city'></span>,
-		<span data-bind="var: address(ship/region);format:text;"  title='state'></span>.
-		<span data-bind="var: address(ship/postal);format:text;"  title='zip'></span>
-		<div data-bind="var: address(ship/countrycode);format:text;" title='country'></div>
+		<span data-tlc="bind $var '.ship/city'; if (is $var --notblank;) {{format --append=', '; apply --append;}};" title="city"></span>
+		<span data-tlc="bind $var '.ship/region'; if (is $var --notblank;) {{format --append='. '; apply --append;}};" title="state"></span>
+		<span data-tlc="bind $var '.ship/postal'; if (is $var --notblank;) {{apply --append;}};" title="zip"></span>
+		<div data-tlc="bind $var '.ship/countrycode'; if (is $var --notblank;) {{apply --append;}};" title="country"></div>
 
 	</div>
 
@@ -2315,70 +2225,65 @@ The 'data-action' attribute is used to assign an onclick.
 
 
 
-<table class='orderContentsTable' data-app-role='invoiceContainer' id='invoiceTemplate'>
-<tr>
-	<td colspan='2'>
-<div class='floatRight'>
-<button data-app-event="myRIA|execOrder2Cart">Re-order</button>
-<button data-app-event="orderCreate|execInvoicePrint">Print Invoice</button>
-</div>
+<div class="orderContentsTable" data-app-role="invoiceContainer" id="invoiceTemplate">
 
-<h3 data-bind='var:order(order/flow/pool);format:text; pretext:Order Status: ;'></h3>
+	<div class="clearfix marginBottom">
+		<div class="floatRight">
+		<button data-app-click="quickstart|execOrder2Cart" class="applyButton" data-text="false" data-icon-primary="ui-icon-arrowrefresh-1-w">Re-order</button>
+		<button data-app-click="order_create|execInvoicePrint" class="applyButton" data-text="false" data-icon-primary="ui-icon-print">Print Invoice</button>
+		</div>
+	
+		<h3 data-tlc="bind $var '.order.flow.pool'; format --prepend='Order Status: '; if (is $var --notblank;) {{apply --append;}};"></h3>
+		<h5 data-tlc="bind $var '.order.sum.order_total'; format --prepend='Order Total: '; format --currency='USD'; if (is $var --notblank;) {{apply --append;}};" class="orderTotal"></h5>
+		<h5 data-tlc="bind $var '.order.sum.balance_due_total'; format --prepend='Balance Due: '; format --currency='USD'; if (is $var --notblank;) {{apply --append;}};" class="balanceDue"></h5>
 
-	</td>
-</tr>
-<tr>
-	<td>
-<hgroup class='marginBottom'>
-<!-- print icon -->
+	</div>
 
+	<section class="clearfix invoiceAddressContainer marginBottom">
 
-<!-- <h2 data-bind='var:order(bill/firstname);format:text; pretext:Shipping Status: ;'></h2> -->
+		<address class="billAddress">
+		<b>
+			<span data-tlc="bind $var '.order.bill.firstname'; format --prepend='Bill To: '; if (is $var --notblank;) {{apply --append;}};"></span>
+			<span data-tlc="bind $var '.order.bill.lastname'; if (is $var --notblank;) {{apply --append;}};"></span>
+		</b>
+		<div data-tlc="bind $var '.order.bill.address1'; if (is $var --notblank;) {{apply --append;}};"></div>
+		<div data-tlc="bind $var '.order.bill.address2'; if (is $var --notblank;) {{apply --append;}};"></div>
+		<div>
+			<span data-tlc="bind $var '.order.bill.city'; format --append=', '; if (is $var --notblank;) {{apply --append;}};"></span>
+			<span data-tlc="bind $var '.order.bill.region'; format --append='. '; if (is $var --notblank;) {{apply --append;}};"></span>
+			<span data-tlc="bind $var '.order.bill.postal'; if(is $var --blank) {{bind $var 'order(order.data.bill_int_zip)';}}; if (is $var --notblank;) {{apply --append;}};"></span>
+		</div>
+		<div data-tlc="bind $var '.order.bill.countrycode'; if (is $var --notblank;) {{apply --append;}};"></div>
+		</address>
 
-<h5 class='orderTotal' data-bind='var:order(order/sum/order_total);format:money; currencySign: $;  hideZero:false; pretext:Order Total: ;'></h5>
-<h5 class='balanceDue' data-bind='var:order(order/sum/balance_due_total);format:money; currencySign: $;  hideZero:false; pretext:Balance Due: ;'></h5>
-</hgroup>
+		<address class="shipAddress">
+		<b>
+			<span data-tlc="bind $var '.order.ship.firstname'; format --prepend='Ship To: '; if (is $var --notblank;) {{apply --append;}};"></span>
+			<span data-tlc="bind $var '.order.ship.lastname'; if (is $var --notblank;) {{apply --append;}};"></span>
+		</b>
+		<div data-tlc="bind $var '.order.ship.address1'; if (is $var --notblank;) {{apply --append;}};"></div>
+		<div data-tlc="bind $var '.order.ship.address2'; if (is $var --notblank;) {{apply --append;}};"></div>
+		<div>
+			<span data-tlc="bind $var '.order.ship.city'; format --append=', '; if (is $var --notblank;) {{apply --append;}};"></span>
+			<span data-tlc="bind $var '.order.ship.region'; format --append='. '; if (is $var --notblank;) {{apply --append;}};"></span>
+			<span data-tlc="bind $var '.order.ship.postal'; if (is $var --notblank;) {{apply --append;}};"></span>
+		</div>
+		<div data-tlc="bind $var '.order.ship.countrycode'; if (is $var --notblank;) {{apply --append;}};"></div>
+		</address>
 
-<address class='marginBottom'>
-<b>
-	<span data-bind='var:order(order/bill/firstname);format:text; pretext:Bill To: ;'></span>
-	<span data-bind='var:order(order/bill/lastname);format:text;'></span>
-</b>
-<div data-bind='var:order(order/bill/address1);format:text;'></div>
-<div data-bind='var:order(order/bill/address2);format:text;'></div>
-<div>
-	<span data-bind='var:order(order/bill/city);format:text;posttext:, ;'></span>
-	<span data-bind='var:order(order/bill/region);format:text;posttext:. ;'></span>
-	<span data-bind='var:order(order/bill/postal);format:text; defaultVar:order(order/data.bill_int_zip);'></span>
-</div>
-<div data-bind='var:order(order/bill/countrycode);format:text;'></div>
-</address>
+	</section>
 
-<address class='marginBottom'>
-<b>
-	<span data-bind='var:order(order/ship/firstname);format:text; pretext:Ship To: ;'></span>
-	<span data-bind='var:order(order/ship/lastname);format:text;'></span>
-</b>
-<div data-bind='var:order(order/ship/address1);format:text;'></div>
-<div data-bind='var:order(order/ship/address2);format:text;'></div>
-<div>
-	<span data-bind='var:order(order/ship/city);format:text;posttext:, ;'></span>
-	<span data-bind='var:order(order/ship/region);format:text;posttext:. ;'></span>
-	<span data-bind='var:order(order/ship/postal);format:text;'></span>
-</div>
-<div data-bind='var:order(order/ship/countrycode);format:text;'></div>
-</address>
-
-
-	</td>
-	<td class='orderContentsProdlistContainer'>
-	<ul data-bind='var:order(order/tracking); format:orderTrackingLinks; extension:store_crm;before:<h4>Shipping:</h4>;' class='displayNone noListStyle marginBottom'></ul>
-	<table  class='listStyleNone lineItemProdlist'>
-		<tbody data-bind="var: order(order/@ITEMS); format:stuffList; loadsTemplate:chkoutInvoiceItemTemplate;"></tbody>
+	<section class="orderContentsProdlistContainer">
+	<ul data-tlc="bind $var '.order.tracking'; store_crm#ordertrackinglinks  --legacy; apply --append;" class="displayNone noListStyle marginBottom"></ul>
+	<table class="listStyleNone lineItemProdlist">
+		<tbody data-tlc="bind $var '.order.@ITEMS'; controller#loop --templateid='chkoutInvoiceItemTemplate'; if (is $var --notblank;) {{apply --append;}};"></tbody>
 	</table>
-	</td>
-</tr>
-</table>
+	</section>
+
+
+</div>
+
+
 
 
 
@@ -2403,102 +2308,64 @@ The 'data-action' attribute is used to assign an onclick.
 
 
 
-<div id='loginFormForModal' class='loginOption displayNone' title='Please log in'>
+
+<div id='loginFormForModal' class='loginOption displayNone seoStrip' title='Please log in'>
 
 <!-- the contents of this div/id are toggled on/off when login/logout occurs. don't change the ID -->
 
 
-<p id='loginMessaging' class='marginBottom appMessaging'></p>
+	<p id='loginMessaging' class='marginBottom appMessaging'></p>
 
-<div id='loginFormContainer'>
-<form action='#' onSubmit='app.ext.myRIA.u.loginFrmSubmit($("#modalLoginlogin").val(),$("#modalLoginpassword").val()); return false;' id='modalLoginForm'>
-<input type='hidden' name='loginCallback' id='loginCallback' value='' /><!-- used to save a callback action in -->
-	<fieldset>
+	<div id='loginFormContainer'>
+		<form action='#' data-app-submit='quickstart|accountLoginSubmit' class='marginBottom alignedForm'>
+		<input type='hidden' name='method' value='unsecure' />
+		<input type='hidden' name='loginCallback' id='loginCallback' value='' /><!-- used to save a callback action in -->
+			<fieldset>
+			<legend>Account Login</legend>
+			<label>
+				<span class='prompt'>Login/Email</span>
+				<input type='email' class='alignInput' required='required'  name='login' value='' size='25'  />
+			</label>
+			<label>
+				<span class='prompt'>Password</span>
+				<input type='password' class='alignInput' required='required'  name='password' value='' size='25'  />	
+			</label>
+			<div class='alignRight'>
+			<input type='submit' value='log in' class='applyButton ' />
+			</div>
+			</fieldset>
+		</form>
 
-	<div>
-	<label for='modalLoginlogin'>Login/Email</label>
-	<input type='email' class='zform_textbox zform_email'  name='login' id='modalLoginlogin' value='' size='25' />
+		<div id='recoverPasswordContainer' class='marginBottom'>
+			<div id='recoverPasswordMessaging' class='appMessaging'></div>
+			<form action='#' data-app-submit='quickstart|accountPasswordRecoverSubmit' class='alignedForm'>
+			<fieldset>
+			<legend>Recover Password</legend>
+			<label>
+				<span class='prompt'>Login/Email</span>
+				<input type='text' name='login' required='required' size='25' class='alignInput' />
+			</label>
+			<div class='alignRight'><input type='submit' class='applyButton' value='Email Password to Me' /></div>
+			</fieldset>
+			</form>
+		</div><!-- /recoverPasswordContainer -->
+
+		<div>
+		<a class='applyButton' href='#!customer/newsletter'>Create Account</a>
+		</div>
 	</div>
-
-	<div>
-	<label for='modalLoginpassword'>Password</label>
-	<input type='password' class='zform_textbox zform_password'   name='password' id='modalLoginpassword' value='' size='25' />
-	</div>
-
-	<div>
-	<input type='submit' value='log in' class='ui-button-text ui-button ui-state-default ui-corner-all ' />
-	</div>
-	</fieldset>
-</form>
-
-<div id='recoverPasswordContainer'>
-<hr />
-
-<h3 class='marginBottom'>Recover Password</h3>
-<div id='recoverPasswordMessaging'></div>
-<form action='#' onSubmit="app.calls.appBuyerPasswordRecover.init($('#passwordRecoveryLogin').val(),{'callback':'showMessaging','message':'Thank you, will receive an email shortly','targetID':'recoverPasswordMessaging'}); app.model.dispatchThis('immutable'); return false;">
-<fieldset>
-<div class='marginBottom'><label for='passwordRecoveryLogin'>Login/Email</label> <input type='text' name='login' required='required' id='passwordRecoveryLogin' size='25' /></div>
-
-<div><input type='submit' class='ui-button-text ui-button ui-state-default ui-corner-all ' value='Email Password to Me' /></div>
-
-</fieldset>
-</form>
-
-</div><!-- /recoverPasswordContainer -->
-
-<div>
-<hr />
-<button class='ui-button-text ui-button ui-state-default ui-corner-all ' onClick="showContent('customer',{'show':'newsletter'});">Create Account</button>
-</div>
-
-
-
-</div>
 
 <!-- this div will appear after a successful login. if you bind a new action to the button, best to empty the div and re-add the button, so the actions don't statck. -->
 	<div id='loginSuccessContainer' class='center displayNone'>
-		<button class='ui-button-text ui-button ui-state-default ui-corner-all ' id='modalLoginContinueButton' onClick="$('#loginFormForModal').dialog('close');">Continue</button>
+		<button class='applyButton' id='modalLoginContinueButton' data-app-click="quickstart|dialogCloseExec">Continue</button>
 	</div>
-</div>
-
-
-
-<div class='debug displayNone'>
-<table>
-<tr>
-	<td>
-<ul class='debugQuickLinks'>
-	<li>Store Links
-	<ul>
-		<li><a href='#' onClick="return showContent('homepage',{});">Homepage</a></li>
-		<li><a href='#' onClick="return showContent('customer',{'show':'orders'});">Orders</a></li>
-		<li><a href='#' onClick="return showContent('cart',{'show':'cart'});">Cart</a></li>
-		<li><a href='#' onClick="app.ext.store_cart.u.showCartInModal({'templateID':'cartTemplate'});">CartInModal</a></li>
-		<li><a href='#' onClick="return showContent('company',{'show':'return'});">Returns</a></li>
-		<li><a href='#' onClick="return showContent('company',{'show':'privacy'});">Privacy</a></li>
-		<li><a href='#' onClick="return quickView('category',{'navcat':'.air_fresheners','templateID':'categoryTemplate'});">Cat in Modal</a></li>
-	</ul>
-	</li>
-	<li>Some JS test links
-	<ul>
-		<li><a href='#' onClick="localStorage.clear();">Clear Local Storage</a></li>
-		<li><a href='#' onClick="app.ext.orderCreate.a.startCheckout($('#mainContentArea'));">mobile checkout</a></li>
-		<li><a href='#' onClick="app.u.throwGMessage('All your base are belong to us','mainContentArea');">throwGmessage</a></li>
-	</ul>
-	</li>
-</ul>
-	</td>
-	<td>
-<form name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get">
-	<input type='search' name='KEYWORDS' placeholder='product search' class="productSearchKeyword handleDefault" />
-	<button>Search</button>
-</form>
-	</td>
-</tr>
-</table>
 
 </div>
+
+
+
+<div id='appversion'></div>
+
 
 
 </body>

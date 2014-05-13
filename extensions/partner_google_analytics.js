@@ -22,7 +22,7 @@ The functions here are designed to work with 'reasonable' size lists of categori
 */
 
 
-var google_analytics = function() {
+var google_analytics = function(_app) {
 	var r = {
 		
 		vars : {
@@ -43,9 +43,9 @@ To keep this extension as self-contained as possible, it loads it's own script.
 the callback is handled in the extension loader. It will handle sequencing for the most part.
 The startExtension will re-execute if this script isn't loaded until it has finished loading.
 */
-					app.u.loadScript(('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js');
+					_app.u.loadScript(('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js');
 					if(zGlobals.checkoutSettings.googleCheckoutMerchantId)	{
-						app.u.loadScript(('https:' == document.location.protocol ? 'https://' : 'http://') + 'checkout.google.com/files/digital/ga_post.js'); //needed 4 tracking google wallet orders in GA.
+						_app.u.loadScript(('https:' == document.location.protocol ? 'https://' : 'http://') + 'checkout.google.com/files/digital/ga_post.js'); //needed 4 tracking google wallet orders in GA.
 						}
 
 					return true;
@@ -53,63 +53,121 @@ The startExtension will re-execute if this script isn't loaded until it has fini
 				onError : function()	{
 	//errors will get reported for this callback as part of the extensions loading.  This is here for extra error handling purposes.
 	//you may or may not need it.
-					app.u.dump('BEGIN app.ext.google_analytics.callbacks.init.onError');
+					_app.u.dump('BEGIN _app.ext.google_analytics.callbacks.init.onError');
 					}
 				},
 
 			startExtension : {
 				onSuccess : function(){
-//					app.u.dump("BEGIN google_analytics.callbacks.startExtension.onSuccess");
+//					_app.u.dump("BEGIN google_analytics.callbacks.startExtension.onSuccess");
 
-//make sure that not only has myRIA been loaded, but that the createTemplateFunctions has executed
-					if(app.ext.myRIA && app.ext.myRIA.template && typeof _gaq == 'object')	{
+//make sure that not only has quickstart been loaded, but that the createTemplateFunctions has executed
+					if(_app.templates && _app.templates.productTemplate && typeof _gaq == 'object')	{
 
-//app.u.dump(" -> adding triggers");
-app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/index.html']); app.ext.google_analytics.u.handleAntiBounceEvent(P);})
-app.ext.myRIA.template.categoryTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/category/'+P.navcat]); app.ext.google_analytics.u.handleAntiBounceEvent(P);})
-app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/product/'+P.pid]); app.ext.google_analytics.u.handleAntiBounceEvent(P);})
-app.ext.myRIA.template.companyTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/company/'+P.show]); app.ext.google_analytics.u.handleAntiBounceEvent(P);})
-app.ext.myRIA.template.customerTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/customer/'+P.show]); app.ext.google_analytics.u.handleAntiBounceEvent(P);}) 
-app.ext.myRIA.template.checkoutTemplate.onInits.push(function(P) {_gaq.push(['_trackPageview', '/checkout']); app.ext.google_analytics.u.handleAntiBounceEvent(P);}) 
+//_app.u.dump(" -> adding triggers");
+_app.templates.homepageTemplate.on('complete.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/index.html']); _app.ext.google_analytics.u.handleAntiBounceEvent(P);})
+_app.templates.categoryTemplate.on('complete.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/category/'+P.navcat]); _app.ext.google_analytics.u.handleAntiBounceEvent(P);})
+_app.templates.productTemplate.on('complete.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/product/'+P.pid]); _app.ext.google_analytics.u.handleAntiBounceEvent(P);})
+_app.templates.companyTemplate.on('complete.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/company/'+P.show]); _app.ext.google_analytics.u.handleAntiBounceEvent(P);})
+_app.templates.customerTemplate.on('complete.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/customer/'+P.show]); _app.ext.google_analytics.u.handleAntiBounceEvent(P);}) 
+_app.templates.checkoutTemplate.on('init.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/checkout']); _app.ext.google_analytics.u.handleAntiBounceEvent(P);}) 
 
-app.ext.myRIA.template.searchTemplate.onInits.push(function(P) {
+_app.templates.searchTemplate.on('init.googleanalytics',function(event,$ele,P) {
 	_gaq.push('_trackPageview','/search?KEYWORDS='+P.KEYWORDS);
-	app.ext.google_analytics.u.handleAntiBounceEvent(P);
+	_app.ext.google_analytics.u.handleAntiBounceEvent(P);
 	}) 
 //404's don't execute the anti-bounce event because if you go homepage then 404 and leave, it should register as a bounce.
-app.ext.myRIA.template.pageNotFoundTemplate.onCompletes.push(function(P) {_gaq.push(['_trackPageview', '/404.html?page=' + document.location.pathname + document.location.search + '&from=' + document.referrer]);})
+_app.templates.pageNotFoundTemplate.on('complete.googleanalytics',function(event,$ele,P) {_gaq.push(['_trackPageview', '/404.html?page=' + document.location.pathname + document.location.search + '&from=' + document.referrer]);})
 
 
-// Google Analytics TrackTrans
-app.ext.orderCreate.checkoutCompletes.push(function(P){
-	app.u.dump("BEGIN google_analytics code pushed on orderCreate.checkoutCompletes");
-	if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
-		var order = app.data[P.datapointer].order;
-		_gaq.push(['_addTrans',
-			  P.orderID,           // order ID - required
-			  '', // affiliation or store name
-			  order.sum.order_total,          // total - required
-			  order.sum.tax_total,           // tax
-			  order.sum.ship_total,          // shipping
-			  order.sum.city,       // city
-			  order.sum.region,     // state or province
-			  order.sum.countrycode             // country
-		   ]);
-	
-		var L = order['@ITEMS'].length;
-		app.u.dump(" -> "+L+" items in @ITEMS");
-	
-		for(var i = 0; i < L; i += 1)	{
-			_gaq.push(['_addItem',
-				P.orderID,         // order ID - necessary to associate item with transaction
-				order['@ITEMS'][i].product,         // SKU/code - required
-				order['@ITEMS'][i].prod_name,      // product name - necessary to associate revenue with product
-				order['@ITEMS'][i].stid, // category or variation
-				order['@ITEMS'][i].base_price,        // unit price - required
-				order['@ITEMS'][i].qty             // quantity - required
-				]);
+//for GoogleTrustedStores.
+_app.ext.order_create.checkoutCompletes.push(function(P){
+	if(typeof window.GoogleTrustedStore)	{
+		if(P && P.datapointer && _app.data[P.datapointer] && _app.data[P.datapointer].order)	{
+			var order = _app.data[P.datapointer].order,
+			$div = $("<div \/>",{'id':'gts-order'}),
+			L = order['@ITEMS'].length, hasPreBack = 'N', discounts = 0;
+			
+			for(var i = 0; i < L; i += 1)	{
+				if(order['@ITEMS'][i].sku.charAt(0) == '%')	{discounts += Number(order['@ITEMS'][i].extended)}
+				}
+			
+			$("<span \/>",{'id':'gts-o-id'}).text(P.orderID).appendTo($div);
+			$("<span \/>",{'id':'gts-o-domain'}).text(document.domain).appendTo($div); //sdomain
+			$("<span \/>",{'id':'gts-o-email'}).text(order.customer.login || order.bill.email).appendTo($div);
+			$("<span \/>",{'id':'gts-o-country'}).text(order.bill.countrycode).appendTo($div);
+			$("<span \/>",{'id':'gts-o-total'}).text(order.sum.order_total).appendTo($div);
+			$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
+			$("<span \/>",{'id':'gts-o-discounts'}).text(discounts).appendTo($div);
+			$("<span \/>",{'id':'gts-o-shipping-total'}).text(order.sum.ship_total).appendTo($div);
+			$("<span \/>",{'id':'gts-o-tax-total'}).text(order.sum.tax_total).appendTo($div);
+			//$("<span \/>",{'id':'gts-o-est-ship-date'}).text("").appendTo($div); //!!! needs to be set.
+			$("<span \/>",{'id':'gts-o-has-preorder'}).text(hasPreBack).appendTo($div); //set in loop above.
+			$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
+			
+			$div.appendTo('body');
+
+//delete existing object or gts conversion won't load right.
+			delete window.GoogleTrustedStore; 
+//this function will re-load the gts code. The spans above tell the GTS store to treat this as a conversion.
+//so it's important those spans are added to the DOM prior to this code being run.
+			(function() {
+			var scheme = (("https:" == document.location.protocol) ? "https://" : "http://");
+			var gts = document.createElement("script");
+			gts.type = "text/javascript";
+			gts.async = true;
+			gts.src = scheme + "www.googlecommerce.com/trustedstores/gtmp_compiled.js";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(gts, s);
+			})();
+
+
 			}
-		_gaq.push(['_trackTrans']);
+		else	{
+			//unable to determine order contents.
+			}
+		}
+	});
+
+
+_app.ext.order_create.checkoutCompletes.push(function(P){
+	_app.u.dump("BEGIN google_analytics code pushed on order_create.checkoutCompletes");
+	if(P && P.datapointer && _app.data[P.datapointer] && _app.data[P.datapointer].order)	{
+		var order = _app.data[P.datapointer].order;
+		if(_app.data[P.datapointer].payment_status && _app.data[P.datapointer].payment_status.charAt(0) == 0)	{
+
+			_gaq.push(['_addTrans',
+				  P.orderID,           // order ID - required
+				  '', // affiliation or store name
+				  order.sum.order_total,          // total - required
+				  order.sum.tax_total,           // tax
+				  order.sum.ship_total,          // shipping
+				  order.sum.city,       // city
+				  order.sum.region,     // state or province
+				  order.sum.countrycode             // country
+			   ]);
+		
+			var L = order['@ITEMS'].length;
+			_app.u.dump(" -> "+L+" items in @ITEMS");
+		
+			for(var i = 0; i < L; i += 1)	{
+				_gaq.push(['_addItem',
+					P.orderID,         // order ID - necessary to associate item with transaction
+					order['@ITEMS'][i].product,         // SKU/code - required
+					order['@ITEMS'][i].prod_name,      // product name - necessary to associate revenue with product
+					order['@ITEMS'][i].stid, // category or variation
+					order['@ITEMS'][i].base_price,        // unit price - required
+					order['@ITEMS'][i].qty             // quantity - required
+					]);
+				}
+			_gaq.push(['_trackTrans']);
+
+
+			}
+		else	{
+			//payment was declined or some kind of error occured. Do not track as conversion.
+			
+			}
 		}
 	else	{
 		//unable to determine order contents.
@@ -118,109 +176,8 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 
 						}
 					else	{
-						setTimeout(function(){app.ext.google_analytics.callbacks.startExtension.onSuccess()},250);
-						} //// END if(app.ext.myRIA && app.ext.myRIA.template && typeof _gaq == 'object')
-
-
-//////////// Handlers for GoogleTrustedStores \\\\\\\\\\\\\\\\
-					if(app.ext.myRIA && app.ext.myRIA.template && window.gts) {
-						
-app.ext.myRIA.template.homepageTemplate.onCompletes.push(function(P) { app.ext.google_analytics.u.gtsInit(P); });
-app.ext.myRIA.template.categoryTemplate.onCompletes.push(function(P) { app.ext.google_analytics.u.gtsInit(P); });
-app.ext.myRIA.template.productTemplate.onCompletes.push(function(P) {
-	// change google_base_offer_id in "gts" array to the current PID and re-init gts
-	if(P.pid && window.gts && window.gts.length) {
-		for (var i = 0; i < window.gts.length; i++) {
-			if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = P.pid }
-			}
-		}
-	app.ext.google_analytics.u.gtsInit(P);
-	});
-
-app.ext.orderCreate.checkoutCompletes.push(function(P){
-	if(window.gts)	{
-		if(P && P.datapointer && app.data[P.datapointer] && app.data[P.datapointer].order)	{
-			
-			//app.u.dump(" ---------- In checkoutCompletes, dumping order ------------ ");
-			//app.u.dump(app.data[P.datapointer].order);
-			
-			Date.prototype.yyyymmdd = function() { // returns date in YYYY-MM-DD format
-				var yyyy = this.getFullYear().toString();
-				var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-				var dd  = this.getDate().toString();
-				return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]); // padding
-			};
-		
-			// Tikimaster usually dispatches orders within 1-2 days
-			var estShipDate = new Date();
-			estShipDate.setDate(estShipDate.getDate() + 2); // today + 2 days
-			estShipDate = estShipDate.yyyymmdd(); // YYYY-MM-DD
-			
-			var order = app.data[P.datapointer].order,
-			$div = $("<div \/>",{'id':'gts-order','style':'display:none;'}),
-			L = order['@ITEMS'].length, hasPreBack = 'N', discounts = 0;
-			
-			for(var i = 0; i < L; i += 1)	{
-				if(order['@ITEMS'][i].sku.charAt(0) == '%')	{discounts += Number(order['@ITEMS'][i].extended)}
-				}
-			
-			var google_base_offer_id = '', google_base_subaccount_id = '';
-			
-			if(order['@ITEMS'] && order['@ITEMS'][0] && order['@ITEMS'][0].product) {
-				google_base_offer_id = order['@ITEMS'][0].product;
-			}
-			
-			// extract google shopping store id from window.gts
-			// set first order product ID into window.gts -> google_base_offer_id
-			for (var i = 0; i < window.gts.length; i++) {
-				if(window.gts[i][0] == "google_base_subaccount_id" ) { google_base_subaccount_id = window.gts[i][1] }
-				if(window.gts[i][0] == "google_base_offer_id" ) { window.gts[i][1] = google_base_offer_id }
-				}
-			
-			// prepare gts-o section with Order totals
-			$("<span \/>",{'id':'gts-o-id'}).text(P.orderID).appendTo($div);
-			$("<span \/>",{'id':'gts-o-domain'}).text(document.domain).appendTo($div); //sdomain
-			$("<span \/>",{'id':'gts-o-email'}).text(order.customer.login || order.bill.email).appendTo($div);
-			$("<span \/>",{'id':'gts-o-country'}).text(order.bill.countrycode).appendTo($div);
-			$("<span \/>",{'id':'gts-o-total'}).text(order.sum.order_total).appendTo($div);
-			$("<span \/>",{'id':'gts-o-currency'}).text('USD').appendTo($div);
-			$("<span \/>",{'id':'gts-o-discounts'}).text(discounts).appendTo($div);
-			$("<span \/>",{'id':'gts-o-shipping-total'}).text(order.sum.shp_total).appendTo($div);
-			$("<span \/>",{'id':'gts-o-tax-total'}).text(order.sum.tax_total).appendTo($div);
-			$("<span \/>",{'id':'gts-o-est-ship-date'}).text(estShipDate).appendTo($div); //!!! needs to be set.
-			$("<span \/>",{'id':'gts-o-has-preorder'}).text(hasPreBack).appendTo($div); //set in loop above.
-			$("<span \/>",{'id':'gts-o-has-digital'}).text('N').appendTo($div);
-			
-			// prepare gts-i sections for all Items in the order
-			for(var i = 0; i < L; i += 1) {
-				var $itemSpan = $("<span \/>",{'class':'gts-item'});
-				$("<span \/>",{'class':'gts-i-name'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-price'}).text(order['@ITEMS'][i].base_price).appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-quantity'}).text(order['@ITEMS'][i].qty).appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-id'}).text(order['@ITEMS'][i].product).appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-store-id'}).text(google_base_subaccount_id).appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-country'}).text('US').appendTo($itemSpan);
-				$("<span \/>",{'class':'gts-i-prodsearch-language'}).text('EN').appendTo($itemSpan);
-				
-				$itemSpan.appendTo($div);
-				}
-			
-			window.gts_order = $div.html();
-
-			//re-load the gts code. The spans above tell the GTS store to treat this as a conversion.
-			// gts code is loaded into iframe and will pick up parent.gts_order structure
-			app.ext.google_analytics.u.gtsInit(P);
-			
-			
-			}
-		else	{
-			//unable to determine order contents.
-			}
-		}
-	}); // end .push
+						setTimeout(function(){_app.ext.google_analytics.callbacks.startExtension.onSuccess()},250);
 						}
-///////// END - Handlers for GoogleTrustedStores \\\\\\\\\\
-
 
 					},
 				onError : function(){}
@@ -229,68 +186,14 @@ app.ext.orderCreate.checkoutCompletes.push(function(P){
 			u : {
 				handleAntiBounceEvent : function(P)	{
 //see comment up by var triggerBounceCode for what this is for.
-					if(!app.ext.google_analytics.vars.triggeredBounceCode)	{
+					if(!_app.ext.google_analytics.vars.triggeredBounceCode)	{
 						_gaq.push(['_trackEvent','pageView','navigate','','',false]);
-						app.ext.google_analytics.vars.triggeredBounceCode = true;
+						_app.ext.google_analytics.vars.triggeredBounceCode = true;
 						}
 					else	{
 						//catch. 
 						}
-					},
-				gtsInit : function(P) { // Init Google Trusted Stores code
-					if(window.gts) {
-						
-						// IE < 9 fix - load stylesheets first
-						if (window.attachEvent && !window.addEventListener) { // that's dirty IE8 detection
-							var gts_stylesheet = 'extensions/partner_google_analytics_gts_iefix.css';
-							if (document.createStyleSheet) {
-								document.createStyleSheet(gts_stylesheet);
-								} else {
-								$("head").append('<link rel="stylesheet" type="text/css" href="'+gts_stylesheet+'" />'); 
-								}
-							}
-						
-						// If re-init - remove gts nodes first
-						$("#anycommerce-gts-iframe,.anycommerce-gts-div,.anycommerce-gts-style").remove();
-						
-						// Load gts code into iframe
-						$("<iframe \/>",{
-							'id':'anycommerce-gts-iframe',
-							'src':'extensions/partner_google_analytics_gts_iframe.html',
-							'style':'position:fixed; top:0; left:0; border:none; height:0; width:100%; pointer-events:none;'
-							}).appendTo('body');
-
-						// We load Google Trusted Stores scripts and Badge image into the iframe
-						// creating iframe is the only way to re-load this stuff dynamically
-						// But that means iframe will sit on top of our webpage - that's not good at all
-						// (it's not transparent for the mouse clicks)
-						// sadly we cannot make iframe hidden - then Google will get statistics, but user won't see the badge
-						// let's transfer Badge image from the iframe back to main DOM as a compromise
-						// !!! GTS order complete popup and vignette-bg stay in the iframe - thanks Michael for testing this !!!
-						var transferDivs = setInterval(function(){
-							$('#anycommerce-gts-iframe').contents().find('style:not(.anycommerce-gts-style)').each(function(){
-								$(this).addClass('anycommerce-gts-style');
-								$('<style class="anycommerce-gts-style">'+$(this).text()+'</style>').appendTo('head');
-							});
-							$('#anycommerce-gts-iframe').contents().find('body > div:not(#gts-comm,#gts-order,#gts-g-w,#gts-bgvignette)').each(function(){ $(this).addClass('anycommerce-gts-div'); $('body').append($(this)); $(this).remove });
-							// make iframe height 100% if we got GTS popup on screen
-							if($('#anycommerce-gts-iframe').contents().find('#gts-bgvignette:visible').attr('id')) {
-								$('#anycommerce-gts-iframe').css('height','100%');
-								$('#anycommerce-gts-iframe').css('pointer-events','auto');
-								} else {
-								$('#anycommerce-gts-iframe').css('height','0');
-								$('#anycommerce-gts-iframe').css('pointer-events','none');
-								}
-							},1000);
-						// I hope 30 seconds is enough for GTS scripts to load
-						// and also for the customer to press Yes/No on GTS popup
-						setTimeout(function(){
-							window.clearInterval(transferDivs);
-							$('#anycommerce-gts-iframe').css('height','0');
-							},30000);
-						
-						} // if(window.gts)
-					} // gtsInit
+					}
 				} //util
 		} //r object.
 	return r;

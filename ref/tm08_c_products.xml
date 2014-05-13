@@ -1,0 +1,113 @@
+<TEMPLATE ID="~tm08_c_products" FORMAT="LAYOUT">
+
+
+<!-- ******* -->
+<ELEMENT ID="CYUMPJZ" AUTHOR="jt" PROJECT="195310" TYPE="CONFIG" EXPORT="1" CREATED="20091015070632" TITLE="Category: Features Products" FOLDER="_ticket_195310"></ELEMENT>
+<ELEMENT ID="PAGETITLE" SUB="PAGE_TITLE" TYPE="TITLE"><PRETEXT><![CDATA[<h1 style='color:#ffffff; font-size:18px; font-weight:bold; margin:0px 10px 0px 0px;'>]]></PRETEXT>
+<POSTTEXT><![CDATA[</h1>]]></POSTTEXT>
+</ELEMENT>
+<ELEMENT ID="SUBCATEGORIES" SUB="PAGE_SUBCATS_TEXTONLY" TYPE="SUBCAT" DESCENDTREE="1" MODE="LIST"><HTML><![CDATA[
+<!-- CATEGORY -->
+<a href='<% print($cat_url); %>' style='color:#72533e;'><% print($cat_pretty); %></a>
+<% load($TOTALCOUNT); math(op=>"subtract",var=>$COUNT); math(op=>"subtract",var=>"1"); stop(unless=>$_); print(" &bull; "); %>
+<!-- /CATEGORY -->
+]]></HTML>
+</ELEMENT>
+<ELEMENT ID="PRODLIST_3ITEM" FORMAT="CUSTOM" PROMPT="Product List: first three items" SUB="PAGE_PRODLIST1" MAX="3" TYPE="PRODLIST" ALTERNATE="1" DISABLEPRODUCTS="1" DATA="page:prodlist_custom" COLS="3"><HTML><![CDATA[<!-- product list -->
+<table class='medBottom'>
+<!-- ROW -->
+<tr>
+<!-- PRODUCT -->
+<!-- product: <% print($COUNT); %> -->
+
+	<td class='ztable_row0 zborder alignTop prodlistProdContainer'>
+	<div class='no_underline pointer' title="<% load($zoovy:prod_name); format(encode=>"uri"); print(); %>" onClick="document.location = 
+'<% load($PROD_URL); default(""); print(); %>'">
+		
+<% load($zoovy:prod_thumb);  default("");  default($zoovy:prod_image1); image(w=>"312",h=>"234",bg=>"ffffff",tag=>"1",alt=>$zoovy:prod_name);  print(); %>
+	
+<div class='zcolor prodName'><a href="<% load($PROD_URL); default(""); print(); %>"><% load($zoovy:prod_name); strip(length=>"40"); default("");  format(convert=>"lowercase"); format(encode=>"entity"); print(); %></a></div>
+	
+<div style='line-height:135%; padding:3px;' class='ztable_row_small'>
+<% load($zoovy:prod_desc);  default(""); format(wiki,title1=>"",/title1=>"",title2=>"",/title2=>"",title3=>"",/title3=>"",listitem=>"",/listitem=>"",list=>"",/list=>"",hardbreak=>""); strip(html=>"1",length=>"175"); format(encode=>"entity"); print(); %>
+</div>
+
+<div class='ztable_row_title' style='padding:3px; text-align:right;'><%
+load($zoovy:base_price); format(hidezero); format(money); print();
+%></div>
+
+	</div>
+	</td>
+<!-- /PRODUCT -->
+</tr>
+<!-- /ROW -->
+</table>
+]]></HTML>
+<DIVIDER><![CDATA[
+
+<td><img src='<% loadurp("URL::GRAPHICS_URL"); default(""); print(); %>/blank.gif' height='1' width='11' alt=''></td>
+
+]]></DIVIDER>
+</ELEMENT>
+<ELEMENT ID="PRODLIST2" FORMAT="CUSTOM" PROMPT="Product List" SUB="PAGE_PRODLIST2" PRODUCTS_SKIP="3" TYPE="PRODLIST" ALTERNATE="0" DATA="page:prodlist2_custom" COLS="4"><HTML><![CDATA[<!-- product list -->
+<table class='medBottom'>
+<!-- ROW -->
+<tr>
+<!-- PRODUCT -->
+<!-- product: <% print($COUNT); %> -->
+	<td class='ztable_row0 zborder alignTop prodlistProdContainer'>
+	<div class='no_underline pointer' title="<% load($zoovy:prod_name); format(encode=>"uri"); print(); %>" onClick="document.location = 
+'<% load($PROD_URL); default(""); print(); %>'">
+
+<% load($zoovy:prod_thumb);  default("");  default($zoovy:prod_image1); image(w=>"229",h=>"171",bg=>"ffffff",tag=>"1",alt=>$zoovy:prod_name);  print(); %>
+	
+<div class='zcolor_dark no_underline prodName'><a href="<% load($PROD_URL); default(""); print(); %>"><% load($zoovy:prod_name); default(""); format(convert=>"lowercase"); print(); %></a></div>
+	
+<div style='line-height:135%; padding:3px;' class='ztable_row_small'>
+<% load($zoovy:prod_desc);  default(""); format(wiki,title1=>"",/title1=>"",title2=>"",/title2=>"",title3=>"",/title3=>"",listitem=>"",/listitem=>"",list=>"",/list=>"",hardbreak=>""); strip(length=>"110"); format(encode=>"entity"); print(); %>
+</div>
+
+<div class='ztable_row_title' style='padding:3px; text-align:right;'><%
+load($zoovy:base_price); format(hidezero); format(money); print();
+%></div>
+
+	</div>
+	</td>
+<!-- /PRODUCT -->
+</tr>
+<tr>
+	<td colspan='7' style='height:10px;'></td>
+</tr>
+<!-- /ROW -->
+</table>
+<!-- /product list -->
+]]></HTML>
+<DIVIDER><![CDATA[
+
+<td><img src='<% loadurp("URL::GRAPHICS_URL"); default(""); print(); %>/blank.gif' height='1' width='13' alt=''></td>
+
+]]></DIVIDER>
+</ELEMENT>
+<ELEMENT ID="DESCRIPTION" WIKI="3" PROMPT="Text Description" SUB="PAGE_DESC" FONT="0" TYPE="TEXT" EDITOR="INLINE" DATA="page:description"><POSTTEXT><![CDATA[</div><!-- end text area -->]]></POSTTEXT>
+<PRETEXT><![CDATA[<!-- begin text area --><div class='ztxt alignLeft medBottom'>]]></PRETEXT>
+</ELEMENT>
+<ELEMENT ID="CYUMPKA" TYPE="OUTPUT"><HTML><![CDATA[
+
+<!-- %WRAPPER_URL%/tk08_c_headerbg_xmas1-965x118.jpg -->
+<div style='height:118px; background: url(%WRAPPER_URL%/tk08_c_headerbg_green-965x118.jpg); width:965px; position:relative; margin-bottom:10px'>
+	<div style='position:absolute; bottom:38px; left:230px;'>%PAGE_TITLE%</div>
+	<div class='ztable_row_small no_underline' style='position:absolute; bottom:1px; left:230px; width:734px; overflow:hidden; height:13px; font-size:10px;'>%PAGE_SUBCATS_TEXTONLY%</div>
+</div>
+
+<div style='width:965px;'>
+	
+	<div>%PAGE_PRODLIST1%</div>
+	
+	<div>%PAGE_PRODLIST2%</div>
+	
+	%PAGE_DESC%
+	
+</div>]]></HTML>
+</ELEMENT>
+
+</TEMPLATE>
