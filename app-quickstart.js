@@ -195,6 +195,7 @@ document.write = function(v){
 					_app.u.dump(" -> existing cart was NOT valid. Fetch a new cartid");
 					_app.model.removeCartFromSession(_rtag.cartid); //this will ensure the cart isn't used again.
 					_app.calls.appCartCreate.init({'callback':"addCart2CM","extension":'quickstart'},'mutable');//The cart that was passed was exired in invalid.
+					_app.model.dispatchThis('mutable');
 					}
 				else	{
 					_app.u.dump(" -> cart has been created.");
@@ -1392,7 +1393,6 @@ setTimeout(function(){
 				var authState = _app.u.determineAuthentication();
 				dump("authState: "+authState);
 				if(typeof P != 'object' || !P.sku || !P.listid)	{
-
 					_app.u.throwMessage("Uh Oh! Something went wrong. Please try that again or contact the site administrator if error persists. err: required param for add2buyerList was missing. see console for details.");
 					dump("ERROR! params missing for add2BuyerList. listid and pid required. params: "); dump(P);
 					}
@@ -2084,6 +2084,7 @@ effects the display of the nav buttons only. should be run just after the handle
 						dump(" -> product is already on the DOM. bring it into focus");
 						infoObj.datapointer = 'appProductGet|'+infoObj.pid; //here so datapoitner is available in renderFunctions.
 //typically, the onComplete get handled as part of the request callback, but the template has already been rendered so the callback won't get executed.
+
 						infoObj.state = 'complete'; //needed for handleTemplateEvents.
 						_app.renderFunctions.handleTemplateEvents($product,infoObj); //complete
 						}
