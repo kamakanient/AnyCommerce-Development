@@ -77,11 +77,11 @@ css files should be included before any .js file to ensure they are downloaded i
 $(document).ready(function(){
 
 	window.myApp = new initApp({
-		"release":"201404.a",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+		"release":"201404.0513a",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
 		"baseURL":baseURL, //used in non-local mode.
 		"checkoutAuthMode" : "active",//can be passive, active or required
-		"testURL":"http://201404.tikimaster.com/", //used ONLY if protocol is file: (for testing)
+		"testURL":"http://v201404.tikimaster.com/", //used ONLY if protocol is file: (for testing)
 		"addjQueryPointer" : true,
 		"initComplete" : function(){
 			dump(" -> init is complete");
@@ -89,7 +89,7 @@ $(document).ready(function(){
 				var progress = myApp.u.loadResources(); //the object returns by loadResources will get updated as the resources finish loading.
 				myApp.u.showProgress(progress);
 				});
-//			$('#appversion').text(myApp.vars.release);
+			$(document.body).append(myApp.vars.release);
 			}
 		});
 	myApp.vars.initComplete();
@@ -1101,7 +1101,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 <!-- used to display a category within a 'list', usually in the body of a category or the homepage. -->
 <ul>
 <li id="categoryListTemplate">
-	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';">
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" class='blockLink'>
 		<div class="thumbContainer"><img data-tlc="bind $var '.%meta.CAT_THUMB'; if (is $var --notblank;) {{ apply --img --media=$var --width=229 --height=171 --bgcolor='#ffffff' --replace;}};" src="img/blank-229x171.gif" class="catThumb" alt="" height="171" width="229"></div>
 		<div class="catName white2LGray"><span data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy;"></span></div>
 	</a>
@@ -1109,15 +1109,14 @@ don't modify the 'data-templateid' unless you are changing template names and up
 
 
 <li id="categoryListTemplateRootCats" onmouseover="myApp.ext.tikimaster.a.showDropDown($(this));" onmouseout="myApp.ext.tikimaster.a.hideDropDown($(this));" class="pointer">
-	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';">
-		<!--div class='thumbContainer'><img src='blank.gif' class='catThumb' alt='' data-bind='var: category(%meta.CAT_THUMB); format:imageURL;' width='35' height='35' /></div-->
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" class='blockLink'>
 		<div class="catName"><span data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy;"></span></div>
 	</a>
 	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootSubCats'  --legacy;" class="displayNone dropdown"></ul>
 </li>
 
 <li id="categoryListTemplateRootSubCats" class="subCatName" data-tlc="bind $pretty '.pretty'; if(is $pretty --null;) {{apply --hide;}};">
-	<a href="" data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy; bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" data-app-click="tikimaster|hideDropDownOnSelect"></a>
+	<a class='blockLink' data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy; bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" data-app-click="tikimaster|hideDropDownOnSelect"></a>
 </li>
 
 </ul>
@@ -1234,7 +1233,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 <li id="productListTemplateResults" class="loadingBG searchResultsProduct " onmouseover="$('.quickView',$(this)).show();" onmouseout="$('.quickView').hide();">
 	<button class="floatRight pointer quickView displayNone" data-app-click="quickstart|quickviewShow" data-loadstemplate="productTemplateQuickView">Quickview</button>
 	
-	<a data-tlc="bind $pid '.pid'; bind $seo '.%attribs.zoovy:prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class='blockLink'>
 		<div class="prodThumbContainer w312h234">
 		<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=312 --height=234 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="234" width="312">
 		</div>
@@ -1247,7 +1246,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 </li>
 
 <li id="productListTemplateResultsNoPreview" class="loadingBG searchResultsProduct ">
-	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class='blockLink'>
 		<div class="prodThumbContainer w120h120">
 		<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=120 --height=120 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="120" width="120">
 		</div>
@@ -1261,7 +1260,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 
 
 <li id="productListTemplateResultsNewArrivals" class="loadingBG searchResultsNewProduct ">
-	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class="blockLink">
+	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class='blockLink'>
 		<div class="prodThumbContainer w140h93">
 			<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=140 --height=93 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="93" width="140">
 		</div>
@@ -1968,15 +1967,17 @@ So the cart template should contain these two elements and the extension should 
 </section>
 
 		</div>
-		<div class="ui-state-default cartButtons stdPadding clearfix">
+		<div class="ui-state-default cartButtons stdPadding clearfix" data-app-role='cartButtonsContainer'>
 			<!-- spans are set around the buttons so each element has one consitent tag type around it -->
 			<span class="continueShoppingSpan thisButton"><button class="applyButton continueShoppingButton" data-app-click="quickstart|dialogCloseExec">Continue Shopping</button></span>
 	
 			<span id="inStoreCheckoutButton" class='thisButton' title="proceed to secure checkout">
-				<a class="applyButton ui-state-highlight checkoutButton" href='#!checkout'>Store Checkout</a>
+				<a class="applyButton ui-state-highlight checkoutButton" href='#!checkout' onmouseout="myApp.ext.tikimaster.u.checkoutButtonMouseout($(this))" onmouseover="myApp.ext.tikimaster.u.checkoutButtonMouseover($(this))">Store Checkout</a>
 			</span>
 	
 			<span data-tlc="bind $var '.cart.cartid'; cco#paypalecbutton  --legacy;" id="paypalecbutton" class="thisButton"></span>
+
+
 	
 		</div>
 
@@ -2366,6 +2367,14 @@ The 'data-action' attribute is used to assign an onclick.
 
 <div id='appversion'></div>
 
+<div class="displayNone" id='paymentMethodsIcons4Tooltip'>
+      <img src="img/cart_payment_methods-240x48.png" width='240' height='48' alt='we accept visa, mastercard, discover and amex.'>
+      <span class="alignLeft">
+        Proceed to our 1-page secure checkout.<br>
+        We accept Visa, MasterCard, Discover, AMEX,<br> 
+        PayPal, Money orders and Cashiers checks by Mail.
+      </span>
+    </div>
 
 
 </body>
