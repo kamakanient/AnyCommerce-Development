@@ -347,11 +347,6 @@ var tikimaster = function(_app) {
 			breadcrumbRootName : "Home",
 			customPrompt : "I understand it takes 3-14 business days to customize my item. This item is not returnable / exchangeable as it is considered customized. Once this order is placed, no changes or cancellations are permitted.",
 			catTemplates : {
-				'.affiliates' : 'categoryTemplateAffiliates',
-				'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
-				'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
-				'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
-				'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails',
 				'.001' : 'categoryTemplateShowSubCats',
 				'.002' : 'categoryTemplateShowSubCats',
 				'.002.001' : 'categoryTemplateShowSubCats',

@@ -277,4 +277,40 @@ myApp.router.appendInit({
 
 
 
+myApp.router.addAlias('affiliates',function(routeObj){
+	dump(" -----------> GOT TO AFFILIATES ALIAS");
+	routeObj = routeObj || {};
+	routeObj.params = routeObj.params || {};
+//for the exact matches, navcat won't be set. we'll need it for showContent tho
+	if(!routeObj.params.navcat && routeObj.route.indexOf('category/') === 0)	{
+		routeObj.params.navcat = routeObj.route.replace('category/','');
+		}
+	
+	if(routeObj.params && routeObj.params.navcat)	{
+		//regularize the navcat.
+		if(routeObj.params.navcat.charAt(0) != '.')	{
+			routeObj.params.navcat = '.'+routeObj.params.navcat;
+			}
+		var affiliatePages = {
+			'.affiliates' : 'categoryTemplateAffiliates',
+			'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
+			'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
+			'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
+			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails',
+			}
+		if(affiliatePages[routeObj.params.navcat])	{
+			routeObj.params.templateID = affiliatePages[routeObj.params.navcat];
+			}
+		}
+	//if we get here and navcat still isn't set, showContent will handle the error.
+	showContent('category',	routeObj.params);
+	});
+
+myApp.router.appendHash({'type':'match','route':'affiliates/{{navcat}}*','callback':'affiliates'}); //this'll handle any hard coded links.
+//these will handle any links auto-generated, such as breadcrumb or subcat lists.
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates','callback':'affiliates'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.1','callback':'affiliates'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.4','callback':'affiliates'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.contract','callback':'affiliates'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.program-details','callback':'affiliates'});
 
