@@ -1,5 +1,6 @@
 
 myApp.rq.push(['script',0,(document.location.protocol == 'file:') ? myApp.vars.testURL+'jsonapi/config.js' : myApp.vars.baseURL+'jsonapi/config.js',function(){
+	dump(" -> zglobals has loaded");
 //in some cases, such as the zoovy UI, zglobals may not be defined. If that's the case, certain vars, such as jqurl, must be passed in via P in initialize:
 //	myApp.u.dump(" ->>>>>>>>>>>>>>>>>>>>>>>>>>>>> zGlobals is an object");
 	myApp.vars.username = zGlobals.appSettings.username.toLowerCase(); //used w/ image URL's.
@@ -122,6 +123,13 @@ myApp.u.addEventsToCatTemplates = function()	{
 
 myApp.u.addEventsToCatTemplates();
 
+$('#cartTemplate').on('complete.tooltip',function(state,$ele,infoObj){
+	$('.checkoutButton',$ele).tooltip({
+		content : $('#paymentMethodsIcons4Tooltip').html()
+		});
+	});
+
+
 $('#productTemplate').on('complete.something',function(state,$ele,infoObj){
 	myApp.ext.tikimaster.u.addBreadCrumbToProductPage($ele);
 	myApp.ext.tikimaster.u.makeDropDownBreadcrumb();
@@ -175,15 +183,18 @@ myApp.u.carouselIsReady = function()	{
 
 
 myApp.u.showProgress = function(progress)	{
+	dump("BEGIN myApp.u.showProgress");
 	function showProgress(attempt)	{
+		dump(" -> attempt: "+attempt+' and progress.passZeroResourcesLength: '+progress.passZeroResourcesLength+' and progress.passZeroResourcesLoaded: '+progress.passZeroResourcesLoaded);
 		if(progress.passZeroResourcesLength == progress.passZeroResourcesLoaded)	{
 			//All pass zero resources have loaded.
 			//the app will handle hiding the loading screen.
 			myApp.u.appInitComplete();
 			}
-		else if(attempt > 150)	{
+		else if(attempt > 20)	{
 			//hhhhmmm.... something must have gone wrong.
 			clearTimeout(progress.passZeroTimeout); //end the resource loading timeout.
+			$('.appMessaging','#appPreView').anymessage({'message':'Init failed to load all the resources within a reasonable number of attempts.','gMessage':true,'persistent':true});
 			}
 		else	{
 			var percentPerInclude = (100 / progress.passZeroResourcesLength);

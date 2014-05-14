@@ -297,11 +297,13 @@ var tikimaster = function(_app) {
 					}, 500);
 				}
 			},
-			checkoutButtonMouseover : function() {
-			  $('.checkoutButtonsContainer > .paymentMethodsIcons').fadeIn();
+			checkoutButtonMouseover : function($t) {
+				$t.closest("[data-app-role='cartButtonsContainer']").find(".paymentMethodsIcons").fadeIn()
+//			  $('.checkoutButtonsContainer > .paymentMethodsIcons').fadeIn();
 			},
-			checkoutButtonMouseout : function() {
-			  $('.checkoutButtonsContainer > .paymentMethodsIcons').fadeOut();
+			checkoutButtonMouseout : function($t) {
+				$t.closest("[data-app-role='cartButtonsContainer']").find(".paymentMethodsIcons").fadeOut()
+//			  $('.checkoutButtonsContainer > .paymentMethodsIcons').fadeOut();
 			},
 			
 			
