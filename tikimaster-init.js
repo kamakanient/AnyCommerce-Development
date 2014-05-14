@@ -275,10 +275,15 @@ myApp.router.appendInit({
 	});
 
 
+/*
+Now add some routes for the affiliate and video pages.
+#!affiliate/... or #!video/... (or category/.affiliate or category/.video) will trigger this handler. 
+These are here because those pages require special layouts.
+*/
 
 
-myApp.router.addAlias('affiliates',function(routeObj){
-	dump(" -----------> GOT TO AFFILIATES ALIAS");
+myApp.router.addAlias('customCategoryTemplate',function(routeObj){
+	dump(" -----------> GOT TO customCategoryTemplate ALIAS");
 	routeObj = routeObj || {};
 	routeObj.params = routeObj.params || {};
 //for the exact matches, navcat won't be set. we'll need it for showContent tho
@@ -291,26 +296,40 @@ myApp.router.addAlias('affiliates',function(routeObj){
 		if(routeObj.params.navcat.charAt(0) != '.')	{
 			routeObj.params.navcat = '.'+routeObj.params.navcat;
 			}
-		var affiliatePages = {
+		var pageTemplates = {
 			'.affiliates' : 'categoryTemplateAffiliates',
 			'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
 			'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
 			'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
-			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails',
+			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
 			}
-		if(affiliatePages[routeObj.params.navcat])	{
-			routeObj.params.templateID = affiliatePages[routeObj.params.navcat];
+		if(pageTemplates[routeObj.params.navcat])	{
+			routeObj.params.templateID = pageTemplates[routeObj.params.navcat];
 			}
 		}
 	//if we get here and navcat still isn't set, showContent will handle the error.
 	showContent('category',	routeObj.params);
 	});
 
-myApp.router.appendHash({'type':'match','route':'affiliates/{{navcat}}*','callback':'affiliates'}); //this'll handle any hard coded links.
+myApp.router.appendHash({'type':'match','route':'affiliates/{{navcat}}*','callback':'customCategoryTemplate'}); //this'll handle any hard coded links.
 //these will handle any links auto-generated, such as breadcrumb or subcat lists.
-myApp.router.prependHash({'type':'exact','route':'category/.affiliates','callback':'affiliates'});
-myApp.router.prependHash({'type':'exact','route':'category/.affiliates.1','callback':'affiliates'});
-myApp.router.prependHash({'type':'exact','route':'category/.affiliates.4','callback':'affiliates'});
-myApp.router.prependHash({'type':'exact','route':'category/.affiliates.contract','callback':'affiliates'});
-myApp.router.prependHash({'type':'exact','route':'category/.affiliates.program-details','callback':'affiliates'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.1','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.4','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.contract','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.program-details','callback':'customCategoryTemplate'});
+
+
+myApp.router.addAlias('videos',function(routeObj){
+	routeObj = routeObj || {};
+	routeObj.params = routeObj.params || {};
+	routeObj.params.templateID = 'categoryTemplateVideos';
+	routeObj.params.navcat = routeObj.params.navcat || '.tiki_videos';
+	showContent('category',	routeObj.params);
+	});
+	
+myApp.router.appendHash({'type':'match','route':'videos','callback':'videos'}); //this'll handle any hard coded links.
+//these will handle any links auto-generated, such as breadcrumb or subcat lists.
+myApp.router.prependHash({'type':'exact','route':'category/.tiki_videos','callback':'videos'});
+
 

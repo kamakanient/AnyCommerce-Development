@@ -430,11 +430,7 @@ var tikimaster = function(_app) {
 				'.tikidiscovery.yskull___bones_decor' : 'categoryTemplateShowSubCats',
 				'.tikidiscovery.znautical_decor' : 'categoryTemplateShowSubCats',
 				'.tikihomedecor' : 'categoryTemplateShowSubCats',
-				'.videos' : 'categoryTemplateVideos',
-				'.videos.product_videos' : 'categoryTemplateVideosList',
-				'.videos.product_videos.topic_1' : 'categoryTemplateVideos',
-				'.videos.product_videos.topic_2' : 'categoryTemplateVideos',
-				'.videos.product_videos.topic_3' : 'categoryTemplateVideos'
+
 			}
 		} // vars
 		
