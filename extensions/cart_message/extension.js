@@ -155,6 +155,7 @@ some defaults are present, but they can be overwritten by the app easily enough.
 					},
 //in a storefront, chat.join will likely be overwritten. Most likely, you'll open a dialog w/ the cart messaging UI (or something like that).
 				'chat.join' : function(message,$context)	{
+					dump(" -> this is the original chat.join");
 					$("[data-app-role='messageInput']",$context).show();
 					$("[data-app-role='messageHistory']",$context).append("<p class='chat_join'>"+message.FROM+" has joined the chat.<\/p>");
 					},
