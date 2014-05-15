@@ -515,7 +515,8 @@ need to be customized on a per-ria basis.
 */
 				if(infoObj.performJumpToTop && $('html, body').scrollTop() > 0)	{
 					//new page content loading. scroll to top.
-					$('html, body').animate({scrollTop : ($('header','#appView').length ? $('header','#appView').first().height() : 0)},500,function(){
+					dump(" -> top: "+$('#mainContentArea').position().top);
+					$('html, body').animate({scrollTop : 0},'fast',function(){
 						$o.fadeOut(1000, function(){$n.fadeIn(1000)}); //fade out old, fade in new.
 						})
 					} 
