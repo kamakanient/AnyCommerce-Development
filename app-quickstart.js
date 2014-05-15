@@ -525,6 +525,7 @@ need to be customized on a per-ria basis.
 					}
 				}
 			else if($n instanceof jQuery)	{
+				dump(" -> $o is not properly defined.  jquery: "+($o instanceof jQuery)+" and length: "+$o.length);
 				$n.fadeIn(1000);
 				}
 			else	{
