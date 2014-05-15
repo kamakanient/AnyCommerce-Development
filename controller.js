@@ -1036,7 +1036,7 @@ Some utilities for loading external files, such as .js, .css or even extensions.
 */
 
 		loadScript : function(url, callback, params){
-			dump("load script: "+url+" and typeof callback: "+(typeof callback));
+//			dump("load script: "+url+" and typeof callback: "+(typeof callback));
 			if(url)	{
 				var script = document.createElement("script");
 				script.type = "text/javascript";
@@ -1044,17 +1044,13 @@ Some utilities for loading external files, such as .js, .css or even extensions.
 					script.onreadystatechange = function(){
 						if (script.readyState == "loaded" || script.readyState == "complete"){
 							script.onreadystatechange = null;
-							dump(" -> "+url+" loaded");
 							if(typeof callback == 'function')	{callback(params);}
 							}
 						};
 					}
 				else {
-					script.onload = function(){
-						dump(" ---> "+url+" loaded");
-						if(typeof callback == 'function')	{
-							callback(params);
-							}
+					if(typeof callback == 'function')	{
+						script.onload = function(){callback(params)}
 						}
 					}
 			//append release to the end of included files to reduce likelyhood of caching.
@@ -1107,9 +1103,7 @@ css : type, pass, path, id (id should be unique per css - allows for not loading
 //domID is optional id to add to <link> allows for removal or changing later.
 //if you pass a domID that already exists, that file is 'saved over'.
 		loadCSSFile : function(filename,domID){
-			dump(" -> load css file: "+filename);
 			if(filename && domID && document.getElementById(domID))	{
-				dump(" -> css file: "+filename+" already on DOM");
 				document.getElementById(domID).href = filename; //overwrite existing .css file. effectively removes old in favor of new.
 				}
 			else if(filename)	{
@@ -1197,7 +1191,7 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 				'passZeroTimeout' : null
 				}; //what is returned.
 			function resourcesAreLoaded(){
-				rObj.passZeroResourcesLoaded = _app.u.numberOfLoadedResourcesFromPass(0); //this should NOT be in the else or it won't get updated once the resources are done.
+				rObj.passZeroResourcesLoaded = _app.u.numberOfLoadedResourcesFromPass(0,true); //this should NOT be in the else or it won't get updated once the resources are done.
 				if(_app.u.numberOfLoadedResourcesFromPass(0) == _app.vars.rq.length)	{
 					_app.vars.rq = null; //this is the tmp array used by handleRQ and numberOfResourcesFromPass. Should be cleared for next pass.
 					_app.model.addExtensions(_app.vars.extensions);

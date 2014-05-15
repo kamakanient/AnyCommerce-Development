@@ -1356,7 +1356,6 @@ will return false if datapointer isn't in _app.data or local (or if it's too old
 
 
 			loadAndVerifyExtension : function(extObjItem)	{
-				dump(" -> load extension: "+extObjItem.filename);
 				var url = extObjItem.filename;
 				var namespace = extObjItem.namespace; //for easy reference.
 				var errors = ""; // list of errors. what is returned
@@ -1370,7 +1369,6 @@ will return false if datapointer isn't in _app.data or local (or if it's too old
 //it means that a developer could use an extension that didn't load properly, but that is their perogative, since we told them its broke.
 
 				if(typeof window[namespace] === 'function')	{
-					dump(" -> extension: "+extObjItem.filename+" is already loaded");
 					_app.ext[namespace] = window[namespace](_app); //keep this as early in the process as possible so it's done before the next extension loads.
 
 
@@ -1454,7 +1452,7 @@ only one extension was getting loaded, but it got loaded for each iteration in t
 */
 		
 		fetchExtension : function(extObjItem)	{
-			_app.u.dump('BEGIN model.fetchExtention ['+extObjItem.namespace+']');
+//			_app.u.dump('BEGIN model.fetchExtention ['+extObjItem.namespace+']');
 			var errors = '';
 			var url = extObjItem.filename+"?_v="+_app.vars.release;
 			var namespace = extObjItem.namespace; //for easy reference.
@@ -1471,7 +1469,7 @@ only one extension was getting loaded, but it got loaded for each iteration in t
 					},
 				success: function(data) {
 	//The 'success' can be executed prior to the script finishing loading so the heavy lifting happens in 'complete'.
-					_app.u.dump(' successfully retrieved '+extObjItem.namespace+' extension');
+//					_app.u.dump(" -> EXTCONTROL Got to success");
 					},
 				complete: function(data)	{
 //					_app.u.dump(" -> EXTCONTROL got to complete for "+namespace);
