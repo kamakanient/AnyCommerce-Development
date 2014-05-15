@@ -513,7 +513,8 @@ need to be customized on a per-ria basis.
 1. allows the animations to be performed sequentially, which will be less jittery than running two at the same time
 2. Puts control of this into custom page transitions.
 */
-				if(infoObj.performJumpToTop && $('html, body').scrollTop() > 0)	{
+				dump(" -> scrollTop: "+$('html').scrollTop());
+				if(infoObj.performJumpToTop && $('html').scrollTop() > 0)	{
 					//new page content loading. scroll to top.
 					dump(" -> top: "+$('#mainContentArea').position().top);
 					$('html, body').animate({scrollTop : 0},'fast',function(){
@@ -526,7 +527,9 @@ need to be customized on a per-ria basis.
 				}
 			else if($n instanceof jQuery)	{
 				dump(" -> $o is not properly defined.  jquery: "+($o instanceof jQuery)+" and length: "+$o.length);
-				$n.fadeIn(1000);
+				$('html, body').animate({scrollTop : 0},'fast',function(){
+					$n.fadeIn(1000);
+					});
 				}
 			else	{
 				//hhmm  not sure how or why we got here.
