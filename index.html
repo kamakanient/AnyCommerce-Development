@@ -57,8 +57,10 @@ document.getElementsByTagName('base')[0].href = baseURL;
 all css includes need to be after the js that changes the base url.
 css files should be included before any .js file to ensure they are downloaded in parallel
 -->
+
 <link rel="stylesheet" type="text/css" href="jquery-ui-1.10.4.custom.min.css" />
-<link rel="stylesheet" type="text/css" href="_tikimaster_styles.css" /><!-- contains quickstart css also -->
+<link rel="stylesheet" type="text/css" href="app-quickstart.css">
+<link rel="stylesheet" type="text/css" href="_tikimaster_styles.css" />
 
 
 
@@ -78,7 +80,7 @@ css files should be included before any .js file to ensure they are downloaded i
 $(document).ready(function(){
 
 	window.myApp = new initApp({
-		"release":"201404.0519b",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+		"release":"201404.0519c",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
 		"baseURL":baseURL, //used in non-local mode.
 		"checkoutAuthMode" : "active",//can be passive, active or required
@@ -216,7 +218,7 @@ $(document).ready(function(){
 
 						<a href='http://www.facebook.com/pages/Tikimaster-The-Store-Of-Hawaii/79606002155/' target='facebook'><img src='img/socialb_logos/facebook-32x32.png' width='32' height='32' alt='follow us on facebook'  /></a>
 
-						<a href='http://static.zoovy.com/rss/tikimaster/912278.xml' target='rss'><img src='img/socialb_logos/rss-32x32.png' width='32' height='32' alt='subscribe to our rss feed'  /></a>
+						<a href='/media/rss/tikimaster/912278.xml' target='rss'><img src='img/socialb_logos/rss-32x32.png' width='32' height='32' alt='subscribe to our rss feed'  /></a>
 
 						<a href='http://pinterest.com/pin/164381455118977153/' target='pinterest'><img src='img/socialb_logos/tm12_pinterest-32x32.png' width='32' height='32' alt='Pinterest'  /></a>
 
@@ -333,7 +335,7 @@ $(document).ready(function(){
 		<area shape='rect' coords='563,91,627,105' href="#!category/media" alt='Tikimaster In the Media' title='Tikimaster In the Media' />
 
 		<area shape='rect' coords='640,40,706,56' href="#!videos" alt='Videos' title='Videos' />
-		<area shape='rect' coords='640,58,706,71' href='/rss/tikimaster/912278.xml' alt='rss' title='rss' target='rss' />
+		<area shape='rect' coords='640,58,706,71' href='/media/rss/tikimaster/912278.xml' alt='rss' title='rss' target='rss' />
 		<area shape='rect' coords='639,73,706,90' href="#!category/wishlist" alt='Wishlist' title='Wishlist' rel='nofollow' />
 
 	</map>
