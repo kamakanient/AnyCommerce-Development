@@ -1191,7 +1191,7 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 				'passZeroTimeout' : null
 				}; //what is returned.
 			function resourcesAreLoaded(){
-				rObj.passZeroResourcesLoaded = _app.u.numberOfLoadedResourcesFromPass(0,true); //this should NOT be in the else or it won't get updated once the resources are done.
+				rObj.passZeroResourcesLoaded = _app.u.numberOfLoadedResourcesFromPass(0); //this should NOT be in the else or it won't get updated once the resources are done.
 				if(_app.u.numberOfLoadedResourcesFromPass(0) == _app.vars.rq.length)	{
 					_app.vars.rq = null; //this is the tmp array used by handleRQ and numberOfResourcesFromPass. Should be cleared for next pass.
 					_app.model.addExtensions(_app.vars.extensions);
@@ -1212,7 +1212,7 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 			var r = (L === 0) ? false : 0; //what is returned. total # of scripts that have finished loading. false if rq is empty.
 			for(var i = 0; i < L; i++)	{
 				r += _app.vars.rq[i][_app.vars.rq[i].length - 1]
-				if(debug && _app.vars.rq[i][_app.vars.rq[i].length -1] == 0)	{_app.u.dump(" -> "+i+": "+_app.vars.rq[i][2]+": "+_app.vars.rq[i][_app.vars.rq[i].length -1]);}
+				if(debug)	{_app.u.dump(" -> "+i+": "+_app.vars.rq[i][2]+": "+_app.vars.rq[i][_app.vars.rq[i].length -1]);}
 				}
 			return r;
 			},
@@ -2340,7 +2340,7 @@ a word */
 
 		jqSelector : function(selector,str){
 			if (undefined == str) { str = new String(""); }	// fix undefined issue
-			return ((selector) ? selector : '')+str.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
+			return ((selector && str) ? selector : '')+str.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
 			},
 
 		isValidMonth : function(val)	{
