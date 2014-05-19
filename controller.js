@@ -932,7 +932,7 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 					}
 		//this would get added at end of INIT. that way, init can modify the hash as needed w/out impacting.
 				if (window.addEventListener) {
-					console.log(" -> addEventListener is supported and added for hash change.");
+					dump(" -> addEventListener is supported and added for hash change.");
 					window.addEventListener("hashchange", _app.router.handleHashChange, false);
 					$(document.body).data('isRouted',true);
 					}
