@@ -121,8 +121,9 @@ myApp.u.addEventsToCatTemplates = function()	{
 		'categoryTemplateAffiliatesProgramDetails'
 		];
 
-	for(var t in catTemplates){
-		$(myApp.u.jqSelector('#',catTemplates[t])).on('complete.breadcrumb',function(state,$ele,infoObj){
+	for(var index in catTemplates){
+		dump(" -> index: "+catTemplates[index]);
+		$(myApp.u.jqSelector('#',catTemplates[index])).on('complete.breadcrumb',function(state,$ele,infoObj){
 			myApp.ext.tikimaster.u.makeDropDownBreadcrumb();
 			myApp.ext.tikimaster.u.loadFeaturedStoreBanner();
 			});
