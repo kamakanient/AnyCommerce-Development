@@ -2340,7 +2340,7 @@ a word */
 
 		jqSelector : function(selector,str){
 			if (undefined == str) { str = new String(""); }	// fix undefined issue
-			return ((selector && str) ? selector : '')+str.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
+			return ((selector && str && (typeof str == 'string') ) ? selector : '')+str.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
 			},
 
 		isValidMonth : function(val)	{
