@@ -3119,6 +3119,15 @@ else	{
 					$('#globalMessaging').anymessage({"message":"In quickstart.e.quickviewShow, unable to ascertain PID ["+PID+"] or no data-loadstemplate set on trigger element.","gMessage":true});
 					}
 				return false;
+				},
+			triggerBlurOnEnter : function($ele,p)	{
+				var r = true;
+				if (p.keyCode == 13)	{
+					p.preventDefault();
+					$ele.trigger('blur')
+					r = false;
+					}
+				return r;
 				}
 
 			}, // e/events
