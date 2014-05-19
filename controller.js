@@ -1041,14 +1041,18 @@ Some utilities for loading external files, such as .js, .css or even extensions.
 				var script = document.createElement("script");
 				script.type = "text/javascript";
 				if (script.readyState){  //IE
+					dump(" -> using script onreadystate");
 					script.onreadystatechange = function(){
 						if (script.readyState == "loaded" || script.readyState == "complete"){
 							script.onreadystatechange = null;
-							if(typeof callback == 'function')	{callback(params);}
+							if(typeof callback == 'function')	{
+								dump(" -> script.readyState: "+script.readyState);
+								callback(params);}
 							}
 						};
 					}
 				else {
+					dump(" -> using script onload");
 					if(typeof callback == 'function')	{
 						script.onload = function(){callback(params)}
 						}

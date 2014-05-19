@@ -66,12 +66,12 @@ css files should be included before any .js file to ensure they are downloaded i
 
 <!-- jquery and jquery ui are pivotal to the functionality of the myApp. load them early -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script src="resources/jquery-ui-1.10.4.custom.min.js"></script>
+<script src="resources/jquery-ui-1.10.4.custom.min.js" data-apptimize="embed"></script>
 
 
-<script src="controller.js"></script>
-<script src="model.js"></script>
-<script type="text/javascript" src="includes.js"></script><!-- contains some polyfills and should be loaded early -->
+<script src="controller.js" data-apptimize="embed"></script>
+<script src="model.js" data-apptimize="embed"></script>
+<script type="text/javascript" src="includes.js" data-apptimize="embed"></script><!-- contains some polyfills and should be loaded early -->
 
 
 <script type="text/javascript" src="https://sb.buysafe.com/private/rollover/rollover.js"></script>
@@ -80,7 +80,7 @@ css files should be included before any .js file to ensure they are downloaded i
 $(document).ready(function(){
 
 	window.myApp = new initApp({
-		"release":"201404.0519n",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+		"release":"201404.0519p",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
 		"baseURL":baseURL, //used in non-local mode.
 		"checkoutAuthMode" : "active",//can be passive, active or required
@@ -2360,14 +2360,20 @@ The 'data-action' attribute is used to assign an onclick.
 <div id='appversion'></div>
 
 <div class="displayNone" id='paymentMethodsIcons4Tooltip'>
-      <img src="img/cart_payment_methods-240x48.png" width='240' height='48' alt='we accept visa, mastercard, discover and amex.'>
-      <span class="alignLeft">
-        Proceed to our 1-page secure checkout.<br>
-        We accept Visa, MasterCard, Discover, AMEX,<br> 
-        PayPal, Money orders and Cashiers checks by Mail.
-      </span>
-    </div>
+  <img src="img/cart_payment_methods-240x48.png" width='240' height='48' alt='we accept visa, mastercard, discover and amex.'>
+  <span class="alignLeft">
+	Proceed to our 1-page secure checkout.<br>
+	We accept Visa, MasterCard, Discover, AMEX,<br> 
+	PayPal, Money orders and Cashiers checks by Mail.
+  </span>
+</div>
 
+
+
+<script src="tikimaster.js" data-apptimize="embed"></script>
+<script src="extensions/cart_checkout_order.js" data-apptimize="embed"></script>
+<script src="extensions/quickstart.js" data-apptimize="embed"></script>
+<script src="extensions/store_checkout.js" data-apptimize="embed"></script>
 
 </body>
 </html>

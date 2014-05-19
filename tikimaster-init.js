@@ -1,4 +1,34 @@
 
+
+
+myApp.u.showProgress = function(progress)	{
+	dump("BEGIN myApp.u.showProgress");
+	function showProgress(attempt)	{
+		dump(" -> attempt: "+attempt+' and progress.passZeroResourcesLength: '+progress.passZeroResourcesLength+' and progress.passZeroResourcesLoaded: '+progress.passZeroResourcesLoaded);
+		if(progress.passZeroResourcesLength == progress.passZeroResourcesLoaded)	{
+			//All pass zero resources have loaded.
+			//the app will handle hiding the loading screen.
+			myApp.u.appInitComplete();
+			}
+		else if(attempt > 60)	{
+			//hhhhmmm.... something must have gone wrong.
+			clearTimeout(progress.passZeroTimeout); //end the resource loading timeout.
+			$('.appMessaging','#appPreView').anymessage({'message':'Init failed to load all the resources within a reasonable number of attempts.','gMessage':true,'persistent':true});
+			}
+		else	{
+			var percentPerInclude = (100 / progress.passZeroResourcesLength);
+			var percentComplete = Math.round(progress.passZeroResourcesLength * percentPerInclude); //used to sum how many includes have successfully loaded.
+//			dump(" -> percentPerInclude: "+percentPerInclude+" and percentComplete: "+percentComplete);
+			$('#appPreViewProgressBar').val(percentComplete);
+			$('#appPreViewProgressText').empty().append(percentComplete+"% Complete");
+			attempt++;
+			setTimeout(function(){showProgress(attempt);},250);
+			}
+		}
+	showProgress(0)
+	}
+
+
 myApp.rq.push(['script',0,(document.location.protocol == 'file:') ? myApp.vars.testURL+'jsonapi/config.js' : myApp.vars.baseURL+'jsonapi/config.js',function(){
 	dump(" -> zglobals has loaded");
 //in some cases, such as the zoovy UI, zglobals may not be defined. If that's the case, certain vars, such as jqurl, must be passed in via P in initialize:
@@ -191,32 +221,6 @@ myApp.u.carouselIsReady = function()	{
 
 
 
-myApp.u.showProgress = function(progress)	{
-	dump("BEGIN myApp.u.showProgress");
-	function showProgress(attempt)	{
-		dump(" -> attempt: "+attempt+' and progress.passZeroResourcesLength: '+progress.passZeroResourcesLength+' and progress.passZeroResourcesLoaded: '+progress.passZeroResourcesLoaded);
-		if(progress.passZeroResourcesLength == progress.passZeroResourcesLoaded)	{
-			//All pass zero resources have loaded.
-			//the app will handle hiding the loading screen.
-			myApp.u.appInitComplete();
-			}
-		else if(attempt > 60)	{
-			//hhhhmmm.... something must have gone wrong.
-			clearTimeout(progress.passZeroTimeout); //end the resource loading timeout.
-			$('.appMessaging','#appPreView').anymessage({'message':'Init failed to load all the resources within a reasonable number of attempts.','gMessage':true,'persistent':true});
-			}
-		else	{
-			var percentPerInclude = (100 / progress.passZeroResourcesLength);
-			var percentComplete = Math.round(progress.passZeroResourcesLength * percentPerInclude); //used to sum how many includes have successfully loaded.
-//			dump(" -> percentPerInclude: "+percentPerInclude+" and percentComplete: "+percentComplete);
-			$('#appPreViewProgressBar').val(percentComplete);
-			$('#appPreViewProgressText').empty().append(percentComplete+"% Complete");
-			attempt++;
-			setTimeout(function(){showProgress(attempt);},250);
-			}
-		}
-	showProgress(0)
-	}
 
 
 //Any code that needs to be executed after the app init has occured can go here.
