@@ -109,7 +109,7 @@ var tikimaster = function(_app) {
 			hideDropDownOnSelect : function($tag){
 				this.hideDropDown($tag);
 				$tag.data('timeoutNoShow', setTimeout(function(){$tag.data('timeoutNoShow', 'false');}, 500));
-			},
+			}
 		}, //Actions
 
 ////////////////////////////////////   RENDERFORMATS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -429,7 +429,7 @@ var tikimaster = function(_app) {
 				'.tikidiscovery.xpirate_decor' : 'categoryTemplateShowSubCats',
 				'.tikidiscovery.yskull___bones_decor' : 'categoryTemplateShowSubCats',
 				'.tikidiscovery.znautical_decor' : 'categoryTemplateShowSubCats',
-				'.tikihomedecor' : 'categoryTemplateShowSubCats',
+				'.tikihomedecor' : 'categoryTemplateShowSubCats'
 
 			}
 		} // vars
