@@ -513,7 +513,7 @@ need to be customized on a per-ria basis.
 1. allows the animations to be performed sequentially, which will be less jittery than running two at the same time
 2. Puts control of this into custom page transitions.
 */
-				dump(" -> scrollTop: "+$('html').scrollTop());
+				dump(" -> scrollTop: "+$('body').scrollTop());
 				if(infoObj.performJumpToTop && $('html').scrollTop() > 0)	{
 					//new page content loading. scroll to top.
 					dump(" -> top: "+$('#mainContentArea').position().top);
@@ -522,6 +522,7 @@ need to be customized on a per-ria basis.
 						})
 					} 
 				else	{
+					dump(" -> scrolltop < 0");
 					$o.fadeOut(1000, function(){$n.fadeIn(1000)}); //fade out old, fade in new.
 					}
 				}

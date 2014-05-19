@@ -199,7 +199,7 @@ myApp.u.showProgress = function(progress)	{
 			//the app will handle hiding the loading screen.
 			myApp.u.appInitComplete();
 			}
-		else if(attempt > 20)	{
+		else if(attempt > 60)	{
 			//hhhhmmm.... something must have gone wrong.
 			clearTimeout(progress.passZeroTimeout); //end the resource loading timeout.
 			$('.appMessaging','#appPreView').anymessage({'message':'Init failed to load all the resources within a reasonable number of attempts.','gMessage':true,'persistent':true});
