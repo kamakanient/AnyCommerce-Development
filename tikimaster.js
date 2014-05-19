@@ -141,7 +141,10 @@ var tikimaster = function(_app) {
 					document.location.hash = "#!category/"+$(this).attr('data-catsafeid')
 					});
 				},
+				
+
 			makeDropDownBreadcrumb : function(){
+				
 				dump("Tikimaser makeDropDownBreadcrumb started");
 				
 				// rootcat '.' has a pretty name 'New UnNamed Category'

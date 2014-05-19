@@ -134,33 +134,8 @@ myApp.cmr.push(['goto',function(message,$context){
 	$history.parent().scrollTop($history.height());
 	}]);
 
+
 //  now add some template functions.
-
-myApp.u.addEventsToCatTemplates = function()	{
-
-	var catTemplates = [
-		'categoryTemplate',
-		'categoryTemplateShowSubCats',
-		'categoryTemplateVideos',
-		'categoryTemplateVideosList',
-		'categoryTemplateVideosWatch',
-		'categoryTemplateAffiliates',
-		'categoryTemplateAffiliatesSignUp',
-		'categoryTemplateAffiliatesLinkExchange',
-		'categoryTemplateAffiliatesContract',
-		'categoryTemplateAffiliatesProgramDetails'
-		];
-
-	for(var index in catTemplates){
-		//had jqSelector here. fought with it for a while. was breaking older IE. testing to see if this fixes issue.
-/*		$('#'+catTemplates[index]).on('complete.breadcrumb',function(state,$ele,infoObj){
-			myApp.ext.tikimaster.u.makeDropDownBreadcrumb();
-			myApp.ext.tikimaster.u.loadFeaturedStoreBanner();
-			});
-		}
-*/	}
-
-myApp.u.addEventsToCatTemplates();
 
 $('#cartTemplate').on('complete.tooltip',function(state,$ele,infoObj){
 	$('.checkoutButton',$ele).tooltip({
