@@ -447,9 +447,6 @@ td.ztxt { padding:0 20px 0 0px; }
   background:url('img/tk08_btn_search-102x54.png') no-repeat 0 -27px;
 }
 
-
-
-
 .breadcrumb {
 	float:left;
 	position:relative;
@@ -466,13 +463,15 @@ td.ztxt { padding:0 20px 0 0px; }
 	}
 
 .breadcrumb > li a {
-	padding: 2px 4px 3px 4px;
+	padding: 4px;
+	display:block;
+	text-decoration: none;
 	color: #593101;
 	}
 
 
 .breadcrumb > li.hasSubcats > a {
-	background: url('img/tm11_downarrow_orange-8x3.gif') no-repeat center right #E9DBB9;
+	background: url('img/tm11_downarrow_orange-8x3.gif') no-repeat center right;
 	padding-right:12px;
 	}
 
