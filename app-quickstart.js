@@ -509,20 +509,20 @@ need to be customized on a per-ria basis.
 //if $o doesn't exist, the animation doesn't run and the new element doesn't show up, so that needs to be accounted for.
 //$o MAY be a jquery instance but have no length, so check both.
 			if($o instanceof jQuery && $o.length)	{
-/* *** 201403 -> move the scroll to top into the page transition for 2 reasons:
+/*
+*** 201403 -> move the scroll to top into the page transition for 2 reasons:
 1. allows the animations to be performed sequentially, which will be less jittery than running two at the same time
 2. Puts control of this into custom page transitions.
+** 201404 -> chrome uses 'html' and ff uses 'body' for the scrolltop > 0 check. using html,body as the selector didn't work in chrome.
 */
-				dump(" -> scrollTop: "+$('body').scrollTop());
-				if(infoObj.performJumpToTop && $('html').scrollTop() > 0)	{
+
+				if(infoObj.performJumpToTop && ($('body').scrollTop() + $('html').scrollTop()) > 0)	{ // >0 scrolltop check should be just body, not html, body or chrome scroll to the top.
 					//new page content loading. scroll to top.
-					dump(" -> top: "+$('#mainContentArea').position().top);
 					$('html, body').animate({scrollTop : 0},'fast',function(){
 						$o.fadeOut(1000, function(){$n.fadeIn(1000)}); //fade out old, fade in new.
 						})
 					} 
 				else	{
-					dump(" -> scrolltop < 0");
 					$o.fadeOut(1000, function(){$n.fadeIn(1000)}); //fade out old, fade in new.
 					}
 				}
