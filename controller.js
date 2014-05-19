@@ -1212,7 +1212,7 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 			var r = (L === 0) ? false : 0; //what is returned. total # of scripts that have finished loading. false if rq is empty.
 			for(var i = 0; i < L; i++)	{
 				r += _app.vars.rq[i][_app.vars.rq[i].length - 1]
-				if(debug)	{_app.u.dump(" -> "+i+": "+_app.vars.rq[i][2]+": "+_app.vars.rq[i][_app.vars.rq[i].length -1]);}
+				if(debug && _app.vars.rq[i][_app.vars.rq[i].length -1] == 0)	{_app.u.dump(" -> "+i+": "+_app.vars.rq[i][2]+": "+_app.vars.rq[i][_app.vars.rq[i].length -1]);}
 				}
 			return r;
 			},
