@@ -153,12 +153,12 @@ myApp.u.addEventsToCatTemplates = function()	{
 
 	for(var index in catTemplates){
 		//had jqSelector here. fought with it for a while. was breaking older IE. testing to see if this fixes issue.
-		$('#'+catTemplates[index]).on('complete.breadcrumb',function(state,$ele,infoObj){
+/*		$('#'+catTemplates[index]).on('complete.breadcrumb',function(state,$ele,infoObj){
 			myApp.ext.tikimaster.u.makeDropDownBreadcrumb();
 			myApp.ext.tikimaster.u.loadFeaturedStoreBanner();
 			});
 		}
-	}
+*/	}
 
 myApp.u.addEventsToCatTemplates();
 

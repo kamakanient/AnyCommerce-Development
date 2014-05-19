@@ -80,7 +80,7 @@ css files should be included before any .js file to ensure they are downloaded i
 $(document).ready(function(){
 
 	window.myApp = new initApp({
-		"release":"201404.0519p",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+		"release":"201404.0519q",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
 		"baseURL":baseURL, //used in non-local mode.
 		"checkoutAuthMode" : "active",//can be passive, active or required
@@ -2371,8 +2371,8 @@ The 'data-action' attribute is used to assign an onclick.
 
 
 <script src="tikimaster.js" data-apptimize="embed"></script>
+<script src="quickstart.js" data-apptimize="embed"></script>
 <script src="extensions/cart_checkout_order.js" data-apptimize="embed"></script>
-<script src="extensions/quickstart.js" data-apptimize="embed"></script>
 <script src="extensions/store_checkout.js" data-apptimize="embed"></script>
 
 </body>
