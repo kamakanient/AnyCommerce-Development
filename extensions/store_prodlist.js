@@ -172,6 +172,13 @@ The advantage of saving the data in memory and local storage is lost if the data
 			onSuccess : function()	{
 //				_app.u.dump('BEGIN _app.ext.store_prodlist.init.onSuccess ');
 				return true;  //currently, there are no config or extension dependencies, so just return true. may change later.
+
+if(typeof String.prototype.trim !== 'function') {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, ''); 
+  };
+}
+
 //				_app.u.dump('END _app.ext.store_prodlist.init.onSuccess');
 				},
 			onError : function()	{
