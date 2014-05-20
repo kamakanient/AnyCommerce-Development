@@ -41,7 +41,7 @@ var cart_message = function(_app) {
 					
 					var addCMResponse = function(id,func){
 						//allow but notify if an existing response is overwritten.
-						if(_app.cmr[i][0]){
+						if(_app.cmr[i] && _app.cmr[i][0]){
 							_app.u.dump("Cart Messaging Response "+_app.cmr[i][0]+" is being overwritten","warn");
 							}
 						_app.ext.cart_message.cmResponse[id] = func;
