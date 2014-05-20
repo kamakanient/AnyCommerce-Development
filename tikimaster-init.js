@@ -4,7 +4,7 @@
 myApp.u.showProgress = function(progress)	{
 	dump("BEGIN myApp.u.showProgress");
 	function showProgress(attempt)	{
-		dump(" -> attempt: "+attempt+' and progress.passZeroResourcesLength: '+progress.passZeroResourcesLength+' and progress.passZeroResourcesLoaded: '+progress.passZeroResourcesLoaded);
+//		dump(" -> attempt: "+attempt+' and progress.passZeroResourcesLength: '+progress.passZeroResourcesLength+' and progress.passZeroResourcesLoaded: '+progress.passZeroResourcesLoaded);
 		if(progress.passZeroResourcesLength == progress.passZeroResourcesLoaded)	{
 			//All pass zero resources have loaded.
 			//the app will handle hiding the loading screen.
