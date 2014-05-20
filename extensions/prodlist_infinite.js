@@ -87,7 +87,7 @@ var prodlist_infinite = function(_app) {
 //data.bindData will get passed into getProdlistVar and used for defaults on the list itself. That means any var supported in prodlistVars can be set in bindData.
 
 			infiniteproductlist : function($tag,data)	{
-//				_app.u.dump("BEGIN prodlist_infinite.renderFormats.infiniteProductList"); dump(data);
+				_app.u.dump("BEGIN prodlist_infinite.renderFormats.infiniteProductList"); //dump(data);
 //				_app.u.dump(" -> data.bindData: "); _app.u.dump(data.bindData);
 				data.bindData.loadsTemplate = data.bindData.templateid;
 				if(_app.u.isSet(data.value))	{
@@ -119,7 +119,7 @@ This is the function that gets executed to build a product list.
 It is run once, executed by the renderFormat.
 */
 			buildInfiniteProductList : function($tag)	{
-//				_app.u.dump("BEGIN store_prodlist.u.buildInfiniteProductList()");
+				_app.u.dump("BEGIN store_prodlist.u.buildInfiniteProductList()");
 //				_app.u.dump(" -> obj: "); _app.u.dump(obj);
 
 				var bindData = $tag.data('bindData');

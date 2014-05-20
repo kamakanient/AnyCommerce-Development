@@ -41,7 +41,7 @@ function initApp(params) {
 		$.extend(true,self,controller(self),{'vars':params}); //extend self, not initApp.prototype, so that any variables/functions inside this instance are unique to the instance.
 
 		initApp.prototype.model = create(new model(self));
-		self.u.dump('Welcome fellow developer!\nThis project was built with an open-source MVC which can be found here:\nhttps://github.com/zoovy/AnyCommerce-Development','greet');
+//		self.u.dump('Welcome fellow developer!\nThis project was built with an open-source MVC which can be found here:\nhttps://github.com/zoovy/AnyCommerce-Development','greet');
 
 		self.initialize();
 		}
