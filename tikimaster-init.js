@@ -103,39 +103,6 @@ myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(
 
 
 
-
-//Cart Messaging Responses.
-myApp.cmr.push(['chat.join',function(message){
-	if(message.FROM == 'ADMIN')	{
-		var $ui = myApp.ext.quickstart.a.showBuyerCMUI();
-		$("[data-app-role='messageInput']",$ui).show();
-		$("[data-app-role='messageHistory']",$ui).append("<p class='chat_join'>"+message.FROM+" has joined the chat.<\/p>");
-		$('.show4ActiveChat',$ui).show();
-		$('.hide4ActiveChat',$ui).hide();
-		}
-	}]);
-
-//the default behavior for an itemAppend is to open the chat dialog. that's an undesired behavior from the buyer perspective.
-myApp.cmr.push(['cart.itemAppend',function(message,$context)	{
-	dump(" -> message from: "+message.FROM);
-	$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+(message.sku || message.pid || 'unknown product')+" to the cart.<\/p>");
-	}]);
-
-
-
-myApp.cmr.push(['goto',function(message,$context){
-	var $history = $("[data-app-role='messageHistory']",$context);
-	$P = $("<P>")
-		.addClass('chat_post')
-		.append("<span class='from'>"+message.FROM+"<\/span> has sent over a "+(message.vars.pageType || "")+" link for you within this store. <span class='lookLikeLink'>Click here<\/span> to view.")
-		.on('click',function(){
-			showContent(myApp.ext.quickstart.u.whatAmIFor(message.vars),message.vars);
-			});
-	$history.append($P);
-	$history.parent().scrollTop($history.height());
-	}]);
-
-
 //  now add some template functions.
 
 $('#cartTemplate').on('complete.tooltip',function(state,$ele,infoObj){
@@ -225,6 +192,38 @@ myApp.u.appInitComplete = function()	{
 			}
 		else	{$('.ocmFacebookComment').hide()}
 		});
+		
+	
+	//Cart Messaging Responses.
+	myApp.cmr.push(['chat.join',function(message){
+		if(message.FROM == 'ADMIN')	{
+			var $ui = myApp.ext.quickstart.a.showBuyerCMUI();
+			$("[data-app-role='messageInput']",$ui).show();
+			$("[data-app-role='messageHistory']",$ui).append("<p class='chat_join'>"+message.FROM+" has joined the chat.<\/p>");
+			$('.show4ActiveChat',$ui).show();
+			$('.hide4ActiveChat',$ui).hide();
+			}
+		}]);
+	
+	//the default behavior for an itemAppend is to open the chat dialog. that's an undesired behavior from the buyer perspective.
+	myApp.cmr.push(['cart.itemAppend',function(message,$context)	{
+		$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+(message.sku || message.pid || 'unknown product')+" to the cart.<\/p>");
+		}]);
+	
+	
+	
+	myApp.cmr.push(['goto',function(message,$context){
+		var $history = $("[data-app-role='messageHistory']",$context);
+		$P = $("<P>")
+			.addClass('chat_post')
+			.append("<span class='from'>"+message.FROM+"<\/span> has sent over a "+(message.vars.pageType || "")+" link for you within this store. <span class='lookLikeLink'>Click here<\/span> to view.")
+			.on('click',function(){
+				showContent(myApp.ext.quickstart.u.whatAmIFor(message.vars),message.vars);
+				});
+		$history.append($P);
+		$history.parent().scrollTop($history.height());
+		}]);
+		
 	}
 
 
