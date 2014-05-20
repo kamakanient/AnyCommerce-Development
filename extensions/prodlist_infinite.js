@@ -144,7 +144,7 @@ It is run once, executed by the renderFormat.
 				}, //buildInfiniteProductList
 
 			addProductToPage : function($tag)	{
-				_app.u.dump("BEGIN prodlist_infinite.u.addProductToPage");
+				$tag.parent.append("BEGIN prodlist_infinite.u.addProductToPage");
 				$tag.data('isDispatching',true);
 				
 				var plObj = _app.ext.store_prodlist.u.setProdlistVars($tag.data('bindData')),
@@ -155,6 +155,7 @@ It is run once, executed by the renderFormat.
 				var $template = new tlc().getTemplateInstance(plObj.loadsTemplate);
 
 				function handleProd(pid,$templateCopy)	{
+					$tag.parent.append("adding sku "+pid+"<br>");
 					$templateCopy.attr('data-pid',pid);
 					return _app.calls.appProductGet.init({"pid":pid,"withVariations":plObj.withVariations,"withInventory":plObj.withInventory},{'callback':'tlc',jqObj:$templateCopy,'verb':'translate'},'mutable');
 					}

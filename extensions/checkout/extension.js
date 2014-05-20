@@ -2300,6 +2300,7 @@ _app.model.dispatchThis('passive');
 						$r.append("<div ><input type='radio' name='want/payby' value='ZERO' checked='checked' \/>"+pMethods[0].pretty+"<\/div>");
 						}
 					else if(L > 0)	{
+						$r.append("<p>payby: "+payby+"</p>"); // ### TODO -> this is not getting saved in want/payby. so it is not selecting itself.
 						for(var i = 0; i < L; i += 1)	{
 							var $div = $("<div class='headerPadding' data-app-role='paymentMethodContainer'>");
 							var $label = $("<label \/>");
