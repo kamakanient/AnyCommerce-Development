@@ -103,7 +103,8 @@ myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(
 
 
 
-
+/*
+#### TODO -> disabled for testing purposes
 //Cart Messaging Responses.
 myApp.cmr.push(['chat.join',function(message){
 	if(message.FROM == 'ADMIN')	{
@@ -142,7 +143,7 @@ $('#cartTemplate').on('complete.tooltip',function(state,$ele,infoObj){
 		content : $('#paymentMethodsIcons4Tooltip').html()
 		});
 	});
-
+*/
 
 $('#productTemplate').on('complete.something',function(state,$ele,infoObj){
 	myApp.ext.tikimaster.u.addBreadCrumbToProductPage($ele);
