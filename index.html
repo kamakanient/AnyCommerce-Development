@@ -80,7 +80,7 @@ css files should be included before any .js file to ensure they are downloaded i
 $(document).ready(function(){
 
 	window.myApp = new initApp({
-		"release":"201404.0519s",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+		"release":"201404.0519r",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
 		"baseURL":baseURL, //used in non-local mode.
 		"checkoutAuthMode" : "active",//can be passive, active or required
@@ -1108,7 +1108,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </li>
 
 <li id="categoryListTemplateRootSubCats" class="subCatName" data-tlc="bind $pretty '.pretty'; if(is $pretty --null;) {{apply --hide;}};">
-	<a class='blockLink' data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy; bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" data-app-click="tikimaster|hideDropDownOnSelect"></a>
+	<a class='blockLink' data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy; " data-app-click="tikimaster|hideDropDownOnSelect"></a>
 </li>
 
 </ul>
@@ -1490,7 +1490,7 @@ if you change these, you should move them above this comment so that when you (o
 <!--  used in breadcrumb -->
 <ul>
 	<li id="breadcrumbTemplate" data-tlc="bind $var '.@subcategoryDetail.length';  if(is $var --gte='1';) {{apply --add --class='hasSubcats';}};" onMouseOver="myApp.ext.tikimaster.a.showDropDown($(this));" onMouseOut="myApp.ext.tikimaster.a.hideDropDown($(this));" data-app-role='bcListParent'>
-	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category'; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy; apply --append;"></a>
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category'; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy;"></a>
 	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootSubCats'  --legacy;" class="dropdown displayNone"></ul>
 	</li>
 </ul>
