@@ -87,7 +87,7 @@ var prodlist_infinite = function(_app) {
 //data.bindData will get passed into getProdlistVar and used for defaults on the list itself. That means any var supported in prodlistVars can be set in bindData.
 
 			infiniteproductlist : function($tag,data)	{
-				_app.u.dump("BEGIN prodlist_infinite.renderFormats.infiniteProductList"); //dump(data);
+//				_app.u.dump("BEGIN prodlist_infinite.renderFormats.infiniteProductList"); dump(data);
 //				_app.u.dump(" -> data.bindData: "); _app.u.dump(data.bindData);
 				data.bindData.loadsTemplate = data.bindData.templateid;
 				if(_app.u.isSet(data.value))	{
@@ -122,22 +122,18 @@ It is run once, executed by the renderFormat.
 //				_app.u.dump("BEGIN store_prodlist.u.buildInfiniteProductList()");
 //				_app.u.dump(" -> obj: "); _app.u.dump(obj);
 
-				var bindData = $tag.data('bindData') || {};
+				var bindData = $tag.data('bindData');
 //tag is likely an li or a table.  add a loading graphic after it.
 				$tag.parent().append($("<div \/>").addClass('loadingBG').attr('data-app-role','infiniteProdlistLoadIndicator'));
-//				$tag.parent().append(" -> csv: "+bindData.csv);
+
 
 //Need either the tag itself ($tag) or the parent id to build a list. recommend $tag to ensure unique parent id is created
 //also need a list of product (csv)
 				if($tag && bindData.csv)	{
-					$tag.parent().append("<br> -> required parameters exist. Proceed...");
-					try {
-						bindData.csv = _app.ext.store_prodlist.u.cleanUpProductList(bindData.csv); //strip blanks and make sure this is an array. prod attributes are not, by default.
-						}
-					catch(e)	{
-						$tag.parent().append(e);
-						}
-					$tag.parent().append("<br> -> bindData.csv typeof: "+(typeof csv)+ " and length: "+csv.length);
+//					_app.u.dump(" -> required parameters exist. Proceed...");
+					
+					bindData.csv = _app.ext.store_prodlist.u.cleanUpProductList(bindData.csv); //strip blanks and make sure this is an array. prod attributes are not, by default.
+//					_app.u.dump(" -> bindData.csv after cleanup: "); _app.u.dump(bindData.csv);
 					this.addProductToPage($tag);
 					}
 				else	{
@@ -148,7 +144,7 @@ It is run once, executed by the renderFormat.
 				}, //buildInfiniteProductList
 
 			addProductToPage : function($tag)	{
-				$tag.parent.append("BEGIN prodlist_infinite.u.addProductToPage");
+				_app.u.dump("BEGIN prodlist_infinite.u.addProductToPage");
 				$tag.data('isDispatching',true);
 				
 				var plObj = _app.ext.store_prodlist.u.setProdlistVars($tag.data('bindData')),
@@ -159,7 +155,6 @@ It is run once, executed by the renderFormat.
 				var $template = new tlc().getTemplateInstance(plObj.loadsTemplate);
 
 				function handleProd(pid,$templateCopy)	{
-					$tag.parent.append("adding sku "+pid+"<br>");
 					$templateCopy.attr('data-pid',pid);
 					return _app.calls.appProductGet.init({"pid":pid,"withVariations":plObj.withVariations,"withInventory":plObj.withInventory},{'callback':'tlc',jqObj:$templateCopy,'verb':'translate'},'mutable');
 					}
