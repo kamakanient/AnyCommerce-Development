@@ -130,10 +130,10 @@ It is run once, executed by the renderFormat.
 //Need either the tag itself ($tag) or the parent id to build a list. recommend $tag to ensure unique parent id is created
 //also need a list of product (csv)
 				if($tag && bindData.csv)	{
-					$tag.parent().append(" -> required parameters exist. Proceed...");
+					$tag.parent().append("<br> -> required parameters exist. Proceed...");
 					
 					bindData.csv = _app.ext.store_prodlist.u.cleanUpProductList(bindData.csv); //strip blanks and make sure this is an array. prod attributes are not, by default.
-//					_app.u.dump(" -> bindData.csv after cleanup: "); _app.u.dump(bindData.csv);
+					$tag.parent().append("<br> -> bindData.csv typeof: "+(typeof csv)+ " and length: "+csv.length);
 					this.addProductToPage($tag);
 					}
 				else	{
