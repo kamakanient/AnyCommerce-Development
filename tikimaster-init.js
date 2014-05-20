@@ -103,8 +103,7 @@ myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(
 
 
 
-/*
-#### TODO -> disabled for testing purposes. was breaking old IE. needs fixin, working on another IE bug
+
 //Cart Messaging Responses.
 myApp.cmr.push(['chat.join',function(message){
 	if(message.FROM == 'ADMIN')	{
@@ -118,7 +117,8 @@ myApp.cmr.push(['chat.join',function(message){
 
 //the default behavior for an itemAppend is to open the chat dialog. that's an undesired behavior from the buyer perspective.
 myApp.cmr.push(['cart.itemAppend',function(message,$context)	{
-	$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+message.sku+" to the cart.<\/p>");
+	dump(" -> message from: "+message.FROM);
+	$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+(message.sku || message.pid || 'unknown product')+" to the cart.<\/p>");
 	}]);
 
 
@@ -143,7 +143,7 @@ $('#cartTemplate').on('complete.tooltip',function(state,$ele,infoObj){
 		content : $('#paymentMethodsIcons4Tooltip').html()
 		});
 	});
-*/
+
 
 $('#productTemplate').on('complete.something',function(state,$ele,infoObj){
 	myApp.ext.tikimaster.u.addBreadCrumbToProductPage($ele);

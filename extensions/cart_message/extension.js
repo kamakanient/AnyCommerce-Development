@@ -158,9 +158,9 @@ some defaults are present, but they can be overwritten by the app easily enough.
 					$("[data-app-role='messageInput']",$context).show();
 					$("[data-app-role='messageHistory']",$context).append("<p class='chat_join'>"+message.FROM+" has joined the chat.<\/p>");
 					},
-				'cart.itemAppend' : function(opts,$context)	{
+				'cart.itemAppend' : function(message,$context)	{
 					$("[data-app-role='messageInput']",$context).show();
-					$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+opts.FROM+" has added item "+opts.sku+" to the cart.<\/p>");
+					$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+(message.sku || message.pid || 'unknown product')+" to the cart.<\/p>");
 					},
 				'chat.post' : function(message,$context)	{
 					dump(message);
