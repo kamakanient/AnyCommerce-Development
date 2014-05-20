@@ -51,7 +51,7 @@ var cart_message = function(_app) {
 						addCMResponse(_app.cmr[i][0],_app.cmr[i][1]);
 						delete _app.cmr[i];
 						}
-					_app.cmr.push = addCMResponse; // all future pushes will get added immediately to the response list.
+					_app.cmr.prototype.push = addCMResponse; // all future pushes will get added immediately to the response list.
 					_app.u.loadCSSFile(_app.vars.baseURL+"extensions/cart_message/styles.css","cart_messageCSS");
 					_app.model.fetchNLoadTemplates(_app.vars.baseURL+'extensions/cart_message/templates.html',theseTemplates);
 					//if there is any functionality required for this extension to load, put it here. such as a check for async google, the FB object, etc. return false if dependencies are not present. don't check for other extensions.
@@ -160,7 +160,12 @@ some defaults are present, but they can be overwritten by the app easily enough.
 					},
 				'cart.itemAppend' : function(message,$context)	{
 					$("[data-app-role='messageInput']",$context).show();
-					$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+(message.sku || message.pid || 'unknown product')+" to the cart.<\/p>");
+					try	{
+						$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+message.FROM+" has added item "+(message.sku || message.pid || 'unknown product')+" to the cart.<\/p>");
+						}
+					catch(e)	{
+						dump(e);
+						}
 					},
 				'chat.post' : function(message,$context)	{
 					dump(message);
