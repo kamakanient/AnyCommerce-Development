@@ -104,7 +104,7 @@ myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(
 
 
 /*
-#### TODO -> disabled for testing purposes
+#### TODO -> disabled for testing purposes. was breaking old IE. needs fixin, working on another IE bug
 //Cart Messaging Responses.
 myApp.cmr.push(['chat.join',function(message){
 	if(message.FROM == 'ADMIN')	{
