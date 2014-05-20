@@ -119,20 +119,24 @@ This is the function that gets executed to build a product list.
 It is run once, executed by the renderFormat.
 */
 			buildInfiniteProductList : function($tag)	{
-				_app.u.dump("BEGIN store_prodlist.u.buildInfiniteProductList()");
+//				_app.u.dump("BEGIN store_prodlist.u.buildInfiniteProductList()");
 //				_app.u.dump(" -> obj: "); _app.u.dump(obj);
 
 				var bindData = $tag.data('bindData') || {};
 //tag is likely an li or a table.  add a loading graphic after it.
 				$tag.parent().append($("<div \/>").addClass('loadingBG').attr('data-app-role','infiniteProdlistLoadIndicator'));
-				$tag.parent().append(" -> csv: "+bindData.csv);
+//				$tag.parent().append(" -> csv: "+bindData.csv);
 
 //Need either the tag itself ($tag) or the parent id to build a list. recommend $tag to ensure unique parent id is created
 //also need a list of product (csv)
 				if($tag && bindData.csv)	{
 					$tag.parent().append("<br> -> required parameters exist. Proceed...");
-					
-					bindData.csv = _app.ext.store_prodlist.u.cleanUpProductList(bindData.csv); //strip blanks and make sure this is an array. prod attributes are not, by default.
+					try {
+						bindData.csv = _app.ext.store_prodlist.u.cleanUpProductList(bindData.csv); //strip blanks and make sure this is an array. prod attributes are not, by default.
+						}
+					catch(e)	{
+						$tag.parent().append(e);
+						}
 					$tag.parent().append("<br> -> bindData.csv typeof: "+(typeof csv)+ " and length: "+csv.length);
 					this.addProductToPage($tag);
 					}

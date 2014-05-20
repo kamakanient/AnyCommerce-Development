@@ -459,9 +459,8 @@ the object created here is passed as 'data' into the mulitpage template. that's 
 					}
 				catch(e)	{
 					dump("Couldn't clean up the product list. reason: ");
-					dump(e);
+					alert(e); //### TODO -> change this to a dump. is alert for IE testing.
 					}
-				alert(" -> csv.length: "+csv.length);
 				return csv;
 				},
 
