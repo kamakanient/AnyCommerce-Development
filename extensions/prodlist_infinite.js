@@ -122,15 +122,15 @@ It is run once, executed by the renderFormat.
 				_app.u.dump("BEGIN store_prodlist.u.buildInfiniteProductList()");
 //				_app.u.dump(" -> obj: "); _app.u.dump(obj);
 
-				var bindData = $tag.data('bindData');
+				var bindData = $tag.data('bindData') || {};
 //tag is likely an li or a table.  add a loading graphic after it.
 				$tag.parent().append($("<div \/>").addClass('loadingBG').attr('data-app-role','infiniteProdlistLoadIndicator'));
-
+				$tag.parent().append(" -> csv: "+bindData.csv);
 
 //Need either the tag itself ($tag) or the parent id to build a list. recommend $tag to ensure unique parent id is created
 //also need a list of product (csv)
 				if($tag && bindData.csv)	{
-//					_app.u.dump(" -> required parameters exist. Proceed...");
+					$tag.parent().append(" -> required parameters exist. Proceed...");
 					
 					bindData.csv = _app.ext.store_prodlist.u.cleanUpProductList(bindData.csv); //strip blanks and make sure this is an array. prod attributes are not, by default.
 //					_app.u.dump(" -> bindData.csv after cleanup: "); _app.u.dump(bindData.csv);
