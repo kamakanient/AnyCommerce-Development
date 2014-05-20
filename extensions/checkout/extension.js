@@ -2317,7 +2317,7 @@ _app.model.dispatchThis('passive');
 								}
 							else	{
 								//onClick event is added through an app-event. allows for app-specific events.
-								$label.append("<input type='radio' name='want/payby' value='"+pMethods[i].id+"' />");
+								$label.append("<input type='radio' name='want/payby' value='"+pMethods[i].id+"' "+(pMethods[i].id == payby ? "checked='checked'" : "")+" />");
 								$label.append((pMethods[i].id == 'CREDIT' ? 'Credit Card' : pMethods[i].pretty));
 								if(pMethods[i].icons)	{
 									$.each(pMethods[i].icons.split(' '),function(){
@@ -2338,9 +2338,9 @@ _app.model.dispatchThis('passive');
 							$r.append("This session is <b>not secure</b>, so credit card payment is not available.");
 							}
 						}
-					if(payby)	{
-						$("input[value='"+payby+"']",$r).prop('checked','checked').closest('label').addClass('selected ui-state-active')
-						}	
+//					if(payby)	{
+//						$("input[value='"+payby+"']",$r).prop('checked','checked').closest('label').addClass('selected ui-state-active')
+//						}	
 				return $r.children();
 				}
 
