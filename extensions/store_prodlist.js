@@ -447,13 +447,9 @@ the object created here is passed as 'data' into the mulitpage template. that's 
 					}
 //				_app.u.dump(" -> typeof csv: "+typeof csv);
 				csv = $.grep(csv,function(n){return(n);}); //remove blanks. commonly occurs in product attributes cuz of extra comma
-				try	{
-					csv = $.map(csv,function(n){return(n.replace(/^\s+|\s+$/g, ''));}); //remove blanks. commonly occurs in product attributes cuz of extra comma. IE8 does NOT support trim()
-					}
-				catch(e)	{
-					dump("Couldn't clean up the product list. reason: ");
-					dump(e); //### TODO -> change this to a dump. is alert for IE testing.
-					}
+// *** 201404 ->  IE8 does NOT support trim().
+				csv = $.map(csv,function(n){return(n.replace(/^\s+|\s+$/g, ''));}); //remove blanks. commonly occurs in product attributes cuz of extra comma.
+//				csv = $.map(csv,function(n){return(n.trim());}); //remove blanks. commonly occurs in product attributes cuz of extra comma
 				return csv;
 				},
 
