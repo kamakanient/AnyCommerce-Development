@@ -418,7 +418,7 @@ note - there is NO error checking in here to make sure the subcats aren't alread
 				var pathArray = path.split('.');
 				var len = pathArray.length
 				var s= '.'; //used to contatonate safe id.
-				// TIKIMASTER -> max is necessary on breadcrumb calls so that subcats can be generated.
+// ### tikimaster -> max is necessary on breadcrumb calls so that subcats can be generated.
 				_app.calls.appNavcatDetail.init({'path':'.','detail':'max'}); //homepage data. outside of loop so I can keep loop more efficient
 				for (var i=1; i < len; i += 1) {
 					s += pathArray[i]; //pathArray[0] will be blank, so s (.) plus nothing is just .

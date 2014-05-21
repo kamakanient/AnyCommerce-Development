@@ -41,7 +41,7 @@ function initApp(params) {
 		$.extend(true,self,controller(self),{'vars':params}); //extend self, not initApp.prototype, so that any variables/functions inside this instance are unique to the instance.
 
 		initApp.prototype.model = create(new model(self));
-//		self.u.dump('Welcome fellow developer!\nThis project was built with an open-source MVC which can be found here:\nhttps://github.com/zoovy/AnyCommerce-Development','greet');
+		self.u.dump('Welcome fellow developer!\nThis project was built with an open-source MVC which can be found here:\nhttps://github.com/zoovy/AnyCommerce-Development','greet');
 
 		self.initialize();
 		}
@@ -1041,18 +1041,14 @@ Some utilities for loading external files, such as .js, .css or even extensions.
 				var script = document.createElement("script");
 				script.type = "text/javascript";
 				if (script.readyState){  //IE
-					dump(" -> using script onreadystate");
 					script.onreadystatechange = function(){
 						if (script.readyState == "loaded" || script.readyState == "complete"){
 							script.onreadystatechange = null;
-							if(typeof callback == 'function')	{
-								dump(" -> script.readyState: "+script.readyState);
-								callback(params);}
+							if(typeof callback == 'function')	{callback(params);}
 							}
 						};
 					}
 				else {
-					dump(" -> using script onload");
 					if(typeof callback == 'function')	{
 						script.onload = function(){callback(params)}
 						}
@@ -2344,7 +2340,7 @@ a word */
 
 		jqSelector : function(selector,str){
 			if (undefined == str) { str = new String(""); }	// fix undefined issue
-			return ((selector && str && (typeof str == 'string') ) ? selector : '')+str.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
+			return ((selector) ? selector : '')+str.replace(/([;&,\.\+\*\~':"\!\^#$%@\[\]\(\)=>\|])/g, '\\$1');
 			},
 
 		isValidMonth : function(val)	{

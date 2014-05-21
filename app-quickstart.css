@@ -38,6 +38,7 @@ span.wait	{display:inline-block;}
 
 img	{border:0; vertical-align: top; display:inline-block;} /* vertical-align: top; removes the whitespace sometimes added under an image.  */
 a:focus { outline: none; } /* disable the outline around links. it's unattactive */
+a.blockLink	{text-decoration:none; cursor:pointer;} /* used for #! anchors. IE needs the cursor defined or it shows as an arrow instead of a hand. */
 
 button {display:inline-block; margin: 0; padding: 0; cursor:pointer;}
 /* for small buttons */
@@ -319,8 +320,8 @@ so the displayNone class is used, then a .grpType_PARENT class is added if the i
 BREADCRUMB
  -> used on product and category pages
 
+### tikimaster -> these styles break the dual-level breadcrumb
 
-*** tikimaster -> these classes are not desired for the dual-level breadcrumb feature.
 
 .breadcrumb	{margin-bottom:1em;}
 .breadcrumb li	{padding:0; margin:0; cursor:pointer; padding-right:10px;}
@@ -329,8 +330,8 @@ BREADCRUMB
 
 .breadcrumb li:last-child a	{color:#666666; text-decoration:none; font-weight:bold; cursor:text;}
 
-*/
 
+*/
 /*
 
 cartTemplate
