@@ -1261,7 +1261,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 
 		<h5 data-tlc="bind $var '.prod_name'; if (is $var --notblank;) {{apply --append;}};" class="hideInMinimalMode"></h5>
 		<span data-tlc="bind $var '.description'; tikimaster#striphtml; format --truncate='100'; apply --append;" class="description hideInMinimalMode"></span>
-		<h6 data-tlc="bind $var '.base_price'; if (is $var --notblank;) {{format --currency='USD'; format --prepend='Our Price: '; apply --add --class='price'; apply --append;}};" class="hideInMinimalMode"></h6>
+		<h6 data-tlc="bind $var '.base_price'; if (is $var --notblank;) {{ math --div='100' --precision='2'; format --currency='USD';  format --prepend='Our Price: '; apply --append; apply --add --class='price';}};" class="hideInMinimalMode"></h6>
 	</a>
 
 </li>
