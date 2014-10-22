@@ -56,6 +56,7 @@ myApp.rq.push(['extension',0,'quickstart','app-quickstart.js','startMyProgram'])
 
 myApp.rq.push(['extension',0,'tikimaster','tikimaster.js']);
 myApp.rq.push(['extension',0,'prodlist_infinite','extensions/prodlist_infinite.js']);
+myApp.rq.push(['extension',0,'store_filter','extensions/_store_filter.js','attachEventHandlers']);
 
 //myApp.rq.push(['extension',0,'entomologist','extensions/entomologist/extension.js']);
 //myApp.rq.push(['extension',0,'tools_animation','extensions/tools_animation.js']);

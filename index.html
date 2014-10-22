@@ -180,7 +180,7 @@ var _robots = {
 
 		<div id="headerNav">
 			<!--img class="pointer swing" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' /-->
-			<a class="swing" href="#!category/004" alt='Tiki Decor' style="width:118px; background-position:0 0"></a>
+			<a class="swing" href="#!category/004/carved-tikis" alt='Tiki Decor' style="width:118px; background-position:0 0"></a>
 			<a class="swing" href="#!category/nautical_signs" alt='Nautical Decor' style="width:154px; background-position:-118px 0"></a>
 			<a class="swing" href="#!category/90" alt='Surf Decor' style="width:119px; background-position:-272px 0"></a>
 			<a class="swing" href="#!category/pirate_decor" alt='Pirate Decor'  style="width:136px; background-position:-391px 0"></a>
@@ -214,6 +214,16 @@ var _robots = {
 </div>
 
 <div id='mainContentArea'></div><!-- DO NOT REMOVE - this is where the specific page (ex: homepage, product, category) content is going to go -->
+	
+	<div id="filterContainer">
+		<div id="showFilterBtn" class="pointer" onClick="$(this).parent().toggleClass('expand');"></div>
+		<div id="filterListContainer">
+			<div class="alignCenter">
+				<img src="images/filter_title_185x43.png" />
+			</div>
+			<div id="filterList"></div>
+		</div>
+	</div>
 	
 	<!-- /promo banners and social network logos -->
 	<div class='wrapPromoBox'>
@@ -700,6 +710,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	
 	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
 	
+	<div data-tlc="bind $var '.'; tikimaster#dump;"></div>
 
 	<div class="catHeader greenHeader">
 		<h2 data-tlc="bind $var '.%page.page_title'; if (is $var --notblank;) {{apply --append;}};"></h2>
@@ -721,7 +732,58 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </div><!-- END categoryTemplate -->
 
 
+<div id="categoryTemplateFilteredSearch" class="categoryTemplateFilteredSearch">
+	<span class="displayNone" data-tlc="bind $navcat '.navcat'; bind $seo '.pretty'; bind $hash ''; store_routing#categorylink --navcat=$navcat --seo=$seo; apply --attrib='data-routing-hash';"></span>
+	
+	<ul data-tlc="bind $var '.path'; store_navcats#breadcrumb  --templateid='breadcrumbTemplate'  --legacy;" class="breadcrumb clearfix noPadOrMargin fluidList"></ul>
+	
+	<ul data-sac="output" class='listStyleNone fluidList noPadOrMargin productList'></ul>
+</div>
 
+<div id="filteredSearchTemplate" data-tlc="tikimaster#filterform;" data-filter="parent">
+	<span class="displayNone" data-tlc="bind $title '.title'; apply --attrib='data-seo-title';"></span>
+	<span class="displayNone" data-tlc="bind $desc '.description'; apply --attrib='data-seo-desc';"></span>
+	<h2 data-tlc="bind $title '.title'; apply --append;"></h2>
+	<div data-tlc="bind $desc '.description'; apply --append;"></div>
+	<ul data-filter="resultsList" class="listStyleNone fluidList noPadOrMargin productList"></ul>
+</div>
+
+<form id="filterListTemplate" onSubmit="return false;" data-app-submit="store_filter|execFilteredSearch" data-tlc="bind $bf '.baseFilter'; stringify; apply --attrib='data-filter-base';">
+	<input data-tlc="bind $var '.base'; store_sac#assigndata  --attribute='filter-base' --legacy;" data-sac="filterBase" type="hidden">
+	
+	<!-- Has Video and Has 360 filters are shown on all filter lists- no need for data-binds -->
+	<div class="marginBottom">
+		<h5 class="highlightText">
+			<input name="videoid" data-filter-type="checkboxList" data-filter-index="videoid" data-filter-type="hasAttribute" type="checkbox"> Has Video
+		</h5>
+	</div>
+	<div class="marginBottom">
+		<h5 class="highlightText">
+			<input name="prod_360_viewer_id" data-filter-type="checkboxList" data-filter-index="prod_360_viewer_id" data-filter-type="hasAttribute" type="checkbox"> Has 360 View
+		</h5>
+	</div>
+	
+	<div data-tlc="bind $var '.options.user:app_brand'; if(is $var --blank){{apply --hide;}};" class="filterGroup marginBottom">
+		<h5 class="highlightBG_2">Brand:</h5>
+		<div class="filterCheckboxList" 
+			data-tlc="bind $index '.options.user:app_brand.index';
+				bind $cbl '.options.user:app_brand.options'; 
+				store_filter#filtercheckboxlist --index=$index;"></div>
+	</div>
+	<div data-tlc="bind $var '.options.user:helmet_type'; if(is $var --blank){{apply --hide;}};" class="filterGroup marginBottom">
+		<h5 class="highlightBG_2">Helmet Type:</h5>
+		<div class="filterCheckboxList" 
+			data-tlc="bind $index '.options.user:helmet_type.index';
+				bind $cbl '.options.user:helmet_type.options'; 
+				store_filter#filtercheckboxlist --index=$index;"></div>
+	</div>
+		
+	<!--
+	<select data-bind="var:filter(options); index:primary_color; format:filterSelect; extension:store_sac;"></select>
+	<select data-bind="var:filter(options); index:accent_color; format:filterSelect; extension:store_sac;"></select>
+	-->
+	<button onClick="$(this).closest('form').trigger('submit');">Go!</button>
+</form>
 
 
 
@@ -1520,7 +1582,7 @@ if you change these, you should move them above this comment so that when you (o
 <!--  used in breadcrumb -->
 <ul>
 	<li id="breadcrumbTemplate" data-tlc="bind $var '.@subcategoryDetail.length';  if(is $var --gte='1';) {{apply --add --class='hasSubcats';}};" onMouseOver="myApp.ext.tikimaster.a.showDropDown($(this));" onMouseOut="myApp.ext.tikimaster.a.hideDropDown($(this));" data-app-role='bcListParent'>
-	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category'; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy;"></a>
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --seo --type='category'; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy;"></a>
 	<ul data-tlc="bind $var '.@subcategoryDetail'; store_navcats#categorylist  --detail='max' --templateid='categoryListTemplateRootSubCats'  --legacy;" class="dropdown displayNone"></ul>
 	</li>
 </ul>

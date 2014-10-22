@@ -850,6 +850,25 @@ an + b - a - size of loop, b - offset
 
   /************* Category with products page layout *****************/
   
+#filterContainer {
+	position:absolute;
+	left:-68px; 
+	top:40px;
+	z-index:1001;
+	transition: left .6s, width .6s;
+	-moz-transition: left .6s, width .6s;
+	-webkit-transition: left.6s, width .6s;
+	-o-transition: left .6s, width .6s;
+	width:0px;
+	background:white;
+}
+#filterContainer.active{left: 0px;}
+#filterContainer.expand {width: 195px; border: 1px solid #cc4300;}
+
+#filterContainer #showFilterBtn{position:absolute; left:100%; width: 68px; height:285px; background:url(images/show_filter_btn_68x285.png) no-repeat;}
+#filterContainer #filterListContainer{overflow:hidden;}
+#filterContainer #filterListContainer #filterList{width:200px; min-height:400px;}
+  
 .productList > li {
   width:312px;
   height:316px;

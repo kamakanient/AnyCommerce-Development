@@ -46,7 +46,54 @@ var tikimaster = function(_app) {
 					//you may or may not need it.
 					dump('BEGIN _app.ext.tikimaster.callbacks.init.onError');
 				}
-			}
+			},
+			
+			attachEventHandlers : {
+				onSuccess : function() {
+				//FILTEREDSEARCH STUFFS:
+					var filterComplete = function(event, $context, infoObj){
+						var $fc = $('#filterContainer');
+						$('form', $fc).data('loadFullList', infoObj.loadFullList).trigger('submit');
+						$fc.addClass('active expand');
+						var timer = setTimeout(function(){
+							$fc.removeClass('expand');
+						}, 4000);
+						$fc.data('hidetimer', timer);
+						$fc.on('mouseenter.sac', function(){
+							clearTimeout($fc.data('hidetimer'));
+							$fc.off('mouseenter.sac');
+						});
+					};
+					
+					var filterDepart = function(event, $context, infoObj){
+						var $fc = $('#filterContainer');
+						$fc.removeClass('expand').removeClass('active');
+						$fc.off('mouseenter.sac');
+					};
+					
+					_app.templates.filteredSearchTemplate.on('complete.filter', filterComplete);	
+					_app.templates.filteredSearchTemplate.on('depart.filter', filterDepart);
+					
+					//Adds the listener for the url.  The route needs to match the page pushed into robots below
+				_app.router.appendHash({'type':'match','route':'.004/{{id}}/*','callback':'filter'});
+				//This is the list of helmet pages.  The ID is part of the URL- change this for SEO reasons- the jsonPath is the file where it loads the options from.  The jsonPath doesn't matter as long as it loads the file
+				var traditionalTikiPages = [
+					{id:'.1',jsonPath:'filters/1.json'}
+			//		{id:'full-face',jsonPath:'filters/helmets/full-face.json'}
+				];
+				for(var i in traditionalTikiPages) {
+					_app.ext.store_filter.vars.filterPages.push(traditionalTikiPages[i]);
+					//this page needs to match the route above
+					_app.ext.seo_robots.vars.pages.push("#!.004/"+traditionalTikiPages[i].id+"/");
+				}
+				//END FILTER SEARCH STUFF
+				},
+				onError : function() {
+					dump('START tikimaster.callbacks.attachEventHandlers.onError');
+				}
+				
+			} //attachEventHandlers
+			
 		}, //callbacks
 
 ////////////////////////////////////   ACTIONS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -113,11 +160,65 @@ var tikimaster = function(_app) {
 		}, //Actions
 
 ////////////////////////////////////   RENDERFORMATS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 		renderFormats : {
+		//FILTEREDSEARCH STUFFS
+			filtercheckboxlist : function($tag,data) {
+				var options = false;
+				if(data.bindData.index){
+					options = data.value[data.bindData.index];
+				}
+				
+				if(options) {
+					$tag.attr('data-filter-index', data.bindData.index);
+					$tag.attr('data-filter-type','checkboxList');
+					for(var i in options) {
+						var o = options[i];
+						var $o = $('<div></div>');
+						$o.append('<input type="checkbox" name="'+o.v+'"/>');
+						$o.append('<label>'+o.p+'</label>');
+						$tag.append($o);
+					}
+				}
+				else {
+					$tag.remove();
+				}
+			},
+			
+			assigndata : function($tag, data) {
+				$tag.data(data.bindData.attribute, data.value);
+				//_app.u.dump($tag.data(data.bindData.attribute));
+			},
+		//END FILTER SEARCH STUFF
 		}, //renderFormats
 
 
 		tlcFormats : {
+		
+			//a testing function to show data bound to a tag
+			dump : function(data,thisTLC) {
+				dump("store_cc#dump");
+				dump(data);
+				return true;
+			},
+		
+		//FILTEREDSEARCH STUFFS	
+			filterform : function(data, thisTLC){
+				var $context = data.globals.tags[data.globals.focusTag];
+				
+				var $fc = $('#filterContainer');
+				var $fl = $('#filterList', $fc);
+				$fl.removeData().empty();
+				
+				$fl.data('dataset',data.value);
+				$fl.tlc({'dataset':data.value, 'templateid':'filterListTemplate'});
+				$('button', $fl).button();
+				
+				$('form',$fl).data('jqContext',$context);
+				
+				//$('form', $fl).trigger('submit');
+			},
+		//END FILTER SEARCH STUFF	
 			
 			striphtml : function(data,thisTLC)	{
 				data.globals.binds[data.globals.focusBind] = data.globals.binds[data.globals.focusBind].replace(/(<([^>]+)>)/ig,"");
@@ -130,7 +231,90 @@ var tikimaster = function(_app) {
 		u : {
 			//utilities are typically functions that are exected by an event or action.
 			//any functions that are recycled should be here.
+		//FILTEREDSEARCH STUFFS
+			initFilteredSearch : function($context, infoObj) {
+				var $fc = $('#filterContainer');
+				var $fl = $('#filterList', $fc);
+				var timer = $fc.data('filter-list-clear-timer');
+				if(timer) {
+					clearTimeout(timer);
+					$fl.removeData().empty();
+					$fc.removeData('filter-list-clear-timer');
+				}
+				
+				$fl.data('jqContext',$context);
+				$fl.data('navcat',infoObj.navcat);
+				$fl.data('filters',_app.ext.store_sac.filters[infoObj.navcat]);
+				
+				$fl.tlc({'dataset':_app.ext.store_sac.filters[infoObj.navcat], 'templateid':'filterListTemplate'});
+				$('button', $fl).button();
+				$fc.addClass('active');
+				_app.ext.store_sac.u.sendFilteredSearch();
+				//TODO
+				//$fc.addClass('expand');
+			},
 
+			sendFilteredSearch : function() {
+				var $context = $('#filterList').data('jqContext');
+				var elasticsearch = {
+					"filter" : {
+						"and" : []
+					}
+				}
+				_app.u.dump($('#filterList [data-sac=filterBase]').length);
+				_app.u.dump($('#filterList [data-sac=filterBase]').data('filter-base'));
+				elasticsearch.filter.and.push($('#filterList [data-sac=filterBase]').data('filter-base'));
+				
+				$('#filterList [data-filter-type=checkboxList]').each(function()  {
+					var index = $(this).attr('data-filter-index');
+					var filter = {"or" : []};
+					$('input', $(this)).each(function() {
+						if($(this).is(":checked")) {
+							var f = {"term" : {}};
+							f.term[index] = $(this).attr('name');
+							filter.or.push(f);
+						}
+					});
+					if(filter.or.length > 0) {
+						elasticsearch.filter.and.push(filter);
+					}
+				});
+				 
+				$('#filterList [data-filter-type=hasAttribute]').each(function() {
+					if($(this).is(":checked")) {
+						elasticsearch.filter.and.push({
+							"not" : {
+								"missing" : {
+									"field" : $(this).attr('data-filter-index')
+								}
+							}
+						});
+					}
+				});
+				
+				_app.u.dump(elasticsearch);
+				var es = _app.ext.store_search.u.buildElasticRaw(elasticsearch);
+				es.size = 60;
+				_app.ext.store_search.u.updateDataOnListElement($('[data-sac=output]', $context),es,1);
+				_app.ext.store_search.calls.appPublicSearch.init(es, {'callback':'handleElasticResults', 'datapointer':'appFilteredSearch','extension':'store_search','templateID':'productListTemplateResults','list':$('[data-sac=output]', $context)});
+				_app.model.dispatchThis();
+				
+				//_app.u.dump(es);
+			},
+			
+			destroyFilteredSearch : function(infoObj) {
+				var $fc = $('#filterContainer');
+				$fc.removeClass('expand').removeClass('active');
+				
+				var timer = setTimeout(function() {
+					$('#filterList', $fc).removeData().empty();
+					$fc.removeData('filter-list-clear-timer');
+				}, 750);
+				
+				$fc.data('filter-list-clear-timer', timer);
+			},
+		//END FILTERED SEARCH STUFFS
+		
 			prepareRootNavCats : function(){
 				$("#leftNav ul li").unbind()
 					 .mouseover(function() { _app.ext.tikimaster.a.showDropDown($(this)); })
@@ -344,6 +528,17 @@ var tikimaster = function(_app) {
 			
 			
 		}, //e [app Events]
+		
+		// A map of navcats to objects containing their base filters and available filters for filtered search.  
+		// It can be assumed that if a navcat is used as a key here, (ie typeof _app.ext.tikimaster.filters[navcat] !== "undefined") 
+		// then the app should use the filtered search template for it
+		//FILTEREDSEARCH STUFFS
+		filters : {
+			"004" : {
+				"base" : {"term" : {"prod_is_general" : "accessory_clothing"}},
+				"options" : {}
+			}
+		},
 		
 ////////////////////////////////////   VARS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		vars : {

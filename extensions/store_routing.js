@@ -110,6 +110,7 @@ _app.router.appendHash({'type':'match','route':'modal/product/{{pid}}*','callbac
 									hash = "#!product/"+infoObj.pid+"/";
 									break;
 								case 'category':
+									if(infoObj.navcat[0] == ".") { infoObj.navcat.slice(1,infoObj.navcat.length-1); }
 									hash = "#!category/"+infoObj.navcat+"/";
 									break;
 								case 'static':
@@ -206,6 +207,13 @@ optional params:
 					
 					case 'category':
 						r = true;
+						dump(data.value.pretty);
+						dump('seoAnchor category case:'); dump(data.value.path[0]); dump(data.value.path[data.value.path.length-1]); dump(data.value.path.slice(1,data.value.path.length-1));
+						if(data.value.path[0] == ".") { 
+							var removedDot = data.value.path.slice(1,data.value.path.length-1);
+							dump('removedDot:'); dump(removedDot);
+							data.globals.binds[data.globals.focusBind] = _app.ext.store_routing.u.categoryAnchor(removedDot, (args.seo ? data.value.pretty : ''));
+						}
 						data.globals.binds[data.globals.focusBind] = _app.ext.store_routing.u.categoryAnchor(data.value.path, (args.seo ? data.value.pretty : ''));
 						break;
 					
@@ -250,11 +258,20 @@ optional params:
 					window.location.href = window.location.href.split("#")[0]+hash;
 					}
 				},
+			cleanURIComponent : function(str){
+				var component = str.replace(/^\s+|\s+$/g, '');
+				//component = component.replace(' ', '-');
+				component = component.replace(/[^a-zA-Z0-9]+/g, '-');
+				return component;
+				},
 			productAnchor : function(pid, seo){
 				return "#!product/"+pid+"/"+(seo ? encodeURIComponent(seo) : '');
+	//new	return "#!product/"+pid.toLowerCase()+"/"+(seo ? _app.ext.store_routing.u.cleanURIComponent(seo).toLowerCase() : '')+".html";
 				},
 			categoryAnchor : function(path,seo)	{
-				return "#!category/"+path+((seo) ? "/"+encodeURIComponent(seo) : '');
+				dump("#!category/"+path+((seo) ? "/"+encodeURIComponent(seo) : ''));
+	//old		return "#!category/"+path+((seo) ? "/"+encodeURIComponent(seo) : '');
+				return "#!category/"+path.toLowerCase()+"/"+((seo) ? _app.ext.store_routing.u.cleanURIComponent(seo).toLowerCase() : '');
 				},
 			searchAnchor : function(type,value)	{
 				var r;
@@ -271,7 +288,8 @@ optional params:
 				else	{
 					//unrecognized type
 					}
-				return "#!category/"+path+((seo) ? "/"+encodeURIComponent(seo) : '');
+	//old		return "#!category/"+path+((seo) ? "/"+encodeURIComponent(seo) : '');
+				return "#!category/"+path.toLowerCase()+"/"+((seo) ? _app.ext.store_routing.u.cleanURIComponent(seo).toLowerCase() : '');
 				}
 			}, //u [utilities]
 
