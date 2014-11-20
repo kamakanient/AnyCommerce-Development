@@ -167,6 +167,8 @@ templateID - the template id used (from _app.templates)
 //to display a category w/ thumbnails, first the parent category obj is fetched (appNavcatDetail...) and this would be the callback.
 //it will get the detail of all the children, including 'meta' which has the thumbnail. It'll absorb the tag properties set in the inital request (parent, template) but
 // override the callback, which will be set to simply display the category in the DOM. getChildDataOf handles creating the template instance as long as parentID and templateID are set.
+		
+		//Unused?
 		getChildData : {
 			onSuccess : function(tagObj)	{
 //				_app.u.dump('BEGIN _app.ext.quickstart.callbacks.getChildData.onSuccess');
@@ -223,6 +225,10 @@ templateID - the template id used (from _app.templates)
 							var $ele = $tmp.children().first();
 							$tag.append($ele);
 							numRequests += _app.calls.appNavcatDetail.init({'path':data.value[i].path,'detail':data.bindData.detail},{'callback':'tlc','jqObj':$ele,'verb':'translate'},'mutable');
+							var $tmp = $("<ul \/>").tlc({'templateid':data.bindData.templateid,'verb':'template','dataAttribs':{'catsafeid':data.value[i].path}});
+							var $ele = $tmp.children().first();
+							$tag.append($ele);
+							numRequests += _app.calls.appNavcatDetail.init({'path':data.value[i].path,'detail':data.bindData.detail},{'callback':'tlc','jqObj':$ele,'verb':'translate'},'mutable');
 							}
 						}
 					if(numRequests)	{_app.model.dispatchThis('mutable')}
@@ -271,7 +277,32 @@ templateID - the template id used (from _app.templates)
 
 
 		u : {
-/*
+			showPage : function($container, infoObj)	{
+				var catSafeID = infoObj.navcat;
+				if(!catSafeID)	{
+					$("#globalMessaging").anymessage({"message":"In quickstart.u.showPage, no navcat was passed in infoObj.","gMessage":true});
+					}
+				else	{
+					if(infoObj.templateID){/*templateID 'forced'. use it.*/}
+					else if(catSafeID == zGlobals.appSettings.rootcat || infoObj.pageType == 'homepage')	{
+						infoObj.templateID = 'homepageTemplate'
+						}
+					else	{ infoObj.templateID = 'categoryTemplate'; }
+					
+					var parentID = infoObj.parentID || infoObj.templateID+'_'+_app.u.makeSafeHTMLId(catSafeID);
+					var $page = new tlc().getTemplateInstance(infoObj.templateID);
+					
+					infoObj.state = 'init';
+					_app.renderFunctions.handleTemplateEvents($page,infoObj);
+					
+					$container.append($page);
+
+					$.extend(infoObj,{'callback':'fetchPageContent','extension':'quickstart','jqObj':$page});
+					_app.calls.appNavcatDetail.init({'path':catSafeID,'detail':'max'},infoObj);
+					_app.model.dispatchThis();
+					}
+				}, //showPage
+/*		
 In cases where the root categories are needed, this function will return them from the appCategoryList dataset.
 function assumes appCategoryList already exists in memory.
 will return an object of id:safeid, which is how the categories are stored in a appNavcatDetail.
@@ -418,13 +449,13 @@ note - there is NO error checking in here to make sure the subcats aren't alread
 				var pathArray = path.split('.');
 				var len = pathArray.length
 				var s= '.'; //used to contatonate safe id.
-// ### tikimaster -> max is necessary on breadcrumb calls so that subcats can be generated.
+				_app.calls.appNavcatDetail.init({'path':'.','detail':'fast'}); //homepage data. outside of loop so I can keep loop more efficient
 				_app.calls.appNavcatDetail.init({'path':'.','detail':'max'}); //homepage data. outside of loop so I can keep loop more efficient
 				for (var i=1; i < len; i += 1) {
 					s += pathArray[i]; //pathArray[0] will be blank, so s (.) plus nothing is just .
 //					_app.u.dump(" -> path for breadcrumb: "+s);
 					datapointers.push("appNavcatDetail|"+s);
-					_app.calls.appNavcatDetail.init({'path':s,'detail':'max'});
+					_app.calls.appNavcatDetail.init({'path':s,'detail':'fast'});
 				//after each loop, the . is added so when the next cat id is appended, they're concatonated with a . between. won't matter on the last loop cuz we're done.
 					s += "."; //put a period between each id. do this first so homepage data gets retrieved.
 					}

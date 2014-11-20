@@ -53,7 +53,7 @@ var cart_message = function(_app) {
 						}
 					_app.cmr.push = addCMResponse; // all future pushes will get added immediately to the response list.
 					_app.u.loadCSSFile(_app.vars.baseURL+"extensions/cart_message/styles.css","cart_messageCSS");
-					_app.model.fetchNLoadTemplates(_app.vars.baseURL+'extensions/cart_message/templates.html',theseTemplates);
+					_app.model.fetchNLoadTemplates(_app.vars.baseURL+'extensions/cart_message/templates.html');
 					//if there is any functionality required for this extension to load, put it here. such as a check for async google, the FB object, etc. return false if dependencies are not present. don't check for other extensions.
 					r = true;
 	
@@ -159,7 +159,8 @@ some defaults are present, but they can be overwritten by the app easily enough.
 					$("[data-app-role='messageHistory']",$context).append("<p class='chat_join'>"+message.FROM+" has joined the chat.<\/p>");
 					},
 				'cart.itemAppend' : function(opts,$context)	{
-					$("[data-app-role='messageInput']",$context).show();
+//** 201405 -> the correct behavior would be to override this default if you want a 'show' executed, not the opposite.
+//					$("[data-app-role='messageInput']",$context).show();
 					$("[data-app-role='messageHistory']",$context).append("<p class='cart_item_append'>"+opts.FROM+" has added item "+opts.sku+" to the cart.<\/p>");
 					},
 				'chat.post' : function(message,$context)	{

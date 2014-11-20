@@ -62,7 +62,7 @@ var store_product = function(_app) {
 					this.dispatch(pid,tagObj,Q)
 					}
 //if the product record is in memory BUT the inventory is zero, go get updated record in case it's back in stock.
-				else if(_app.ext.store_product.u.getProductInventory(pid) === 0)	{
+				else if(_app.ext.store_product.u.getProductInventory(_app.data[tagObj.datapointer]) === 0)	{
 					r += 1;
 					this.dispatch(pid,tagObj,Q);
 					}
@@ -237,6 +237,9 @@ addToCart : function (pid,$form){
 				}
 			else	{}
 			}
+		}
+	else if($form instanceof jQuery)	{
+		$form.anymessage({'message':'In store_product.validate.addToCart, pid was not passed','gMessage':true});
 		}
 	else if($form instanceof jQuery)	{
 		$form.anymessage({'message':'In store_product.validate.addToCart, pid was not passed','gMessage':true});
@@ -441,6 +444,44 @@ $display.appendTo($tag);
 
 
 		u : {
+			//CALLED FROM PAGE HANDLER
+			//all requires should be handled by calling function
+			showProd : function($container, infoObj){
+				var pid = infoObj.pid;
+				if(!pid)	{
+					$('#globalMessaging').anymessage({'message':"Uh Oh. It seems an app error occured. Error: no product id. see console for details.",'gMessage':true});
+					dump("quickstart.u.showProd had no infoObj.pid, which is required. infoObj follows:",'error'); dump(infoObj);
+					}
+				else	{
+					infoObj.templateID = infoObj.templateID || 'productTemplate';
+					var $product = new tlc().getTemplateInstance(infoObj.templateID);
+					infoObj.state = 'init';
+					_app.renderFunctions.handleTemplateEvents($container,infoObj); //init event triggered.
+					//$product.attr('id',infoObj.parentID).data('pid',pid);
+					$container.append($product);//hidden by default for page transitions
+					_app.u.handleCommonPlugins($product);
+					
+					var nd = 0; //Number of Dispatches.
+
+//need to obtain the breadcrumb info pretty early in the process as well.
+//the breadcrumb renderformat handles most of the heavy lifting, so datapointers are not necessary for callback. Just getting them into memory here.
+					if(_app.ext.quickstart.vars.session.recentCategories.length > 0)	{
+						nd += _app.ext.store_navcats.u.addQueries4BreadcrumbToQ(_app.ext.quickstart.vars.session.recentCategories[0]).length;
+						}
+					$.extend(infoObj, {'callback':'showProd','extension':'quickstart','jqObj':$product,'templateID':'productTemplate'});
+					dump('InfoObj after extend follows:');
+					dump(infoObj);
+					nd += _app.ext.store_product.calls.appReviewsList.init(pid);  //store_product... appProductGet DOES get reviews. store_navcats...getProd does not.
+					//if a dispatch is going to occur, might as well get updated product info.
+					if(nd)	{
+						_app.model.destroy('appProductGet|'+pid);
+						}
+					_app.ext.store_product.calls.appProductGet.init(pid,infoObj);
+					_app.model.dispatchThis();
+					
+					}
+				},
+				
 /*
 A product is NOT purchaseable if:
 it has no price. ### SANITY 0 IS a valid price. blank is not.
@@ -449,35 +490,54 @@ it has no inventory AND inventory matters to merchant
 */
 			productIsPurchaseable : function(pid)	{
 //				_app.u.dump("BEGIN store_product.u.productIsPurchaseable");
-				var r = true;  //returns true if purchaseable, false if not or error.
-				if(!pid)	{
-					_app.u.dump("ERROR! pid not passed into store_product.u.productIsPurchaseable");
-					r = false;
-					}
-				else if(_app.data['appProductGet|'+pid]['%attribs']['zoovy:base_price'] == '')	{
-					_app.u.dump(" -> not purchaseable because base price not set: "+pid);
-					r = false;
-					}
-				else if(_app.data['appProductGet|'+pid]['%attribs']['zoovy:grp_type'] == 'PARENT')	{
-					_app.u.dump(" -> not purchaseable because product is a parent: "+pid);
-					r = false;
-					}
-//inventory mode of 1 will allow selling more than what's in stock, so skip any inv validating if == 1.
-				else if(typeof zGlobals == 'object' && zGlobals.globalSettings.inv_mode != 1)	{
-//if a product has no options, the inventory record looks like this:
-//["appProductGet|PID"]["@inventory"].PID.inv where both instances of PID are subbed with the product id
-// ex: _app.data["appProductGet|"+PID]["@inventory"][PID].inv
-// also avail is ...[PID].res (reserved)
-					if(typeof _app.data['appProductGet|'+pid]['@inventory'] === 'undefined' || typeof _app.data['appProductGet|'+pid]['@variations'] === 'undefined')	{
-						_app.u.dump(" -> not purchaseable because inventory ("+typeof _app.data['appProductGet|'+pid]['@inventory']+") and/or variations ("+typeof _app.data['appProductGet|'+pid]['@variations']+") object(s) not defined.");
-						r = false;
+				var 
+					r = true,  //returns true if purchaseable, false if not or error.
+					prodData;
+				
+				
+				if(pid)	{
+					if(_app.u.thisNestedExists("data.adminProductGet|"+pid,_app))	{
+						prodData = _app.data['adminProductGet|'+pid];
 						}
 					else	{
-						if(_app.ext.store_product.u.getProductInventory(pid) <= 0)	{
-							_app.u.dump(" -> not purchaseable because inventory not available: "+pid);
-							r = false
+						prodData = _app.data['appProductGet|'+pid];
+						}
+
+					if(prodData)	{
+						if(prodData['%attribs']['zoovy:base_price'] == '')	{
+							_app.u.dump(" -> not purchaseable because base price not set: "+pid);
+							r = false;
+							}
+						else if(prodData['%attribs']['zoovy:grp_type'] == 'PARENT')	{
+							_app.u.dump(" -> not purchaseable because product is a parent: "+pid);
+							r = false;
+							}
+		//inventory mode of 1 will allow selling more than what's in stock, so skip any inv validating if == 1.
+						else if(typeof zGlobals == 'object' && zGlobals.globalSettings.inv_mode != 1)	{
+		//if a product has no options, the inventory record looks like this:
+		//["appProductGet|PID"]["@inventory"].PID.inv where both instances of PID are subbed with the product id
+		// ex: _app.data["appProductGet|"+PID]["@inventory"][PID].inv
+		// also avail is ...[PID].res (reserved)
+							if(typeof prodData['@inventory'] === 'undefined' || typeof prodData['@variations'] === 'undefined')	{
+								_app.u.dump(" -> not purchaseable because inventory ("+typeof prodData['@inventory']+") and/or variations ("+typeof prodData['@variations']+") object(s) not defined.");
+								r = false;
+								}
+							else	{
+								if(_app.ext.store_product.u.getProductInventory(prodData) <= 0)	{
+									_app.u.dump(" -> not purchaseable because inventory not available: "+pid);
+									r = false
+									}
+								}
 							}
 						}
+					else	{
+						_app.u.dump("ERROR! could not find product data in memory for store_product.u.productIsPurchaseable");
+						r = false;
+						}
+					}
+				else	{
+					_app.u.dump("ERROR! pid not passed into store_product.u.productIsPurchaseable");
+					r = false;
 					}
 				return r;
 				}, //productIsPurchaseable
@@ -541,19 +601,19 @@ it has no inventory AND inventory matters to merchant
 //will return 0 if no inventory is available.
 //otherwise, will return the items inventory or, if variations are present, the sum of all inventoryable variations.
 //basically, a simple check to see if the item has purchaseable inventory.
-			getProductInventory : function(pid)	{
+			getProductInventory : function(prodData)	{
 //				_app.u.dump("BEGIN store_product.u.getProductInventory ["+pid+"]");
 				var inv = false;
 //if variations are NOT present, inventory count is readily available.
-				if(_app.data['appProductGet|'+pid])	{
-					if((_app.data['appProductGet|'+pid]['@variations'] && $.isEmptyObject(_app.data['appProductGet|'+pid]['@variations'])) && !$.isEmptyObject(_app.data['appProductGet|'+pid]['@inventory']))	{
-						inv = Number(_app.data['appProductGet|'+pid]['@inventory'][pid].AVAILABLE);
+				if(!$.isEmptyObject(prodData))	{
+					if((prodData['@variations'] && $.isEmptyObject(prodData['@variations'])) && !$.isEmptyObject(prodData['@inventory']))	{
+						inv = Number(prodData['@inventory'][prodData.pid].AVAILABLE);
 	//					_app.u.dump(" -> item has no variations. inv = "+inv);
 						}
 	//if variations ARE present, inventory must be summed from each inventory-able variation.
 					else	{
-						for(var index in _app.data['appProductGet|'+pid]['@inventory']) {
-							inv += Number(_app.data['appProductGet|'+pid]['@inventory'][index].AVAILABLE)
+						for(var index in prodData['@inventory']) {
+							inv += Number(prodData['@inventory'][index].AVAILABLE)
 							}
 	//					_app.u.dump(" -> item HAS variations. inv = "+inv);
 						}
@@ -753,9 +813,11 @@ NOTES
 //						_app.u.dump(" -> have a valid cart object"); _app.u.dump(cartObj);
 						if(cartObj)	{
 							r = true;
-							_app.ext.cco.calls.cartItemAppend.init(cartObj,_tag || {},'immutable');
-							_app.model.dispatchThis('immutable');
-							cartMessagePush(cartObj._cartid,'cart.itemAppend',_app.u.getWhitelistedObject(cartObj,['sku','pid','qty','quantity','%variations']));
+							_app.require('cco',function(){
+								_app.ext.cco.calls.cartItemAppend.init(cartObj,_tag || {},'immutable');
+								_app.model.dispatchThis('immutable');
+								//cartMessagePush(cartObj._cartid,'cart.itemAppend',_app.u.getWhitelistedObject(cartObj,['sku','pid','qty','quantity','%variations']));
+								});
 							}
 						}
 					else	{
@@ -777,14 +839,16 @@ NOTES
 //					_app.u.dump(" -> $forms.length: "+$forms.length);
 					_tag = _tag || {};
 					if($forms.length)	{
-						$forms.each(function(){
+						_app.require(['cco'], function(){
+							$forms.each(function(){
 
-							var cartObj = _app.ext.store_product.u.buildCartItemAppendObj($(this)); //handles error display.
-							if(cartObj)	{
-								_app.ext.cco.calls.cartItemAppend.init(cartObj,_tag,'immutable');
-								}
+								var cartObj = _app.ext.store_product.u.buildCartItemAppendObj($(this)); //handles error display.
+								if(cartObj)	{
+									_app.ext.cco.calls.cartItemAppend.init(cartObj,_tag,'immutable');
+									}
+								});
+							_app.model.dispatchThis('immutable');
 							});
-						_app.model.dispatchThis('immutable');
 						}
 					else	{
 						$('#globalMessaging').anymessage({'message':'handleAddToCart requires $FP to contain at least 1 form.','gMessage':true});

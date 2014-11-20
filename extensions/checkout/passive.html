@@ -364,6 +364,7 @@ the defaultVar on prodName & image is for promotions, which have a 'description'
 	</button>
 
 
+
 </section>
 
 
@@ -372,7 +373,7 @@ the defaultVar on prodName & image is for promotions, which have a 'description'
 
 
 
-
+<!-- there is display logic looking for the number of address elements in addressExists. do not change element try w/out updating display logic. -->
 <!-- there is display logic looking for the number of address elements in addressExists. do not change element try w/out updating display logic. -->
 <address id="chkoutBuyerAddressTemplate" class="ui-widget ui-widget-content ui-corner-all stdPadding">
 	<div data-tlc="bind $var '.bill/address1'; if(is $var --blank;) {{bind $var '.ship/address1'; }}; if (is $var --notblank;) {{apply --append;}};"></div>
@@ -456,7 +457,7 @@ do NOT change the input name or id or checkout will likely break.
 	<div class="floatRight hide4Print">
 	<button class=" applyButton" data-app-click="order_create|execInvoicePrint">Print Invoice</button>
 	</div>
-	
+	<h2 data-tlc="bind $var '.order.our.orderid'; if (is $var --notblank;) {{apply --append;}};"></h2>
 	<h3 data-tlc="bind $var '.order.data.pool'; if (is $var --notblank;) {{format --prepend='Order Status: '; apply --append;}};"></h3>
 	
 		</td>

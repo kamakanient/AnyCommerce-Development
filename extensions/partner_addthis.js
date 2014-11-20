@@ -52,30 +52,6 @@ var partner_addthis = function(_app) {
 						scriptPath += '#domready';
 						}
 					_app.u.loadScript(scriptPath);
-					
-					//This is an example of how to add an addthis toolbox to a product page
-					_app.rq.push(['templateFunction','productTemplate','onCompletes',function(infoObj){
-						var $context = $(_app.u.jqSelector('#',infoObj.parentID));
-						var $toolbox = $('.socialLinks', $context);
-						if($toolbox.hasClass('addThisRendered')){
-							//Already rendered, don't do it again.
-							}
-						else {
-							$toolbox.addClass('addThisRendered').append(
-									'<div id="socialLinks" class="addthis_toolbox addthis_default_style">'
-								+		'<a class="addthis_button_preferred_1"></a>'
-								+		'<a class="addthis_button_preferred_2"></a>'
-								+		'<a class="addthis_button_preferred_3"></a>'
-								+		'<a class="addthis_button_preferred_4"></a>'
-								+		'<a class="addthis_button_compact"></a>'
-								+	'</div>');
-							
-							_app.ext.partner_addthis.u.toolbox($toolbox, infoObj);
-							}
-						}]);
-					return true;
-				},
-				onError : function() {
 					_app.u.dump('BEGIN _app.ext.partner_addthis.callbacks.init.onError');
 				}
 			}
@@ -84,6 +60,12 @@ var partner_addthis = function(_app) {
 	u : {
 	
 		toolbox : function($tags, infoObj){
+				},
+				onError : function() {
+					_app.u.dump('BEGIN _app.ext.partner_addthis.callbacks.init.onError');
+				}
+			}
+		},
 			
 			var call = 'toolbox';
 			var target = $tags.get();
@@ -116,6 +98,13 @@ var partner_addthis = function(_app) {
 			if(typeof addthis !== "undefined"){
 				addthis[call](target, configObj, sharingObj);
 				}
+			else {
+				if(attempts > 40){
+					_app.u.dump("ADDTHIS FAILED "+call);
+					}
+				else {
+					setTimeout(function(){_app.ext.partner_addthis.u.callAddThis(call, target,configObj, sharingObj, attempts+1);}, 250);
+					}
 			else {
 				if(attempts > 40){
 					_app.u.dump("ADDTHIS FAILED "+call);

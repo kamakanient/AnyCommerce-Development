@@ -320,7 +320,7 @@ so the displayNone class is used, then a .grpType_PARENT class is added if the i
 BREADCRUMB
  -> used on product and category pages
 
-### tikimaster -> these styles break the dual-level breadcrumb
+*/
 
 
 .breadcrumb	{margin-bottom:1em;}
@@ -379,6 +379,8 @@ CUSTOMER PAGES
 /* buyer lists */
 .smallButtonList .ui-button-icon-only {width:1.4em}
 .smallButtonList .ui-button-icon-only .ui-button-text	{height:1.4em; padding:0;}
+
+.buyerList .prodThumbContainer	{position:relative;}
 
 .buyerList .prodThumbContainer	{position:relative;}
 
