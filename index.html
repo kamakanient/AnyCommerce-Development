@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 
-<!-- do not populate or add meta data or title, the SEO layer will add it -->
+<!-- do not populate or add meta data, the SEO layer will add it -->
+<title>Tikimaster.com</title><!-- this will get populated by the SEO layer -->
 
 <!-- used for optional social media extensions -->
 <meta property="og:type" content="" id='ogType' >
@@ -23,6 +24,7 @@
 
 <base href='' /><!-- leave blank so it works for a local file. updated to / if protocol is not file: -->
 
+<meta name="description" content="">
 <!--
 <script type="text/javascript">
 //var _gaq = _gaq || {'push':function(){}} //here for testing. REPLACE BEFORE DEPLOYMENT!
@@ -51,10 +53,8 @@ document.getElementsByTagName('base')[0].href = baseURL;
 </script>
 -->
 
-<script data-apptimize="minify" type="text/javascript">
-//var _gaq = _gaq || [];
-//_gaq.push(['_setAccount','UA-370308-1']);
-//_gaq.push(['_trackPageview']);
+<script type="text/javascript">
+var myCreole, baseURL;
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -64,14 +64,14 @@ ga('require', 'ecommerce', 'ecommerce.js');
 ga('create', 'UA-668926-1', 'auto', {'allowLinker':true});
 /*
 ga('set', {
-	'appName' : 'SportsWorldChicago',
+	'appName' : 'Tikimaster',
 	'appID' : 'ZMVC',
-	'appVersion' : '201404'
+	'appVersion' : '201411'
 	});
 */
 ga('send','pageview');
 ga('send','screenview');
-var myCreole, baseURL;
+
 //set base url so images, css, js, etc all load from appropriate location once deployed.
 //baseURL as blank lets loadScript function run off local copy when testing locally.
 if(document.location.protocol == 'file:')	{
@@ -82,6 +82,7 @@ else	{
 	}
 document.getElementsByTagName('base')[0].href = baseURL;
 </script>
+
 
 
 <!--
@@ -103,72 +104,66 @@ css files should be included before any .js file to ensure they are downloaded i
 <script data-apptimize="embed" src="resources/jquery-ui-1.10.4.custom.min.js" ></script>
 
 
-<script data-apptimize="embed" src="controller.js" ></script>
-<script data-apptimize="embed" src="model.js" ></script>
-<script data-apptimize="embed" type="text/javascript" src="includes.js" ></script><!-- contains some polyfills and should be loaded early -->
+<!-- jquery and jquery ui are pivotal to the functionality of the app. load them early -->
+<script data-apptimize="embed" type="text/javascript" src="controller.js"></script>
+<script data-apptimize="embed" type="text/javascript" src="model.js"></script>
+
+<!-- SCRIPTS -->
+<script data-apptimize="embed" type="text/javascript" src="resources/jquery.showloading-v1.0.jt.js"></script>
+<script data-apptimize="embed" type="text/javascript" src="resources/jsonpath.0.8.0.js"></script>
+<script data-apptimize="embed" type="text/javascript" src="resources/tlc.js"></script>
+<script data-apptimize="embed" type="text/javascript" src="resources/peg-0.8.0.js"></script>
+
+<script data-apptimize="embed" type="text/javascript" src="resources/jquery.ui.anyplugins.js"></script>
 
 
 <script data-apptimize="embed" type="text/javascript" src="https://sb.buysafe.com/private/rollover/rollover.js"></script>
+<link data-apptimize="embed" rel="stylesheet" type="text/css" href="resources/anyplugins.css"/>
+<link data-apptimize="embed" rel="stylesheet" type="text/css" href="extensions/checkout/styles.css"/>
+<link data-apptimize="embed" rel="stylesheet" type="text/css" href="extensions/cart_message/styles.css"/>
+
+<script type="text/javascript">
+$.PromisePipeline = function(){
+	var def = new $.Deferred();
+	var deferreds = [];
+	def.addDeferred = function(d){
+		deferreds.push(d);
+		}
+	def.execute = function(){
+		$.when.apply($,deferreds).done(function(){def.resolve();}).fail(function(){def.reject();});
+		}
+	return def;
+}
+</script>
 
 <script type="text/javascript">
 $(document).ready(function(){
-
-	window.myApp = new initApp({
-		"release":"201404.0521a",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
+	var paramStr = window.location.href.replace(window.location.hash, '').split('?')[1];
+	if(!paramStr || paramStr.indexOf('_escaped_fragment_') < 0){
+		window.myApp = new initApp({
+		"release":"201411.20140116143500",  //increment this with each change. should solve caching issues. format: YYYYMMDDHHMMSS
 		"_clientid":"zmvc", //zmvc for store app, 1pc for one page checkout.
 		"baseURL":baseURL, //used in non-local mode.
 		"checkoutAuthMode" : "active",//can be passive, active or required
 		"testURL":"http://v201404.tikimaster.com/", //used ONLY if protocol is file: (for testing)
 		"addjQueryPointer" : true,
-		"initComplete" : function(){
-			dump(" -> init is complete");
-			myApp.u.loadScript('tikimaster-init.js',function(){
-				var progress = myApp.u.loadResources(); //the object returns by loadResources will get updated as the resources finish loading.
-				myApp.u.showProgress(progress);
-				});
-			$(document.body).append(myApp.vars.release);
-			}
-		});
-	myApp.vars.initComplete();
-	myCreole = new Parse.Simple.Creole();
+		"analyticsPointer" : "ga"
+			});
+		myCreole = new Parse.Simple.Creole();
+		myApp.u.loadScript('app-quickstart-init.js?_v='+new Date().getTime());
+		$('#appversion').text(myApp.vars.release);		
+		}
 	});
+
 </script>
 
-<script data-apptimize="minify" type="text/javascript">
-var _robots = {
-	hello : function(botStr){
-		_robots._robotGreeting = botStr || true;
-		console.log("Bot saying hello: "+botStr);
-		return "1.0";
-		},
-	next : function(){
-		//This implementation of _robots.next returns a function that simply blocks with a '100' until the app has been fully instantiated
-		_robots.status = function(){
-			if(typeof myApp !== 'undefined' && 
-				typeof myApp.ext !== 'undefined' && 
-				typeof myApp.ext.quickstart !== 'undefined' && 
-				typeof myApp.ext.quickstart.vars !== 'undefined' &&
-				myApp.ext.quickstart.vars.showContentFinished && myApp.ext.quickstart.vars.showContentCompleteFired){
-				return 204;
-				}
-			else{
-				return 100;
-				}
-			}
-		},
-	ready : function(){return false;},
-	goodbye : function(){
-		console.log("Bot saying goodbye: "+botStr);
-		}
-	}
-</script>
 
 </head>
 
 <body>
 <div id='appPreViewBG'></div>
 
-<div id='appPreView'>
+<div id='appPreView' class="displayNone">
 	<div id="loader">
 		<h3>Resetting your clock to island time. Aloha!</h3>
 		<div class='alignCenter'>
@@ -189,7 +184,7 @@ var _robots = {
 	<!-- HEADER -->
 	<div id="header">
 
-		<a href="#!category/002"><img id="customCarvingLink" class="pointer shake" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' /></a>
+		<a href="/category/002"><img id="customCarvingLink" class="pointer shake" src='img/tk08_carvings-115x134.png' width='115' height='134' alt='Custom Carving' /></a>
 
 		<div id="carvingEmporiumLink" class="shake"><a href='http://www.carvingemporium.com/' target="carvingemporium"><img src='img/tk08_carvemp-116x131.png' width='116' height='131' alt='Carving Emporium' /></a></div>
 
@@ -214,16 +209,16 @@ var _robots = {
 
 		<div id="headerNav">
 			<!--img class="pointer swing" src='img/tk08_specstores-976x57.png' width='976' height='57' alt='' usemap='#headerMap' /-->
-			<a class="swing" href="#!category/004/carved-tikis" alt='Tiki Decor' style="width:118px; background-position:0 0"></a>
-			<a class="swing" href="#!category/nautical_signs" alt='Nautical Decor' style="width:154px; background-position:-118px 0"></a>
-			<a class="swing" href="#!category/90" alt='Surf Decor' style="width:119px; background-position:-272px 0"></a>
-			<a class="swing" href="#!category/pirate_decor" alt='Pirate Decor'  style="width:136px; background-position:-391px 0"></a>
-			<a class="swing" href="#!category/beach_signs" alt='Beach Decor' style="width:137px; background-position:-527px 0"></a>
-			<a class="swing" href="#!category/coastal_decor" alt='Coastal Decor' style="width:144px; background-position:-664px 0"></a>
-			<a class="swing" href="#!category/skull_and_bones_decor" alt='Skull n Bones Decor' style="width:168px; background-position:-808px 0"></a>
+			<a class="swing" href="/category/004/carved-tikis" alt='Tiki Decor' style="width:118px; background-position:0 0"></a>
+			<a class="swing" href="/category/nautical_signs" alt='Nautical Decor' style="width:154px; background-position:-118px 0"></a>
+			<a class="swing" href="/category/90" alt='Surf Decor' style="width:119px; background-position:-272px 0"></a>
+			<a class="swing" href="/category/pirate_decor" alt='Pirate Decor'  style="width:136px; background-position:-391px 0"></a>
+			<a class="swing" href="/category/beach_signs" alt='Beach Decor' style="width:137px; background-position:-527px 0"></a>
+			<a class="swing" href="/category/coastal_decor" alt='Coastal Decor' style="width:144px; background-position:-664px 0"></a>
+			<a class="swing" href="/category/skull_and_bones_decor" alt='Skull n Bones Decor' style="width:168px; background-position:-808px 0"></a>
 		</div>
 
-		<a id="cartLink" href="#!cart" alt='View Cart' title="View Cart"></a>
+		<a id="cartLink" href="/cart/" alt='View Cart' title="View Cart"></a>
 
 	</div>
 	<!-- /HEADER -->
@@ -371,50 +366,50 @@ var _robots = {
 	
 	<!-- nav maps -->
 	<map name="headerMap">
-		<area shape="rect" coords="2,1,116,57" href="#!category/004" alt='Tiki Decor' title='Tiki Decor' />
-		<area shape="rect" coords="124,1,270,57" href="#!category/nautical_signs" alt='Nautical Decor' title='Nautical Decor' />
-		<area shape="rect" coords="276,1,394,57" href="#!category/90" alt='Surf Decor' title='Surf Decor' />
-		<area shape="rect" coords="398,1,523,57" href="#!category/pirate_decor" alt='Pirate Decor' title='Pirate Decor' />
-		<area shape="rect" coords="525,1,665,57" href="#!category/beach_signs" alt='Beach Decor' title='Beach Decor' />
-		<area shape="rect" coords="668,1,806,57" href="#!category/coastal_decor" alt='Coastal Decor' title='Coastal Decor' />
-		<area shape="rect" coords="808,1,972,57" href="#!category/skull_and_bones_decor" alt='Skull n Bones Decor' title='Skull n Bones Decor' />
+		<area shape="rect" coords="2,1,116,57" href="/category/004" alt='Tiki Decor' title='Tiki Decor' />
+		<area shape="rect" coords="124,1,270,57" href="/category/nautical_signs" alt='Nautical Decor' title='Nautical Decor' />
+		<area shape="rect" coords="276,1,394,57" href="/category/90" alt='Surf Decor' title='Surf Decor' />
+		<area shape="rect" coords="398,1,523,57" href="/category/pirate_decor" alt='Pirate Decor' title='Pirate Decor' />
+		<area shape="rect" coords="525,1,665,57" href="/category/beach_signs" alt='Beach Decor' title='Beach Decor' />
+		<area shape="rect" coords="668,1,806,57" href="/category/coastal_decor" alt='Coastal Decor' title='Coastal Decor' />
+		<area shape="rect" coords="808,1,972,57" href="/category/skull_and_bones_decor" alt='Skull n Bones Decor' title='Skull n Bones Decor' />
 	</map>
 	
 	<map name='zfooter_Map'>
-		<area shape='rect' coords='26,41,102,52' href="#!company/return" alt='Return Policy' title='Return Policy' rel='nofollow' />
-		<area shape='rect' coords='26,56,102,70' href="#!company/contact" alt='Contact Us' title='Contact Us' rel='nofollow' />
-		<area shape='rect' coords='26,72,102,86' href="#!company/shipping" alt='Shipping' title='Shipping' rel='nofollow' />
-		<area shape='rect' coords='26,89,102,102' href="#!customer/orders" alt='Tracking' title='Tracking' rel='nofollow' />
-		<area shape='rect' coords='26,102,102,117' href="#!category/002" alt='Services' title='Services' rel='nofollow' />
+		<area shape='rect' coords='26,41,102,52' href="/return_policy/" alt='Return Policy' title='Return Policy' rel='nofollow' />
+		<area shape='rect' coords='26,56,102,70' href="/contact_us/" alt='Contact Us' title='Contact Us' rel='nofollow' />
+		<area shape='rect' coords='26,72,102,86' href="/shipping_policy/" alt='Shipping' title='Shipping' rel='nofollow' />
+		<area shape='rect' coords='26,89,102,102' href="/orders/" alt='Tracking' title='Tracking' rel='nofollow' />
+		<area shape='rect' coords='26,102,102,117' href="/category/002" alt='Services' title='Services' rel='nofollow' />
 
-		<area shape='rect' coords='133,40,208,51' href="#!company/contact" alt='Locate Us' title='Locate Us' rel='nofollow' />
-		<area shape='rect' coords='133,58,208,69' href="#!company/about" alt='About Us' title='About Us' rel='nofollow' />
-		<area shape='rect' coords='133,71,208,86' href="#!cart" alt='View Cart' title='View Cart' rel='nofollow' />
-		<area shape='rect' coords='133,87,208,103' href="#!company/faq" alt='faq' title='faq' rel='nofollow' />
-		<area shape='rect' coords='133,101,208,117' href="#!company/privacy" alt='Privacy' title='Privacy' rel='nofollow' />
+		<area shape='rect' coords='133,40,208,51' href="/contact_us/" alt='Locate Us' title='Locate Us' rel='nofollow' />
+		<area shape='rect' coords='133,58,208,69' href="/about_us/" alt='About Us' title='About Us' rel='nofollow' />
+		<area shape='rect' coords='133,71,208,86' href="/cart/" alt='View Cart' title='View Cart' rel='nofollow' />
+		<area shape='rect' coords='133,87,208,103' href="/frequently_asked_questions/" alt='faq' title='faq' rel='nofollow' />
+		<area shape='rect' coords='133,101,208,117' href="/privacy_policy/" alt='Privacy' title='Privacy' rel='nofollow' />
 
-		<area shape='rect' coords='241,40,353,57' href="#!customer/myaccount" alt='Wholesale' title='Wholesale' rel='nofollow' />
-		<area shape='rect' coords='241,59,353,73' href="#!category/shipping_policy" alt='Drop Shipping' title='Drop Shipping' rel='nofollow' />
-		<area shape='rect' coords='241,75,353,89' href="#!affiliates/affiliates" alt='Affiliate Program' title='Affiliate Program' rel='nofollow' />
+		<area shape='rect' coords='241,40,353,57' href="/my_account/" alt='Wholesale' title='Wholesale' rel='nofollow' />
+		<area shape='rect' coords='241,59,353,73' href="/category/shipping_policy" alt='Drop Shipping' title='Drop Shipping' rel='nofollow' />
+		<area shape='rect' coords='241,75,353,89' href="/affiliates/affiliates" alt='Affiliate Program' title='Affiliate Program' rel='nofollow' />
 
-		<area shape='rect' coords='420,42,520,56' href="#!category/001" alt='Learning Center' title='Learning Center' />
-		<area shape='rect' coords='420,58,520,73' href="#!category/tiki_topics" alt='Decor Topics' title='Decor Topics' />
-		<area shape='rect' coords='420,75,520,90' href="#!category/design_assistant" alt='Design Center' title='Design Center' />
+		<area shape='rect' coords='420,42,520,56' href="/category/001" alt='Learning Center' title='Learning Center' />
+		<area shape='rect' coords='420,58,520,73' href="/category/tiki_topics" alt='Decor Topics' title='Decor Topics' />
+		<area shape='rect' coords='420,75,520,90' href="/category/design_assistant" alt='Design Center' title='Design Center' />
 
 		<area shape='rect' coords='563,40,628,55' href='http://www.facebook.com/pages/Tikimaster-The-Store-Of-Hawaii/79606002155/' alt='Facebook' title='Facebook' target='facebook' />
 		<area shape='rect' coords='563,57,628,71' href='http://twitter.com/kamakani' alt='Twitter' title='Twitter @kamakani' target='twitter' />
 		<area shape='rect' coords='563,72,627,89' href='http://blog.tikimaster.com' alt='Blog' title='Blog' target='blog' />
-		<area shape='rect' coords='563,91,627,105' href="#!category/media" alt='Tikimaster In the Media' title='Tikimaster In the Media' />
+		<area shape='rect' coords='563,91,627,105' href="/category/media" alt='Tikimaster In the Media' title='Tikimaster In the Media' />
 
-		<area shape='rect' coords='640,40,706,56' href="#!videos" alt='Videos' title='Videos' />
+		<area shape='rect' coords='640,40,706,56' href="/videos/" alt='Videos' title='Videos' />
 		<area shape='rect' coords='640,58,706,71' href='/media/rss/tikimaster/912278.xml' alt='rss' title='rss' target='rss' />
-		<area shape='rect' coords='639,73,706,90' href="#!category/wishlist" alt='Wishlist' title='Wishlist' rel='nofollow' />
+		<area shape='rect' coords='639,73,706,90' href="/my_wishlist/" alt='Wishlist' title='Wishlist' rel='nofollow' />
 
 	</map>
 
 
 	<map name="bannerMap">
-		<area shape="rect" coords="1,1,282,77" href="#!product/GIFTCERTIFICATE" alt='Gift Cards' title='Gift Cards' />
+		<area shape="rect" coords="1,1,282,77" href="/product/GIFTCERTIFICATE" alt='Gift Cards' title='Gift Cards' />
 		<area shape="rect" coords="287,3,544,78" href="http://www.carvingemporium.com/" alt='Home Decor Stores' title='Home Decor Stores' />
 		<area shape="rect" coords="548,2,941,77" href="#!affiliates/affiliates" alt='Business Opportunities' title='Business Opportunities' />
 	</map>
@@ -464,10 +459,6 @@ var _robots = {
 	</form>
 </div>
 
-
-
-
-
 <div id='loginFormForModal' class='loginOption displayNone seoStrip' title='Please log in'>
 
 <!-- the contents of this div/id are toggled on/off when login/logout occurs. don't change the ID -->
@@ -510,6 +501,7 @@ var _robots = {
 		</div><!-- /recoverPasswordContainer -->
 
 		<div>
+		<!-- !!!!! NOT YET IMPLEMENTED -->
 		<a class='applyButton' href='#!customer/newsletter'>Create Account</a>
 		</div>
 	</div>
@@ -523,23 +515,256 @@ var _robots = {
 
 
 
-<div id='appversion'></div>
+<div class='debug displayNone seoStrip'>
+<table>
+<tr>
+	<td>
+<ul class='debugQuickLinks'>
+	<li>Store Links
+	<ul>
+		<li><a href='/'>Homepage</a></li>
+		<li><a href='/my_order_history/'>Orders</a></li>
+		<li><a href='/cart/' >Cart</a></li>
+		<li><a href='/return_policy/'>Returns</a></li>
+		<li><a href='/privacy_policy/'>Privacy</a></li>
+		<li><a href='#' onClick="return quickView('category',{'navcat':'.air_fresheners','templateID':'categoryTemplate'});">Cat in Modal</a></li>
+	</ul>
+	</li>
+	<li><a href='#' onClick="myApp.ext.quickstart.a.showBuyerCMUI();">Messaging UI</a>
+	<li>Some JS test links
+	<ul>
+		<li><a href='#' onClick="localStorage.clear();">Clear Local Storage</a></li>
+	</ul>
+	</li>
+</ul>
+	</td>
+	<td>
+<form name='headerSearchFrm' action='#' class='productSearchForm marginLeft' method="get" data-app-submit='quickstart|searchFormSubmit'>
+	<input type='search' name='KEYWORDS' placeholder='product search' class="productSearchKeyword handleDefault" />
+	<button>Search</button>
+</form>
+	</td>
+</tr>
+</table>
 
-<div class="displayNone" id='paymentMethodsIcons4Tooltip'>
-  <img src="img/cart_payment_methods-240x48.png" width='240' height='48' alt='we accept visa, mastercard, discover and amex.'>
-  <span class="alignLeft">
-	Proceed to our 1-page secure checkout.<br>
-	We accept Visa, MasterCard, Discover, AMEX,<br> 
-	PayPal, Money orders and Cashiers checks by Mail.
-  </span>
 </div>
 
+<script type="text/pegjs" id="pegjs">
+dataTLC
+ = grammar+
+
+grammar
+ = _ cmd:(IfStatement) _ lb* { return cmd; }
+ / _ cmd:(WhileLoopStatement) _ lb* { return cmd; }
+ / _ cmd:(ForeachLoopStatement) _ lb* { return cmd; }
+ / _ cmd:(BindStatement) _ lb* { return cmd; } 
+ / _ cmd:(SetStatement) _ lb* { return cmd; } 
+ / _ cmd:(ExportStatement) _ lb* { return cmd; } 
+ / _ cmd:(command) _ lb* { return cmd; }
+
+command
+ = _ module:([a-z_]+ "#")? cmd:[a-z?]+ args:((ws+ value)+)? _ lb* {
+     return {
+       type: "command",
+       module: module ? module[0].join("") : "core",
+       name: cmd.join("").toLowerCase(),
+       args: args ? args.map(function(a) { return a[1] }) : null
+     }
+   }
 
 
-<script src="tikimaster.js" ></script>
-<script src="app-quickstart.js" ></script>
-<script src="extensions/cart_checkout_order.js" ></script>
-<script src="extensions/store_checkout.js" ></script>
+// ** BIND **
+// bind $var 'something'; (jsonpath lookup)
+// bind $var $someothervar; (jsonpath lookup)
+// bind $var ~tag; (returns tag id/path)
+// bind ~tag '#tagid'; jQuery('#tagid')
+// bind ~tag $tagid jQuery($tagid)
+BindStatement
+ = "bind" _ set:(variable / tag) _ src:(variable / scalar / tag) _ lb+ {
+  return { type:"BIND", Set:set, Src:src }
+  }
+
+
+// ** EXPORT **
+// export 'key' --dataset=$var
+// export '%key' --dataset=$var
+ExportStatement
+= "export" _ set:(scalar / variable) args:(ws+ value)+ _ lb+ {
+  return { type:"EXPORT", Set:set, args: args ? args.map(function(a) { return a[1] }) : null } 
+  }
+
+// ** SET ** 
+// set $dst $src --path='.xyz';
+SetStatement
+ = "set" _ set:(variable / tag) _ src:(variable / scalar / tag / boolean / integer) args:((ws+ value)+)? _ lb+ {
+  return { type:"SET", Set:set, Src:src, args: args ? args.map(function(a) { return a[1] }) : null }
+  }
+
+// if (command) {{ }} else {{ }};
+IfStatement
+  = "if" _ "(" _ condition:command _ ")" _ ifStatement:Block elseStatement:(_ "else" _ Block)? _ lb+ {
+      return ({
+        type: "IF",
+        When: condition,
+        IsTrue: ifStatement,
+        IsFalse: elseStatement !== null ? elseStatement[3] : null
+      });
+   }
+
+// while (something) {{ inner loop }};
+WhileLoopStatement
+  = "while" _ "(" _ condition:command _ ")" _ whileStatement:Block lb+ {
+      return ({
+        type: "WHILE",
+        While: condition,
+        Loop: whileStatement,
+      });
+   }
+
+
+// foreach $item in $items {{ inner loop }};
+ForeachLoopStatement
+  = "foreach" _ set:(variable) _ "in" _ members:(variable) _ loop:Block lb+ {
+      return ({
+        type: "FOREACH",
+        Set: set,
+        Members: members,
+        Loop: loop,
+      });
+   }
+
+
+Block
+  = "{{" _ statements:(StatementList _)? "}}" {
+      return {
+        type: "Block",
+        statements: statements !== null ? statements[0][0] : []
+      };
+    }
+
+StatementList
+  = head:Statement tail:(_ Statement)* {
+      var result = [head];
+      for (var i = 0; i < tail.length; i++) {
+        result.push(tail[i][1]);
+      }
+      return result;
+    }
+
+Statement
+  = Block
+  / grammar+
+
+
+/* value types */
+
+// ~tag is a reference to a jquery object
+tag
+ = "~" tag:([a-zA-Z]+) {
+   // tag table should maintain reference to tags on DOM
+   return { type:"tag", tag:tag.join(""), jq:null }
+   }
+
+boolean
+ = "true" {return{ "type":"boolean", "value": true }}
+ / "false" {return{ "type":"boolean", "value": false }}
+
+// longopt start with a --
+longopt
+ = "--" k:([a-zA-Z]+) "=" v:( value ) {
+    return {
+       type: "longopt",
+       key: k.join(""),
+       value: v
+       }
+    }
+ / "--" k:([a-zA-Z]+) {
+    return {
+      type: "longopt",
+      key: k.join(""),
+      value: null
+      }
+    }
+
+
+// scalar (string)
+// NOTE: at this point there is no way to escape a ' in a string.
+//
+scalar
+ = "'" v:([^']*) "'" {
+     return {
+       type: "scalar",
+       value: v.join("")
+     }
+   }
+
+// Variables can't start with a number
+variable
+ = "$" v:([a-zA-Z0-9_]*) {
+     return {
+       type: "variable",
+       value: v.join("")
+     }
+   }
+
+integer
+  = digits:[0-9]+ {
+      return {
+        type: "integer",
+        value: parseInt(digits.join(""), 10)
+      }
+    }
+
+hexcolor
+  = "#" v:([A-Fa-f0-9][A-Fa-f0-9][A-Fa-f0-9][A-Fa-f0-9][A-Fa-f0-9][A-Fa-f0-9]) {
+     return { type:"hexcolor", value: v.join("") }
+     }
+
+additive
+  = left:muldiv _ sign:[+-] _ right:additive {
+      return {
+        type: "command",
+        name:sign,
+        args:[left,right]
+      }
+    }
+  / muldiv
+
+muldiv
+  = left:primary _ sign:[*/] _ right:muldiv {
+      return {
+        type: "command",
+        name: sign,
+        args:[left, right]
+      }
+    }
+  / primary
+
+primary
+  = (variable / integer)
+  / "(" _ additive:additive _ ")" { return additive; }
+
+value
+ = longopt / variable / integer / scalar / boolean / tag / hexcolor / additive
+
+// /* i am a comment (i can only appear before a command) */
+comment
+  = "/*" (!"*/" SourceCharacter)* "*/" { return{}; }
+
+SourceCharacter
+  = .
+
+ws
+ = [ \t\n\r]
+
+_
+ = (ws / comment)*
+
+lb
+ = ";"
+
+
+</script>
 
 </body>
 </html>
