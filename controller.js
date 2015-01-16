@@ -65,8 +65,8 @@ function controller(_app)	{
 		_app.vars.fbUser = {};
 
 				window.sessionStorage.clear();
-				}
-			if($.support.localStorage)	{
+		if(_app.u.getParameterByName('flush') == 1 || 
+			(_app.vars.thisSessionIsAdmin && document.location.protocol == "file:"))	{
 				window.localStorage.clear();
 				}
 			}
@@ -75,7 +75,6 @@ function controller(_app)	{
 			}
 		_app.vars.carts = _app.model.dpsGet('app','carts'); //get existing carts. Does NOT create one if none exists. that's app-specific behavior. Don't default to a blank array either. fetchCartID checks memory first.
 		_app.handleSession(); //get existing session or create a new one.
-		if(_app.u.getParameterByName('flush') == 1)	{
 			_app.u.dump(" !!! Flush is enabled. session and local storage get nuked !!!");
 			if($.support.sessionStorage)	{
 				window.sessionStorage.clear();
@@ -1032,15 +1031,24 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 						event.currentTarget.target = "_blank";
 						}
 					});
-				
+				var defaultPopState = window.onpopstate;
 				window.onpopstate = function(event){
-					_app.router.handleURIChange(event.state);
+					if(_app.router.handleURIChange(event.state)){
+						//handled, we're all good
+						}
+					else {
+						defaultPopState(event);
+						}
 					}
 				
 				}
 			},
 		
-		handleURIChange : function(uri, search, hash, skipPush, forcedParams){
+		handleURIChange : function(uri, search, hash, windowHistoryAction, forcedParams){
+			//default to pushstate
+			if(typeof windowHistoryAction == 'undefined'){
+				windowHistoryAction = 'push';
+				}
 			console.log('handleURIChange');
 			var routeObj = _app.router._getRouteObj(uri, 'hash');
 			if(routeObj) {
@@ -1058,12 +1066,23 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 				routeObj.search = search;
 				routeObj.hash = hash;
 				routeObj.value = uri +""+ (search || "") +""+ (hash || "");
-				if(!skipPush){
-					try{
-						window.history.pushState(routeObj.value, "", routeObj.value);
+				try{
+					if(windowHistoryAction == 'push'){
+						window.history.pushState(routeObj.value,"",routeObj.value);
 						}
-					catch(e){
-						//dump(e);
+					else if (windowHistoryAction == 'replace'){
+						window.history.replaceState(routeObj.value,"",routeObj.value);
+						}
+					else if (windowHistoryAction == 'hash'){
+						window.history.pushState(routeObj.value, "", window.location.pathname+"#!"+routeObj.value);
+						}
+					else {
+						//skip
+						}
+					}
+				catch(e){
+					if(windowHistoryAction == 'hash'){
+						window.location.hash = "#!"+routeObj.value;
 						}
 					}
 				_app.router._executeCallback(routeObj);
@@ -1074,7 +1093,7 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 				}
 			return false;
 			},
-		handleURIString : function(uriStr, skipPush, forcedParams){
+		handleURIString : function(uriStr, windowHistoryAction, forcedParams){
 			var a = document.createElement('a');
 			a.href = "http://www.domain.com"+uriStr;
 			var path = a.pathname;
@@ -1083,7 +1102,7 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 			console.log(path);
 			console.log(search);
 			console.log(hash);
-			this.handleURIChange(path,search,hash,skipPush,forcedParams);
+			this.handleURIChange(path,search,hash,windowHistoryAction,forcedParams);
 			}
 		},
 
@@ -1773,6 +1792,7 @@ window.frames["printContainerIframe"].print();
 	//				_app.u.dump(" -> msg: "); _app.u.dump(msg);
 					if(msg._rtag && msg._rtag.jqObj)	{$target = msg._rtag.jqObj}
 					else if(msg.parentID){$target = $(_app.u.jqSelector('#',msg.parentID));}
+					else if(msg.jqObj){$target = msg.jqObj;}
 					else if(msg._rtag && (msg._rtag.parentID || msg._rtag.targetID || msg._rtag.selector))	{
 						if(msg._rtag.parentID)	{$target = $(_app.u.jqSelector('#',msg._rtag.parentID))}
 						else if(msg._rtag.targetID)	{$target = $(_app.u.jqSelector('#',msg._rtag.targetID))}
@@ -3356,7 +3376,9 @@ $tmp.empty().remove();
 		epoch2mdy : function($tag,data)	{
 			$tag.text(_app.u.epoch2Pretty(data.value,data.bindData.showtime))
 			},
-	
+		data : function($tag, data){
+			$tag.data(data.bindData.index, data.value);
+			},
 		text : function($tag,data){
 			var o = '';
 			if(jQuery.isEmptyObject(data.bindData))	{o = data.value}
@@ -3400,7 +3422,7 @@ $tmp.empty().remove();
 				}
 			else	{
 //for all other inputs and selects, simply setting the value will suffice.
-				if($tag.data('stringify'))	{
+				if($tag.data('stringify') || data.bindData.stringify)	{
 					$tag.val(JSON.stringify(data.value));
 					}
 				else	{

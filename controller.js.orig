@@ -64,8 +64,17 @@ function controller(_app)	{
 		_app.vars.cid = null; //gets set on login. ??? I'm sure there's a reason why this is being saved outside the normal  object. Figure it out and document it.
 		_app.vars.fbUser = {};
 
-//used in conjunction with support/admin login. nukes entire local cache.
-		if(_app.u.getParameterByName('flush') == 1)	{
+				window.sessionStorage.clear();
+		if(_app.u.getParameterByName('flush') == 1 || 
+			(_app.vars.thisSessionIsAdmin && document.location.protocol == "file:"))	{
+				window.localStorage.clear();
+				}
+			}
+		if(_app.u.getParameterByName('quiet') == 1){
+			_app.u.dump = function(){};
+			}
+		_app.vars.carts = _app.model.dpsGet('app','carts'); //get existing carts. Does NOT create one if none exists. that's app-specific behavior. Don't default to a blank array either. fetchCartID checks memory first.
+		_app.handleSession(); //get existing session or create a new one.
 			_app.u.dump(" !!! Flush is enabled. session and local storage get nuked !!!");
 			if($.support.sessionStorage)	{
 				window.sessionStorage.clear();
@@ -73,30 +82,13 @@ function controller(_app)	{
 			if($.support.localStorage)	{
 				window.localStorage.clear();
 				}
-<<<<<<< HEAD
 			}
 		if(_app.u.getParameterByName('quiet') == 1){
 			_app.u.dump = function(){};
-=======
-			}
-		if(_app.u.getParameterByName('quiet') == 1){
-			_app.u.dump = function(){};
-			}
-		
+
 		if (_app.u.getParameterByName('apidomain')) {
 			// ?apidomain=www.domain.com will set jqurl to an alternate source (ex: testing)
 			_app.vars.jqurl = "https://"+_app.u.getParameterByName('apidomain')+":9000/jsonapi/";
->>>>>>> upstream/201410
-			}
-
-		//needs to be after the 'flush' above, or there's no way to flush the cart/session.
-		_app.vars.carts = _app.model.dpsGet('app','carts'); //get existing carts. Does NOT create one if none exists. that's app-specific behavior. Don't default to a blank array either. fetchCartID checks memory first.
-
-		_app.handleSession(); //get existing session or create a new one.
-
-		_app.vars.debug = _app.u.getParameterByName('debug'); //set a var for this so the URI doesn't have to be checked each time.
-
-		
 
 		//needs to be after the 'flush' above, or there's no way to flush the cart/session.
 		_app.vars.carts = _app.model.dpsGet('app','carts'); //get existing carts. Does NOT create one if none exists. that's app-specific behavior. Don't default to a blank array either. fetchCartID checks memory first.
@@ -121,11 +113,8 @@ function controller(_app)	{
 _app.templates holds a copy of each of the templates declared in an extension but defined in the view. The template is stored in memory for speed.
 */
 		_app.templates = {};
-<<<<<<< HEAD
-=======
 		_app.templateFiles = [];
 		_app.templateEvents = [];
->>>>>>> upstream/201410
 
 //queues are arrays, not objects, because order matters here. the model.js file outlines what each of these is used for.
 		_app.q = {mutable : new Array(), passive: new Array(), immutable : new Array()};
@@ -215,10 +204,6 @@ _app.templates holds a copy of each of the templates declared in an extension bu
 		_app.vars.username = _app.vars.username.toLowerCase();
 		
 		}, //handleAdminVars
-<<<<<<< HEAD
-
-
-=======
 		
 	extend : function(extObj){
 		_app.ext[extObj.namespace] = [extObj.filename];
@@ -237,10 +222,8 @@ _app.templates holds a copy of each of the templates declared in an extension bu
 			else {
 				//The extension is loaded but that coupler (or any couplers) are not present
 				}
-			}
 		else {
 			//This extension has not been declared, and so we can't couple to it
-			}
 		},
 		
 	require : function(required, callback){
@@ -278,7 +261,6 @@ _app.templates holds a copy of each of the templates declared in an extension bu
 				if(!ext){
 					dump("ERROR: EXTENSION "+req+" REQUIRED BUT NOT DECLARED");
 					//callback will never be called
-					}
 				else if(ext instanceof Array){
 					_app.model.fetchExtension({"namespace":req, "filename":_app.ext[req][0]}, loadCallback); 
 					}
@@ -288,7 +270,6 @@ _app.templates holds a copy of each of the templates declared in an extension bu
 				}
 			}
 		},
->>>>>>> upstream/201410
 					// //////////////////////////////////   CALLS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ \\		
 
 
@@ -298,7 +279,6 @@ the init allows for the call to check if the data being retrieved is already in 
 If the data is not there, or there's no data to be retrieved (a Set, for instance) the init will execute the dispatch.
 */
 	calls : {
-
 		appCartCreate : {
 			init : function(_tag,Q)	{
 				this.dispatch(_tag,Q); 
@@ -376,11 +356,7 @@ If the data is not there, or there's no data to be retrieved (a Set, for instanc
 						this.dispatch(obj,_tag,Q);
 						}
 //if the product record is in memory BUT the inventory is zero, go get updated record in case it's back in stock.
-<<<<<<< HEAD
-					else if(_app.ext.store_product && (_app.ext.store_product.u.getProductInventory(obj.pid) === 0))	{
-=======
 					else if(_app.ext.store_product && (_app.ext.store_product.u.getProductInventory(_app.data[_tag.datapointer]) === 0))	{
->>>>>>> upstream/201410
 						r = 1;
 						this.dispatch(obj,_tag,Q);
 						}
@@ -439,11 +415,7 @@ If the data is not there, or there's no data to be retrieved (a Set, for instanc
 				_app.u.dump("Attempting to log in");
 				obj._cmd = 'authAdminLogin';
 				obj.authid = obj.password;
-<<<<<<< HEAD
-				obj.authtype = 'password';
-=======
 				obj.authtype = obj.authtype || 'password';
->>>>>>> upstream/201410
 // ** 201402 -> md5 is no longer used for login. 
 /*				if(obj.authtype == 'md5')	{
 					_app.vars.userid = obj.userid.toLowerCase();	 // important!
@@ -658,7 +630,6 @@ _app.u.throwMessage(responseData); is the default error handler.
 					if(typeof _rtag.onComplete == 'function')	{
 						_rtag.onComplete(_rtag);
 						}
-<<<<<<< HEAD
 					}
 				else	{
 					$('#globalMessaging').anymessage({'message':'In admin.callbacks.tlc, jqOjb not set or not an object ['+typeof _rtag.jqObj+'].','gMessage':true});
@@ -669,18 +640,6 @@ _app.u.throwMessage(responseData); is the default error handler.
 					rd._rtag.jqObj.hideLoading().anymessage({'message':rd});
 					}
 				else	{
-=======
-					}
-				else	{
-					$('#globalMessaging').anymessage({'message':'In admin.callbacks.tlc, jqOjb not set or not an object ['+typeof _rtag.jqObj+'].','gMessage':true});
-					}
-				},
-			onError : function(rd)	{
-				if(rd._rtag && rd._rtag.jqObj && typeof rd._rtag.jqObj == 'object'){
-					rd._rtag.jqObj.hideLoading().anymessage({'message':rd});
-					}
-				else	{
->>>>>>> upstream/201410
 					$('#globalMessage').anymessage({'message':rd});
 					}
 				}
@@ -809,21 +768,12 @@ _app.u.throwMessage(responseData); is the default error handler.
 					var $target = _rtag.jqObj || $("#globalMessaging");
 					macroResponses.persistent = _rtag.persistent === false ? false : true; //these responses should be displayed till turned off.
 					$target.anymessage(macroResponses);
-<<<<<<< HEAD
 					}
 				else	{
 					var msg = _app.u.successMsgObject(_rtag.message);
 					msg['_rtag'] = _rtag; //pass in _rtag as well, as that contains info for parentID.
 					_app.u.throwMessage(msg);
 					}
-=======
-					}
-				else	{
-					var msg = _app.u.successMsgObject(_rtag.message);
-					msg['_rtag'] = _rtag; //pass in _rtag as well, as that contains info for parentID.
-					_app.u.throwMessage(msg);
-					}
->>>>>>> upstream/201410
 //allows for the callback to perform a lot of the common handling, but to append a little extra functionality at the end of a success.
 				if(typeof _rtag.onComplete == 'function')	{
 					_rtag.onComplete(_rtag);
@@ -1057,26 +1007,6 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 					//what to do here?
 					}
 		//this would get added at end of INIT. that way, init can modify the hash as needed w/out impacting.
-<<<<<<< HEAD
-				if (window.addEventListener) {
-					dump(" -> addEventListener is supported and added for hash change.");
-					window.addEventListener("hashchange", _app.router.handleHashChange, false);
-					$(document.body).data('isRouted',true);
-					}
-				//IE 8
-				else if(window.attachEvent)	{
-					//A little black magic here for IE8 due to a hash related bug in the browser.
-					//make sure a hash is set.  Then set the hash to itself (yes, i know, but that part is key). Then wait a short period and add the hashChange event.
-					window.location.hash = window.location.hash || '#!home'; //solve an issue w/ the hash change reloading the page.
-					window.location.hash = window.location.hash;
-					setTimeout(function(){
-						window.attachEvent("onhashchange", _app.router.handleHashChange);
-						},1000);
-					$(document.body).data('isRouted',true);
-					}
-				else	{
-					$("#globalMessaging").anymessage({"message":"Browser doesn't support addEventListener OR attachEvent.","gMessage":true});
-=======
 				$('body').on('click.router','a[href], area[href]',function(event){
 					var a = event.currentTarget;
 					if(document.location.protocol == "file:"){
@@ -1101,43 +1031,24 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 						event.currentTarget.target = "_blank";
 						}
 					});
-				
+				var defaultPopState = window.onpopstate;
 				window.onpopstate = function(event){
-					_app.router.handleURIChange(event.state);
->>>>>>> upstream/201410
+					if(_app.router.handleURIChange(event.state)){
+						//handled, we're all good
+						}
+					else {
+						defaultPopState(event);
+						}
 					}
 				
 				}
 			},
-<<<<<<< HEAD
-	
-		handleHashChange : function()	{
-			//_ignoreHashChange set to true to disable the router.  be careful.
-			if(location.hash.indexOf('#!') == 0  && !_app.vars.ignoreHashChange)	{
-				// ### TODO -> test this with hash params set by navigateTo. may need to uri encode what is after the hash.
-// *** 201403 use .href.split instead of .hash for routing- Firefox automatically decodes the hash string, which breaks any URIComponent encoded characters, like "%2F" -> "/" -mc
-// http://stackoverflow.com/questions/4835784/firefox-automatically-decoding-encoded-parameter-in-url-does-not-happen-in-ie
-				var routeObj = _app.router._getRouteObj(location.href.split('#!')[1],'hash'); //if we decide to strip trailing slash, use .replace(/\/$/, "")
-				if(routeObj)	{
-					routeObj.hash = location.hash;
-					routeObj.hashParams = (location.hash.indexOf('?') >= 0 ? _app.u.kvp2Array(location.hash.split("?")[1]) : {});
-					_app.router._executeCallback(routeObj);
-					}
-				else	{
-					_app.u.dump(" -> Uh Oh! no valid route found for "+location.hash);
-					if(typeof _app.router.aliases['404'] == 'function')	{
-						_app.router._executeCallback({'callback':'404','hash':location.hash});
-						}
-					}
-				}
-			else	{
-				if(_app.vars.ignoreHashChange)	{_app.u.dump(" -> ignoreHashChange is true. Router is disabled.")}
-				else	{_app.u.dump(" -> not a hashbang")}
-				//is not a hashbang. do nothing.
-				}
-=======
 		
-		handleURIChange : function(uri, search, hash, skipPush, forcedParams){
+		handleURIChange : function(uri, search, hash, windowHistoryAction, forcedParams){
+			//default to pushstate
+			if(typeof windowHistoryAction == 'undefined'){
+				windowHistoryAction = 'push';
+				}
 			console.log('handleURIChange');
 			var routeObj = _app.router._getRouteObj(uri, 'hash');
 			if(routeObj) {
@@ -1155,12 +1066,23 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 				routeObj.search = search;
 				routeObj.hash = hash;
 				routeObj.value = uri +""+ (search || "") +""+ (hash || "");
-				if(!skipPush){
-					try{
-						window.history.pushState(routeObj.value, "", routeObj.value);
+				try{
+					if(windowHistoryAction == 'push'){
+						window.history.pushState(routeObj.value,"",routeObj.value);
 						}
-					catch(e){
-						//dump(e);
+					else if (windowHistoryAction == 'replace'){
+						window.history.replaceState(routeObj.value,"",routeObj.value);
+						}
+					else if (windowHistoryAction == 'hash'){
+						window.history.pushState(routeObj.value, "", window.location.pathname+"#!"+routeObj.value);
+						}
+					else {
+						//skip
+						}
+					}
+				catch(e){
+					if(windowHistoryAction == 'hash'){
+						window.location.hash = "#!"+routeObj.value;
 						}
 					}
 				_app.router._executeCallback(routeObj);
@@ -1171,7 +1093,7 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 				}
 			return false;
 			},
-		handleURIString : function(uriStr, skipPush, forcedParams){
+		handleURIString : function(uriStr, windowHistoryAction, forcedParams){
 			var a = document.createElement('a');
 			a.href = "http://www.domain.com"+uriStr;
 			var path = a.pathname;
@@ -1180,8 +1102,7 @@ ex: whoAmI call executed during app init. Don't want "we have no idea who you ar
 			console.log(path);
 			console.log(search);
 			console.log(hash);
-			this.handleURIChange(path,search,hash,skipPush,forcedParams);
->>>>>>> upstream/201410
+			this.handleURIChange(path,search,hash,windowHistoryAction,forcedParams);
 			}
 		},
 
@@ -1240,12 +1161,8 @@ Some utilities for loading external files, such as .js, .css or even extensions.
 */
 
 		loadScript : function(url, callback, params){
-<<<<<<< HEAD
-//			dump("load script: "+url+" and typeof callback: "+(typeof callback));
-=======
 			dump("load script: "+url+" and typeof callback: "+(typeof callback));
 			callback = callback || function(){};
->>>>>>> upstream/201410
 			if(url)	{
 				var script = document.createElement("script");
 				script.type = "text/javascript";
@@ -1253,26 +1170,19 @@ Some utilities for loading external files, such as .js, .css or even extensions.
 					script.onreadystatechange = function(){
 						if (script.readyState == "loaded" || script.readyState == "complete"){
 							script.onreadystatechange = null;
-<<<<<<< HEAD
-=======
 							//clean up after ourselves!  This is so that the document can be transplanted and re-instantiated
 							document.getElementsByTagName("head")[0].removeChild(script);
->>>>>>> upstream/201410
 							if(typeof callback == 'function')	{callback(params);}
 							}
 						};
 					}
 				else {
 					if(typeof callback == 'function')	{
-<<<<<<< HEAD
-						script.onload = function(){callback(params)}
-=======
 						script.onload = function(){
 							//clean up after ourselves!  This is so that the document can be transplanted and re-instantiated
 							document.getElementsByTagName("head")[0].removeChild(script);
 							callback(params)
 							}
->>>>>>> upstream/201410
 						}
 					}
 			//append release to the end of included files to reduce likelyhood of caching.
@@ -1393,16 +1303,12 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 		// because the model will execute it for all extensions once the controller is initiated.
 		// so instead, a generic callback function is added to track if the extension is done loading.
 		// which is why the extension is added to the extension Q (above).
-<<<<<<< HEAD
-					_app.u.loadScript(_app.rq[i][3],callback,(_app.rq[i]));
-=======
 					if(_app.rq[i][3]){
 						_app.u.loadScript(_app.rq[i][3],callback,(_app.rq[i]));
 						}
 					else {
 						callback(_app.rq[i]);
 						}
->>>>>>> upstream/201410
 					_app.rq.splice(i, 1); //remove from old array to avoid dupes.
 					}
 				else	{
@@ -1644,8 +1550,6 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 						if(_app.ext[AEF[0]] && _app.ext[AEF[0]].e[AEF[1]] && typeof _app.ext[AEF[0]].e[AEF[1]] === 'function')	{
 							//execute the app event.
 							r = _app.ext[AEF[0]].e[AEF[1]]($CT,ep);
-<<<<<<< HEAD
-=======
 							//Track event execution
 							var eventObj = {
 								'hitType' : 		'event',
@@ -1661,7 +1565,67 @@ will load everything in the RQ will a pass <= [pass]. so pass of 10 loads everyt
 								eventObj.eventValue = Number($CT.attr('data-ga-label'));
 								}
 							window[_app.vars.analyticsPointer]('send', eventObj);
->>>>>>> upstream/201410
+							}
+						else	{
+							$('#globalMessaging').anymessage({'message':"In _app.u._executeEvent, extension ["+AEF[0]+"] and function["+AEF[1]+"] both passed, but the function does not exist within that extension.",'gMessage':true})
+							}
+						}
+					else	{
+						$('#globalMessaging').anymessage({'message':"In _app.u._executeEvent, data-app-"+ep.normalizedType+" ["+$CT.attr('data-app-'+ep.normalizedType)+"] is invalid. Unable to ascertain Extension and/or Function",'gMessage':true});
+						}				
+					}
+				return r;
+				},
+				function destroyEvents($ele)	{
+					for(var i = 0; i < supportedEvents.length; i += 1)	{
+						$ele.off(supportedEvents[i]+".app");
+						}
+					$ele.removeClass('hasDelegatedEvents').addClass('delegationDestroyed'); //here for troubleshooting purposes.
+					}
+
+				if(vars.destroyEvents || vars == 'destroyEvents')	{
+					destroyEvents($t);
+					}
+				else	{
+					if($t.closest('.hasDelegatedEvents').length >= 1)	{
+						//this element or one of it's parents already has events delegated. don't double up.
+						}
+					else	{
+						//this class is used both to determine if events have already been added AND for some form actions to use in closest.
+						$t.addClass('hasDelegatedEvents'); 
+
+						for(var i = 0; i < supportedEvents.length; i += 1)	{
+							$t.on(supportedEvents[i]+".app","[data-app-"+supportedEvents[i]+"]",function(e,p){
+//								dump(" -> executing event. p: "); dump(p);
+								return _app.u._executeEvent($(e.currentTarget),$.extend(p,e));
+								});
+							}	
+
+						//make sure there are no children w/ delegated events so that event actions are not doubled up.
+						$('.hasDelegatedEvents',$t).each(function(){
+							destroyEvents($(this));
+							});
+						}
+					}
+				}, //addEventDelegation
+
+			_executeEvent : function($CT,ep)	{
+				ep = ep || {};
+				var type = ep.type;
+				if(ep.handleObj && ep.handleObj.origType)	{
+					type = ep.handleObj.origType; //use this if available. ep.type could be 'focusOut' instead of 'blur'.
+					}
+				
+//				dump(" -> type: "+type);
+				
+				var r, actionsArray = $CT.attr('data-app-'+type).split(","), L = actionsArray.length; // ex: admin|something or admin|something, admin|something_else
+				for(var i = 0; i < L; i += 1)	{
+					var	AEF = $.trim(actionsArray[i]).split('|'); //Action Extension Function.  [0] is extension. [1] is Function.
+	//				dump(i+") AEF: "); dump(AEF);
+					if(AEF[0] && AEF[1])	{
+						if(_app.ext[AEF[0]] && _app.ext[AEF[0]].e[AEF[1]] && typeof _app.ext[AEF[0]].e[AEF[1]] === 'function')	{
+							//execute the app event.
+							r = _app.ext[AEF[0]].e[AEF[1]]($CT,ep);
 							}
 						else	{
 							$('#globalMessaging').anymessage({'message':"In _app.u._executeEvent, extension ["+AEF[0]+"] and function["+AEF[1]+"] both passed, but the function does not exist within that extension.",'gMessage':true})
@@ -1828,6 +1792,7 @@ window.frames["printContainerIframe"].print();
 	//				_app.u.dump(" -> msg: "); _app.u.dump(msg);
 					if(msg._rtag && msg._rtag.jqObj)	{$target = msg._rtag.jqObj}
 					else if(msg.parentID){$target = $(_app.u.jqSelector('#',msg.parentID));}
+					else if(msg.jqObj){$target = msg.jqObj;}
 					else if(msg._rtag && (msg._rtag.parentID || msg._rtag.targetID || msg._rtag.selector))	{
 						if(msg._rtag.parentID)	{$target = $(_app.u.jqSelector('#',msg._rtag.parentID))}
 						else if(msg._rtag.targetID)	{$target = $(_app.u.jqSelector('#',msg._rtag.targetID))}
@@ -2236,7 +2201,6 @@ VALIDATION
 							$input.after($span.text('not a valid url. '));
 							$("<span class='toolTip' title='A url must be formatted as http, https, ssh or ftp ://www.something.com/net/org/etc'>?<\/span>").tooltip().appendTo($span);
 							}
-<<<<<<< HEAD
 						}
 
 					else if($input.attr('type') == 'number' && $input.val())	{
@@ -2276,47 +2240,6 @@ VALIDATION
 							}
 						else	{} //field is not required and blank.
 						}
-=======
-						}
-
-					else if($input.attr('type') == 'number' && $input.val())	{
-//						_app.u.dump(" -> number validation. value: "+$input.val()+" and isNaN: "+isNaN($input.val()));
-						if (!isNaN($input.val())) {
-							if($input.attr('min') && (Number($input.val()) < Number($input.attr('min'))))	{
-								r = false;
-								$input.addClass('ui-state-error');
-								$input.after($span.text('minimum value of '+$input.attr('min')+'. '));
-								}
-							else if($input.attr('max') && (Number($input.val()) > Number($input.attr('max'))))	{
-								r = false;
-								$input.addClass('ui-state-error');
-								$input.after($span.text('max value of '+$input.attr('max')+'. '));
-								}
-							else	{
-//								_app.u.dump(" -> everything appears to check out w/  "+$input.attr('name')+" number input.");
-								}
-							}
-						else	{
-							_app.u.dump(" -> value is not a number");
-							r = false;
-							$input.addClass('ui-state-error');
-							$input.after($span.text('not a number. '));
-							}
-						}
-
-					else if ($input.attr('type') == 'email' && !_app.u.isValidEmail($input.val()))	{
-						//only 'error' if field is required. otherwise, show warning
-						if(required)	{
-							r = false;
-							$input.addClass('ui-state-error');
-							}
-						else if($input.val())	{
-							$input.after($span.text('not a valid email address'));
-							removeClass($input);
-							}
-						else	{} //field is not required and blank.
-						}
->>>>>>> upstream/201410
 //technically, maxlength isn't a supported attribute for a textarea. data-maxlength is used instead.
 					else if(($input.attr('maxlength') && $input.val().length > $input.attr('maxlength')) || ($input.attr('data-maxlength') && $input.val().length > $input.attr('data-maxlength')))	{
 						r = false;
@@ -2360,7 +2283,6 @@ VALIDATION
 					
 					if($input.hasClass('ui-state-error'))	{
 						_app.u.dump(" -> "+$input.attr('name')+" did not validate. ishidden: "+$input.is(':hidden'));
-<<<<<<< HEAD
 						}
 					
 					});
@@ -2415,62 +2337,6 @@ VALIDATION
 					}
 				}
 			else	{
-=======
-						}
-					
-					});
-
-
-//_app.u.dump(" -> radios:"); _app.u.dump(radios);
-				if(!$.isEmptyObject(radios))	{
-//					_app.u.dump(" -> radios is not empty");
-					var L = radios.length;
-					for(var index in radios)	{
-						if($("input:radio[name='"+index+"']:checked",$form).val())	{
-//							_app.u.dump(" -> radio name='"+index+"' has a value selected");
-							} //is selected.
-						else	{
-							var message = "<div class='formValidationError clearfix marginTop marginBottom ui-state-error smallPadding ui-corner-all'>Please select one choice from the list below:<\/div>"
-							if($("input:radio[name='"+index+"']:first",$form).closest("[data-app-role='radioContainer']").length)	{
-								$("input:radio[name='"+index+"']:first",$form).closest("[data-app-role='radioContainer']").prepend(message)
-								}
-							else	{
-								$("input:radio[name='"+index+"']",$form).first().closest('fieldset').prepend(message)
-								}
-							}
-						}
-					//check to see if the required radios have a value set. this list only contains radio input names that are required.
-					//if none are selected. add ui-state-error to each radio input of that name.
-					}
-				$form.hideLoading();
-				}
-			else	{
-				$('#globalMessaging').anymessage({'message':'Object passed into admin.u.validateForm is empty or not a jquery object','gMessage':true});
-				}
-//			_app.u.dump(" -> r in validateForm: "+r);
-			return r;
-			},
-//accepts an array of 'rules'
-		processFormatRules : function(rules,$input,$span)	{
-//			_app.u.dump("BEGIN _app.u.processFormatRules"); _app.u.dump(rules);
-			var r = true; //defaults to true. one err in rules and it'll be set to false.
-			if(typeof rules == 'object' && $input instanceof jQuery)	{
-				var L = rules.length;
-				for(var i = 0; i < L; i += 1)	{
-					_app.u.dump(i+") is for rule: "+rules[i]+" and typeof formatRules: "+typeof _app.formatRules[rules[i]]);
-					if(typeof _app.formatRules[rules[i]] == 'function')	{
-						if(_app.formatRules[rules[i]]($input,$span))	{_app.u.dump("passed rule validation")}
-						else	{
-							r = false;
-							}
-						}
-					else	{
-						_app.u.dump("A formatting rule ["+rules[i]+"] that does not exist was specified on an input: "+$input.attr('name'),"warn");
-						}
-					}
-				}
-			else	{
->>>>>>> upstream/201410
 				$('#globalMessaging').anymessage({"message":"In contoller.u.processFormatRules, either rules is not an array ["+(typeof rules)+"] or $input is not a valid jquery instance ["+($input instanceof jQuery)+"].","gMessage":true});
 				}
 			return r;
@@ -2865,15 +2731,9 @@ name Mod 10 or Modulus 10. */
 				jQuery.support.onpopstate = ('onpopstate' in window);
 				jQuery.support.onhashchange = ('onhashchange' in window);
 				jQuery.support.WebSocket = ('WebSocket' in window);
-<<<<<<< HEAD
 
 
 
-=======
-
-
-
->>>>>>> upstream/201410
 //If certain privacy settings are set in a browser, even detecting if localStorage is available causes a NS_ERROR_NOT_AVAIL.
 //So we first test to make sure the test doesn't cause an error. thanks ff.
 				try{
@@ -2900,8 +2760,6 @@ name Mod 10 or Modulus 10. */
 				if('placeholder' in test) {jQuery.support.placeholder = true};
 
 				}
-<<<<<<< HEAD
-=======
 			},
 		bindTemplateEvent : function(filterFunc, event, handler){
 			if(typeof filterFunc === "string"){
@@ -2918,7 +2776,6 @@ name Mod 10 or Modulus 10. */
 					_app.templates[i].on(event, handler);
 					}
 				}
->>>>>>> upstream/201410
 			}
 
 		}, //util
@@ -2968,11 +2825,7 @@ Then we'll be in a better place to use data() instead of attr().
 //			_app.u.dump(eleAttr);
 
 //If a template ID is specified but does not exist, try to make one. added 2012-06-12
-<<<<<<< HEAD
-			if(templateID && !_app.templates[templateID])	{
-=======
 			if(templateID && !(_app.templates[templateID] instanceof jQuery))	{
->>>>>>> upstream/201410
 				var tmp = $('#'+templateID);
 				if(tmp.length > 0)	{
 					_app.model.makeTemplate(tmp,templateID);
@@ -3043,11 +2896,7 @@ most likely, this will be expanded to support setting other data- attributes. ##
 //creates a copy of the template.
 			var r;
 //if a templateID is passed, but no template exists, try to create one.
-<<<<<<< HEAD
-			if(templateID && !_app.templates[templateID])	{
-=======
 			if(templateID && !(_app.templates[templateID] instanceof jQuery))	{
->>>>>>> upstream/201410
 				var tmp = $('#'+templateID);
 				if(tmp.length > 0)	{
 					_app.u.dump("WARNING! template ["+templateID+"] did not exist. Matching element found in DOM and used to create template.");
@@ -3312,19 +3161,12 @@ return $r;
 //			_app.u.dump('END parseDataBind');
 			return rule;
 			},
-<<<<<<< HEAD
-
-
-//infoObj.state = onCompletes or onInits. later, more states may be supported.
-			handleTemplateEvents : function($ele,infoObj)	{
-=======
 			
 //infoObj.state = onCompletes or onInits. later, more states may be supported.
 			handleTemplateEvents : function($ele,infoObj)	{
 				// dump("handleTemplateEvents");
 				// dump($ele);
 				// dump(infoObj);
->>>>>>> upstream/201410
 				infoObj = infoObj || {};
 				if($ele instanceof jQuery && infoObj.state)	{
 					if($.inArray(infoObj.state,['init','complete','depart']) >= 0)	{
@@ -3347,10 +3189,6 @@ return $r;
 
 							}
 						$ele.trigger(infoObj.state,[$ele,infoObj]);
-<<<<<<< HEAD
-						_app.ext.quickstart.vars.showContentCompleteFired = true;
-=======
->>>>>>> upstream/201410
 						}
 					else	{
 						$ele.anymessage({'message':'_app.templateFunctions.handleTemplateEvents, infoObj.state ['+infoObj.state+'] is not valid. Only init, complete and depart are acceptable values.','gMessage':true});
@@ -3361,6 +3199,9 @@ return $r;
 					}
 				else	{
 					$('#globalMessaging').anymessage({'message':'In _app.templateFunctions.handleTemplateEvents, $ele is not a valid jQuery instance','gMessage':true});
+					}
+				} //handleTemplateEvents 
+
 					}
 				} //handleTemplateEvents 
 
@@ -3535,7 +3376,9 @@ $tmp.empty().remove();
 		epoch2mdy : function($tag,data)	{
 			$tag.text(_app.u.epoch2Pretty(data.value,data.bindData.showtime))
 			},
-	
+		data : function($tag, data){
+			$tag.data(data.bindData.index, data.value);
+			},
 		text : function($tag,data){
 			var o = '';
 			if(jQuery.isEmptyObject(data.bindData))	{o = data.value}
@@ -3561,6 +3404,34 @@ $tmp.empty().remove();
 					}
 				else	{
 //the value here could be checked, on, 1 or some other string. if the value is set (and we won't get this far if it isn't), check the box.
+					$tag.prop({'checked':true,'defaultChecked':true});
+					}
+				}
+			else if($tag.is(':radio'))	{
+//with radio's the value passed will only match one of the radios in that group, so compare the two and if a match, check it.
+				if($tag.val() == data.value)	{$tag.prop({'checked':true,'defaultChecked':true})}
+				}
+			else if($tag.is('select') && $tag.attr('multiple') == 'multiple')	{
+				if(typeof data.value === 'object')	{
+					var L = data.value.length;
+					for(var i = 0; i < L; i += 1)	{
+//						_app.u.dump(i+") value: "+data.value[i]);
+						$('option[value="' + data.value[i] + '"]',$tag).prop({'selected':'selected','defaultSelected':true});
+						}
+					}
+				}
+			else	{
+//for all other inputs and selects, simply setting the value will suffice.
+				if($tag.data('stringify') || data.bindData.stringify)	{
+					$tag.val(JSON.stringify(data.value));
+					}
+				else	{
+					$tag.val(data.value);
+					$tag.prop('defaultValue',data.value); //allows for tracking the difference onblur.
+					}
+					}
+
+			}, //text
 					$tag.prop({'checked':true,'defaultChecked':true});
 					}
 				}
@@ -3736,19 +3607,11 @@ $tmp.empty().remove();
 			}
 			
 		}, //renderFormats
-<<<<<<< HEAD
 
 //These rules should return true if the value is validated or false if not.
 //If the value does not validate, $err should be APPENDED to w/ a consise message for why it failed.  ex: CC number did not validate.
 	formatRules : {
 
-=======
-
-//These rules should return true if the value is validated or false if not.
-//If the value does not validate, $err should be APPENDED to w/ a consise message for why it failed.  ex: CC number did not validate.
-	formatRules : {
-
->>>>>>> upstream/201410
 		'CC' : function($input,$err)	{
 			var r = _app.u.isValidCC($input.val());
 			if(!r)	{$err.append('The credit card # provided is not valid')}
@@ -3761,13 +3624,9 @@ $tmp.empty().remove();
 			else if($input.val().length <= 2)	{$err.append('The CVV/CID # must be at least three digits');}
 			else	{r = true;}
 			return r;
+		
 			}
 		
 		}
-<<<<<<< HEAD
-	}
-	};
-=======
 	};
 };
->>>>>>> upstream/201410
