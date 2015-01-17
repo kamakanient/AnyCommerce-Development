@@ -145,10 +145,6 @@ additionally, will apply some conditional form logic.
 				if($CT.data('input-format').indexOf('uppercase') > -1)	{
 					$CT.val($CT.val().toUpperCase());
 					}
-
-				if($CT.data('input-format').indexOf('lowercase') > -1)	{
-					$CT.val($CT.val().toLowerCase());
-					}
 				
 				if($CT.data('input-format').indexOf('alphanumeric') > -1)	{
 					$CT.val($CT.val().toString().replace(/\W+/g,""));
@@ -159,9 +155,6 @@ additionally, will apply some conditional form logic.
 					}							
 				else if($CT.data('input-format').indexOf('decimal') > -1)	{
 					$CT.val($CT.val().replace(/[^0-9\.]+/g, ''));
-					}							
-				else if($CT.data('input-format').indexOf('flex') > -1)	{
-					$CT.val($CT.val().replace(/[^\w\:_]+/, '','g'));
 					}							
 				else if($CT.data('input-format').indexOf('pid') > -1)	{
 					$CT.val($CT.val().replace(/[^\w\-_]+/, '','g'));
@@ -724,14 +717,6 @@ or this: $('#bob').find('.ui-tabs-nav li:nth-child(2)').trigger('click');
 			//in case no tab has been found, default to the first. this 'could' happen if applied to an object in memory.
 			if(!$tab.length)	{
 				$tab = $("li:first",this.element);
-					}
-				}
-			else	{
-				$tab = $("li:visible:first",this.element);
-				}
-			//in case no tab has been found, default to the first. this 'could' happen if applied to an object in memory.
-			if(!$tab.length)	{
-				$tab = $("li:first",this.element);
 				}
 			this.reveal($tab);
 			},
@@ -836,11 +821,9 @@ or this: $('#bob').find('.ui-tabs-nav li:nth-child(2)').trigger('click');
 
 
 ///// ANYUPLOAD \\\\\
-turn any element into a drop zone for files to be dragged from a users desktop onto the browser.
-
-///// ANYUPLOAD \\\\\
 /*
 turn any element into a drop zone for files to be dragged from a users desktop onto the browser.
+
 a lot of this code came from here:
 https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
 
@@ -1082,9 +1065,6 @@ https://developer.mozilla.org/en-US/docs/Using_files_from_web_applications
 			new self._buildPreviews(dt.files,event,self); // !!! revisit this. should pass in 'events' and 'ui' like other plugins. need to figure that out.
 			if(typeof self['options'].filesChange == 'function')	{
 				self['options'].filesChange(event,dt.files,{'container':self.element});
-				}
-			if(self['options'].instantUpload)	{
-				self._sendFiles();
 				}
 			if(self['options'].instantUpload)	{
 				self._sendFiles();
@@ -2018,6 +1998,5 @@ jQuery.fn.toCSV = function() {
 	var uri = 'data:application/csv;charset=UTF-8,' + encodeURIComponent(output);
 	window.open(uri);
 	}
-
 
 
