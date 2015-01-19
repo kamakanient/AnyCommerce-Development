@@ -241,9 +241,6 @@ addToCart : function (pid,$form){
 	else if($form instanceof jQuery)	{
 		$form.anymessage({'message':'In store_product.validate.addToCart, pid was not passed','gMessage':true});
 		}
-	else if($form instanceof jQuery)	{
-		$form.anymessage({'message':'In store_product.validate.addToCart, pid was not passed','gMessage':true});
-		}
 	else	{
 		_app.u.throwGMessage("in store_product.validate.addToCart, either pid ("+pid+") not set or $form was not passed.");
 		valid = false;

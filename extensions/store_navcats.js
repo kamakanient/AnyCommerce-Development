@@ -225,10 +225,6 @@ templateID - the template id used (from _app.templates)
 							var $ele = $tmp.children().first();
 							$tag.append($ele);
 							numRequests += _app.calls.appNavcatDetail.init({'path':data.value[i].path,'detail':data.bindData.detail},{'callback':'tlc','jqObj':$ele,'verb':'translate'},'mutable');
-							var $tmp = $("<ul \/>").tlc({'templateid':data.bindData.templateid,'verb':'template','dataAttribs':{'catsafeid':data.value[i].path}});
-							var $ele = $tmp.children().first();
-							$tag.append($ele);
-							numRequests += _app.calls.appNavcatDetail.init({'path':data.value[i].path,'detail':data.bindData.detail},{'callback':'tlc','jqObj':$ele,'verb':'translate'},'mutable');
 							}
 						}
 					if(numRequests)	{_app.model.dispatchThis('mutable')}
@@ -450,7 +446,6 @@ note - there is NO error checking in here to make sure the subcats aren't alread
 				var len = pathArray.length
 				var s= '.'; //used to contatonate safe id.
 				_app.calls.appNavcatDetail.init({'path':'.','detail':'fast'}); //homepage data. outside of loop so I can keep loop more efficient
-				_app.calls.appNavcatDetail.init({'path':'.','detail':'max'}); //homepage data. outside of loop so I can keep loop more efficient
 				for (var i=1; i < len; i += 1) {
 					s += pathArray[i]; //pathArray[0] will be blank, so s (.) plus nothing is just .
 //					_app.u.dump(" -> path for breadcrumb: "+s);

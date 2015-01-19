@@ -331,7 +331,7 @@ BREADCRUMB
 .breadcrumb li:last-child a	{color:#666666; text-decoration:none; font-weight:bold; cursor:text;}
 
 
-*/
+
 /*
 
 cartTemplate
@@ -379,8 +379,6 @@ CUSTOMER PAGES
 /* buyer lists */
 .smallButtonList .ui-button-icon-only {width:1.4em}
 .smallButtonList .ui-button-icon-only .ui-button-text	{height:1.4em; padding:0;}
-
-.buyerList .prodThumbContainer	{position:relative;}
 
 .buyerList .prodThumbContainer	{position:relative;}
 
