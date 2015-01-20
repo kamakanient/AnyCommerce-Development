@@ -99,8 +99,7 @@ css files should be included before any .js file to ensure they are downloaded i
 
 <!-- jquery and jquery ui are pivotal to the functionality of the app. load them early -->
 <script data-apptimize="embed" type="text/javascript" src="jquery.1.10.2.min.js"></script>
-<script data-apptimize="embed" src="jquery-ui-1.10.4.custom.min.js" ></script>
-
+<script data-apptimize="embed" type="text/javascript" src="jquery.ui.1.10.2.min.js"></script>
 <script data-apptimize="embed" type="text/javascript" src="controller.js"></script>
 <script data-apptimize="embed" type="text/javascript" src="model.js"></script>
 
@@ -119,6 +118,9 @@ css files should be included before any .js file to ensure they are downloaded i
 <!-- ### TODO -> test how the load process goes w/ these in init. if includes is moved, move the new Parse  -->
 <script data-apptimize="embed" type="text/javascript" src="resources/jquery.ui.anyplugins.js"></script>
 <script data-apptimize="embed" type="text/javascript" src="includes.js"></script><!-- contains some polyfills and should be loaded early -->
+
+<!--CUSTOM SCRIPTS-->
+<script data-apptimize="embed" type="text/javascript" src="jquery.cycle2.min.js"></script>
 
 
 <script type="text/javascript">
@@ -187,7 +189,7 @@ var _robots = {
 </head>
 
 <body>
-<div id='appPreViewBG'></div>
+<div id='appPreViewBG' class="displayNone"></div>
 
 <div id='appPreView' class="displayNone">
 	<div id="loader">

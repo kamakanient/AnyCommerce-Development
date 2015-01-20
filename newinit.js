@@ -451,10 +451,14 @@ _app.extend({
 	"namespace" : "store_navcats",
 	"filename" : "extensions/store_navcats.js"
 	});
+_app.extend({
+	"namespace" : "tikimaster",
+	"filename" : "extensions/tikimaster.js"
+	});
 	
 _app.couple('quickstart','addPageHandler',{
 	"pageType" : "homepage",
-	"require" : ['store_navcats','templates.html','store_routing'],
+	"require" : ['store_navcats','templates.html','store_routing','store_prodlist','tikimaster'],
 	"handler" : function($container, infoObj, require){
 		infoObj.deferred = $.Deferred();
 		infoObj.defPipeline.addDeferred(infoObj.deferred);
@@ -710,7 +714,153 @@ _app.router.appendInit({
 			}
 		}
 	});
+	
+/*****************************************************************************************************************************************************************************************************************************/
+/*****************************************************************************************************CUSTOM ONCOMPLETES******************************************************************************************************/
 
+//used for the slideshow on the homepage and product page. $.cycle();
+myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(){
+	//if these files are not done loading, cycle won't work quite right. so a check is done before executing a slideshow to make sure (with a settimeout to re-execute check).
+	myApp.rq.push(['script',0,myApp.vars.baseURL+'resources/jquery.cycle2.swipe.min.js',function(){
+		$(document.body).data('swipeLoaded',true); //can't execute a cycle carousel till this is loaded.
+		}]);
+	myApp.rq.push(['script',0,myApp.vars.baseURL+'resources/jquery.cycle2.carousel.min.js',function(){
+		$(document.body).data('carouselLoaded',true); //can't execute a cycle carousel till this is loaded.
+		}]); //need to make sure this loads after cycle2 or it barfs.
+	});
+
+
+
+
+
+
+
+
+
+//  now add some template functions.
+
+_app.u.bindTemplateEvent('cartTemplate', 'complete.pageinit',function(event,$context,infoObj){
+	$('.checkoutButton',$context).tooltip({
+		content : $('#paymentMethodsIcons4Tooltip').html()
+		});
+	});
+
+
+_app.u.bindTemplateEvent('productTemplate', 'complete.pageinit',function(event,$context,infoObj){
+	myApp.ext.tikimaster.u.addBreadCrumbToProductPage($context);
+	myApp.ext.tikimaster.u.makeDropDownBreadcrumb();
+	myApp.ext.tikimaster.u.loadFeaturedStoreBanner();
+	});
+
+_app.u.bindTemplateEvent('homepageTemplate', 'complete.pageinit',function(event,$context,infoObj){
+	function execCycle()	{
+		if(myApp.u.carouselIsReady())	{$('#wideSlideshow',$context).cycle();}
+		else {setTimeout(execCycle,500);}
+		}
+	execCycle();
+	});
+
+_app.u.bindTemplateEvent('homepageTemplate', 'complete.pageinit',function(event,$context,infoObj){
+
+	myApp.ext.tikimaster.u.prepareRootNavCats();
+	
+	$('.randomList', $context).each(function(){
+		myApp.ext.tikimaster.u.randomizeList($(this)); // randomizes list
+		myApp.ext.tikimaster.u.truncList($(this)); // to leave only 3-4 first items after shuffle
+	});
+	myApp.ext.tikimaster.u.loadFeaturedStoreBanner();
+	
+	// Make prod lists unfoldable on header-tab click
+	$('.prodBlock .topRound').unbind().click(function() {
+		$el = $(this).parent().parent().find('.prodBlockContent');
+		$el.toggleClass('unfolded');
+		if($el.hasClass('unfolded')) {
+			curHeight = $el.height(),
+			autoHeight = $el.css('height', 'auto').height();
+			$el.height(curHeight).animate({height: autoHeight}, 800);
+			$('html, body').animate({ scrollTop: $(this).offset().top-30 }, 600);
+		} else {
+			$el.animate({'height':'247px'},800);
+			}
+		});
+	});
+					
+
+
+
+
+//function to ascertain if the secondary files associated w/ cycle are done loading.
+myApp.u.carouselIsReady = function()	{
+	var r = false;
+	if($(document.body).data('swipeLoaded') && $(document.body).data('carouselLoaded'))	{r = true;}
+	return r;
+	}
+
+
+
+
+
+
+
+/*
+Now add some routes for the affiliate and video pages.
+#!affiliate/... or #!video/... (or category/.affiliate or category/.video) will trigger this handler. 
+These are here because those pages require special layouts.
+*/
+
+
+myApp.router.addAlias('customCategoryTemplate',function(routeObj){
+	dump(" -----------> GOT TO customCategoryTemplate ALIAS");
+	routeObj = routeObj || {};
+	routeObj.params = routeObj.params || {};
+//for the exact matches, navcat won't be set. we'll need it for showContent tho
+	if(!routeObj.params.navcat && routeObj.route.indexOf('category/') === 0)	{
+		routeObj.params.navcat = routeObj.route.replace('category/','');
+		}
+	
+	if(routeObj.params && routeObj.params.navcat)	{
+		//regularize the navcat.
+		if(routeObj.params.navcat.charAt(0) != '.')	{
+			routeObj.params.navcat = '.'+routeObj.params.navcat;
+			}
+		var pageTemplates = {
+			'.affiliates' : 'categoryTemplateAffiliates',
+			'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
+			'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
+			'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
+			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
+			}
+		if(pageTemplates[routeObj.params.navcat])	{
+			routeObj.params.templateID = pageTemplates[routeObj.params.navcat];
+			}
+		}
+	//if we get here and navcat still isn't set, showContent will handle the error.
+	showContent('category',	routeObj.params);
+	});
+
+myApp.router.appendHash({'type':'match','route':'affiliates/{{navcat}}*','callback':'customCategoryTemplate'}); //this'll handle any hard coded links.
+//these will handle any links auto-generated, such as breadcrumb or subcat lists.
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.1','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.4','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.contract','callback':'customCategoryTemplate'});
+myApp.router.prependHash({'type':'exact','route':'category/.affiliates.program-details','callback':'customCategoryTemplate'});
+
+
+myApp.router.addAlias('videos',function(routeObj){
+	routeObj = routeObj || {};
+	routeObj.params = routeObj.params || {};
+	routeObj.params.templateID = 'categoryTemplateVideos';
+	routeObj.params.navcat = routeObj.params.navcat || '.tiki_videos';
+	showContent('category',	routeObj.params);
+	});
+	
+myApp.router.appendHash({'type':'match','route':'videos','callback':'videos'}); //this'll handle any hard coded links.
+//these will handle any links auto-generated, such as breadcrumb or subcat lists.
+myApp.router.prependHash({'type':'exact','route':'category/.tiki_videos','callback':'videos'});
+
+/*****************************************************************************************************************************************************************************************************************************/
+/*****************************************************************************************************END CUSTOM ONCOMPLETES**************************************************************************************************/
 
 
 
