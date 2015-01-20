@@ -922,6 +922,120 @@ fallback is to just output the value.
 // infoObj.back can be set to 0 to skip a URI update (will skip both hash state and popstate.) 
 			
 				
+			newShowContent : function(uri,infoObj)	{
+				_app.ext.quickstart.vars.showContentFinished = false;
+				
+				dump("BEGIN newShowContent ["+infoObj.pageType+"]."); dump(infoObj);
+				
+				infoObj = infoObj || {}; //could be empty for a cart or checkout
+				infoObj.defPipeline = $.PromisePipeline();
+				//doing a setTimeout 0 here to allow the UI thread to finish executing before this condition sets
+				infoObj.defPipeline.done(function(){
+					setTimeout(function(){_app.ext.quickstart.vars.showContentFinished = true;}, 0);
+					});
+				var
+					r = false,
+					$old = $("#mainContentArea :visible:first"),  //used for transition (actual and validation).
+					$new = $('[data-app-uri="'+uri+'"]');  //a jquery object returned by the 'show' functions (ex: showProd).
+				
+				//Don't navigate if we're already on the page
+				if($old.attr('data-app-uri') == uri){
+					if(infoObj.retrigger){
+						var triggerComplete = function(){
+							infoObj.state = 'complete'
+							_app.renderFunctions.handleTemplateEvents($('> [data-templateid]',$old), infoObj);
+							}
+						if(_app.ext.quickstart.pageRequires[infoObj.pageType]){
+							_app.require(_app.ext.quickstart.pageRequires[infoObj.pageType], triggerComplete);
+							}
+						else{
+							triggerComplete();
+							}
+						}
+					infoObj.defPipeline.execute();
+					return false;
+					}
+				
+				//Redirect to secure if required
+				if(((!_app.u.buyerIsAuthenticated() && infoObj.login) || infoObj.requireSecure) && document.location.protocol == "http:"){
+					var secure = _app.ext.quickstart.a.secureContentLocation(uri);
+					document.location = secure;
+					return false;
+					}
+				
+				if(!_app.u.buyerIsAuthenticated() && infoObj.login){
+					_app.ext.quickstart.u.showLoginModal();
+					$('#loginSuccessContainer').empty(); //empty any existing login messaging (errors/warnings/etc)
+					$('<button>').addClass('stdMargin ui-state-default ui-corner-all  ui-state-active').attr('id','modalLoginContinueButton').text('Continue').click(function(){
+						$('#loginFormForModal').dialog('close');
+						_app.ext.quickstart.a.newShowContent(uri, infoObj) //binding this will reload this 'page' and show the appropriate content.
+						}).appendTo($('#loginSuccessContainer'));
+					return false;
+					}
+				
+//clicking to links (two product, for example) in a short period of time was rendering both pages at the same time.
+//this will fix that and only show the last clicked item. state of the world render this code obsolete.
+				if($old.length)	{
+					$old.siblings().hide(); //make sure only one 'page' is visible.
+					_app.renderFunctions.handleTemplateEvents($('> [data-templateid]',$old),$.extend(_app.ext.quickstart.vars.hotw[0],{"state":"depart"}))
+					}
+				_app.ext.quickstart.u.closeAllModals();  //important cuz a 'showpage' could get executed via wiki in a modal window.
+
+				_app.ext.quickstart.u.handleSearchInput(infoObj.pageType); //will clear keyword searches when on a non-search page, to avoid confusion.
+				
+				infoObj.state = 'init'; //needed for handleTemplateEvents.
+				_app.ext.quickstart.u.handleSandHOTW(infoObj);
+				
+				//The page already exists, we just have to show it
+				if($new.length){
+					//run init event
+					infoObj.state = 'complete';
+					_app.renderFunctions.handleTemplateEvents($('> *',$new),infoObj);
+					}
+				else {
+					$new = $('<div data-app-uri="'+uri+'"></div>');
+					if(_app.ext.quickstart.pageHandlers[infoObj.pageType]){
+						_app.ext.quickstart.pageHandlers[infoObj.pageType]($new, infoObj, _app.ext.quickstart.pageRequires[infoObj.pageType]);
+						}
+					else{
+						//404
+						dump("No page handler found");
+						}
+					}
+				
+				infoObj.performJumpToTop = (infoObj.performJumpToTop === false) ? false : true; //specific instances jump to top. these are passed in (usually related to modals).
+				
+				$new.addClass('displayNone').appendTo($('#mainContentArea'));
+				var cleanupDef = $.Deferred();
+				infoObj.defPipeline.addDeferred(cleanupDef);
+				var callback = function(){
+					var $hiddenpages = $("#mainContentArea > :hidden");
+					var L = $hiddenpages.length;
+					for(var i = 0; i < L - _app.ext.quickstart.vars.cachedPageCount; i++){
+						$($hiddenpages.get(i)).intervaledEmpty().remove();
+						}
+					cleanupDef.resolve();
+					}
+				if(infoObj.performTransition == false)	{
+					callback();
+					}
+				else if(typeof _app.ext.quickstart.pageTransition == 'function')	{
+					_app.ext.quickstart.pageTransition($old,$new,infoObj, callback);
+					}
+				else if($new instanceof jQuery)	{
+//no page transition specified. hide old content, show new. fancy schmancy.
+					$("#mainContentArea :visible:first").hide();
+					$new.show();
+					callback();
+					}
+				else	{
+					dump("WARNING! In showContent but there is no new page to show!");
+					callback();
+					}
+				infoObj.defPipeline.execute();
+				return true;
+				},
+			
 			showContent : function(uri,infoObj)	{
 				_app.ext.quickstart.vars.showContentFinished = false;
 				
