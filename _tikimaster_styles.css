@@ -655,14 +655,21 @@ td.ztxt { padding:0 20px 0 0px; }
   font-weight: bold;
   cursor:pointer;
 }
+#leftNav ul li a {
+	font-weight: bold;
+	text-decoration:none;
+}
 
 #leftNav ul li:hover {
   color: #E9DBB9;
   background: #593101;
-  /*color:#F8F7F6;
-  background:#654B24;*/
 }
-
+#leftNav ul li:hover a.dropdownTopTierCatLink{
+	color: #E9DBB9;
+}
+#leftNav ul li ul li:hover a{
+	color: #E9DBB9;
+}
 #leftNav img.catLink {
   border:5px solid #9B6B32;
 }
