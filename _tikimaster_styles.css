@@ -562,10 +562,10 @@ td.ztxt { padding:0 20px 0 0px; }
   background:url(img/tk08_h_plhead_bg-254x16.jpg) repeat-x; height:16px;
 }
 
-#mainCenter { position: relative; width:512px; padding:0; margin:0 0 0 5px; overflow: hidden; float:left; }
-#slideshowNav { position: absolute; top: 31px; right: 15px; z-index: 100;}
-#wideSlideshow { padding: 0px; margin: 0px;}
-#slideshowNav a {
+.mainCenter { position: relative; width:512px; padding:0; margin:0 0 0 5px; overflow: hidden; float:left; }
+.slideshowNav { position: absolute; top: 31px; right: 15px; z-index: 100;}
+.wideSlideshow { padding: 0px; margin: 0px;}
+.slideshowNav a {
   margin: 0 0 0 5px; font-size:11px; color:#491e0b;
   font-weight:bold;
   -webkit-box-shadow: 2px 2px 2px 2px , 50);
@@ -608,32 +608,32 @@ td.ztxt { padding:0 20px 0 0px; }
 	}
 .cycle-pager span.cycle-pager-active {background:#ff4000; color: #fff;}
 
-#slideshowNav a:hover, #slideshowNav a.cycle-pager-active, #slideshowNav a.activeSlide {  }
+.slideshowNav a:hover, .slideshowNav a.cycle-pager-active, .slideshowNav a.activeSlide {  }
 
 
-#dealOfTheWeek {
+.dealOfTheWeek {
   background:#faf3e0; margin-top:0px; position:relative;
 }
 
-#dealOfTheWeek .gift-card-top { position:absolute; width:512px; height:90px; z-index:10; background-repeat:no-repeat; }
-#dealOfTheWeek .gift-card1,
-#dealOfTheWeek .gift-card3 { position:absolute; width:242px; height:120px; z-index:10; background-repeat:no-repeat; }
-#dealOfTheWeek .gift-card2,
-#dealOfTheWeek .gift-card4 { position:absolute; width:256px; height:120px; z-index:10; background-repeat:no-repeat; }
+.dealOfTheWeek .gift-card-top { position:absolute; width:512px; height:90px; z-index:10; background-repeat:no-repeat; }
+.dealOfTheWeek .gift-card1,
+.dealOfTheWeek .gift-card3 { position:absolute; width:242px; height:120px; z-index:10; background-repeat:no-repeat; }
+.dealOfTheWeek .gift-card2,
+.dealOfTheWeek .gift-card4 { position:absolute; width:256px; height:120px; z-index:10; background-repeat:no-repeat; }
 
-#dealOfTheWeek .gift-card-top { top:0; left:0; background-position:0 0; }
-#dealOfTheWeek .gift-card1 { top:94px; left:0; background-position:0 -94px; }
-#dealOfTheWeek .gift-card2 { top:94px; left:252px; background-position:-252px -94px; }
-#dealOfTheWeek .gift-card3 { top:217px; left:0px; background-position:0 -217px; }
-#dealOfTheWeek .gift-card4 { top:217px; left:252px; background-position:-252px -217px; }
+.dealOfTheWeek .gift-card-top { top:0; left:0; background-position:0 0; }
+.dealOfTheWeek .gift-card1 { top:94px; left:0; background-position:0 -94px; }
+.dealOfTheWeek .gift-card2 { top:94px; left:252px; background-position:-252px -94px; }
+.dealOfTheWeek .gift-card3 { top:217px; left:0px; background-position:0 -217px; }
+.dealOfTheWeek .gift-card4 { top:217px; left:252px; background-position:-252px -217px; }
 
-#dealOfTheWeek .gift-card-top:hover,
-#dealOfTheWeek .gift-card1:hover,
-#dealOfTheWeek .gift-card2:hover,
-#dealOfTheWeek .gift-card3:hover,
-#dealOfTheWeek .gift-card4:hover { background-image:url(img/tm_card_banner_xmas2013_hover-512x340.jpg); }
+.dealOfTheWeek .gift-card-top:hover,
+.dealOfTheWeek .gift-card1:hover,
+.dealOfTheWeek .gift-card2:hover,
+.dealOfTheWeek .gift-card3:hover,
+.dealOfTheWeek .gift-card4:hover { background-image:url(img/tm_card_banner_xmas2013_hover-512x340.jpg); }
 
-#leftNav {
+.leftNav {
   color: #000000; 
   font-size: 9pt;
   position:relative;
@@ -642,12 +642,12 @@ td.ztxt { padding:0 20px 0 0px; }
   margin:0;
 }
 
-#leftNav ul {
+.leftNav ul {
   margin:0;
   padding:0;
 }
 
-#leftNav ul li {
+.leftNav ul li {
   background: #E9DBB9;
   color: #593101;
   padding: 3px 4px;
@@ -655,26 +655,26 @@ td.ztxt { padding:0 20px 0 0px; }
   font-weight: bold;
   cursor:pointer;
 }
-#leftNav ul li a {
+.leftNav ul li a {
 	font-weight: bold;
 	text-decoration:none;
 }
 
-#leftNav ul li:hover {
+.leftNav ul li:hover {
   color: #E9DBB9;
   background: #593101;
 }
-#leftNav ul li:hover a.dropdownTopTierCatLink{
+.leftNav ul li:hover a.dropdownTopTierCatLink{
 	color: #E9DBB9;
 }
-#leftNav ul li ul li:hover a{
+.leftNav ul li ul li:hover a{
 	color: #E9DBB9;
 }
-#leftNav img.catLink {
+.leftNav img.catLink {
   border:5px solid #9B6B32;
 }
 
-#leftNav ul.dropdown {
+.leftNav ul.dropdown {
   position:absolute;
   left:155px;
   width:150px;
@@ -682,16 +682,16 @@ td.ztxt { padding:0 20px 0 0px; }
   z-index:300;
 }
 
-#leftNav ul.dropdown li {
+.leftNav ul.dropdown li {
   background:#E0A523;
 }
 
-#leftNav ul.dropdown li:hover {
+.leftNav ul.dropdown li:hover {
   color: #E9DBB9;
   background: #593101;
 }
 
-#mainRight1 {
+.mainRight1 {
   position:relative;
   float:left;
   width:149px;
@@ -706,16 +706,16 @@ td.ztxt { padding:0 20px 0 0px; }
   border-radius: 8px 8px 0px 0px;
 }
 
-#mainRight1 .newProductList li {
+.mainRight1 .newProductList li {
   margin:0;
   height:185px;
 }
 
-#mainRight1 .searchResultsNewProduct .description, .productList .description {
+.mainRight1 .searchResultsNewProduct .description, .productList .description {
   color: #434544; font-size: 7pt; padding:3px; display:block;
 }
 
-#mainRight2 {
+.mainRight2 {
   position:relative;
   float:left;
   width:136px;
@@ -723,7 +723,7 @@ td.ztxt { padding:0 20px 0 0px; }
   margin-left:5px;
 }
 
-#mainRight2 .infoBlock {
+.mainRight2 .infoBlock {
   background:#FCF8EF;
   width:100%;
   margin:0 0 5px 0;
@@ -733,12 +733,12 @@ td.ztxt { padding:0 20px 0 0px; }
   opacity:.85;
 }
 
-#mainRight2 .infoBlock a {
+.mainRight2 .infoBlock a {
   text-decoration:none;
   color:#333534;
 }
 
-#mainRight2 .infoBlock p {
+.mainRight2 .infoBlock p {
   color: #333534; 
   font-size: 7pt;
   padding:0;

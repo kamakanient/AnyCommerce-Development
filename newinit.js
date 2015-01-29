@@ -719,6 +719,7 @@ _app.router.appendInit({
 /*****************************************************************************************************CUSTOM ONCOMPLETES******************************************************************************************************/
 
 //used for the slideshow on the homepage and product page. $.cycle();
+/*
 myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(){
 	//if these files are not done loading, cycle won't work quite right. so a check is done before executing a slideshow to make sure (with a settimeout to re-execute check).
 	myApp.rq.push(['script',0,myApp.vars.baseURL+'resources/jquery.cycle2.swipe.min.js',function(){
@@ -728,6 +729,7 @@ myApp.u.loadScript(myApp.vars.baseURL+'resources/jquery.cycle2.min.js',function(
 		$(document.body).data('carouselLoaded',true); //can't execute a cycle carousel till this is loaded.
 		}]); //need to make sure this loads after cycle2 or it barfs.
 	});
+	*/
 
 
 
@@ -753,11 +755,14 @@ _app.u.bindTemplateEvent('productTemplate', 'complete.pageinit',function(event,$
 	});
 
 _app.u.bindTemplateEvent('homepageTemplate', 'complete.pageinit',function(event,$context,infoObj){
+	/*
 	function execCycle()	{
 		if(myApp.u.carouselIsReady())	{$('#wideSlideshow',$context).cycle();}
 		else {setTimeout(execCycle,500);}
 		}
 	execCycle();
+	*/
+	$('.wideSlideshow',$context).cycle();
 	});
 
 _app.u.bindTemplateEvent('homepageTemplate', 'complete.pageinit',function(event,$context,infoObj){
@@ -790,11 +795,13 @@ _app.u.bindTemplateEvent('homepageTemplate', 'complete.pageinit',function(event,
 
 
 //function to ascertain if the secondary files associated w/ cycle are done loading.
+/*
 myApp.u.carouselIsReady = function()	{
 	var r = false;
 	if($(document.body).data('swipeLoaded') && $(document.body).data('carouselLoaded'))	{r = true;}
 	return r;
 	}
+	*/
 
 
 
