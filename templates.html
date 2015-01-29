@@ -413,7 +413,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 	Join now it's Fast, Free and Easy! 
 	<br>
 	</p>
-	<p><a class="wikilink wikilink_category bindByAnchor" title="Click here" href="#!affiliates/affiliates.program-details">Click here</a> for more details.
+	<p><a class="wikilink wikilink_category bindByAnchor" title="Click here" href="/category/affiliates.program-details">Click here</a> for more details.
 	<br>
 	</p>
 	<p>Established in 2000, Tikimaster.com has become a reliable source for Tikis, 
@@ -443,8 +443,8 @@ don't modify the 'data-templateid' unless you are changing template names and up
 
 	<map name="affMap">
 		<area shape="rect" coords="1,0,141,25" href="http://www.shareasale.com/newsignup.cfm" alt="click here to join now" title="click here to join now" target="affiliate">
-		<area shape="rect" coords="181,0,371,26" href="#!affiliates/affiliates.program-details" alt="Click here for program details" title="click here for program details">
-		<area shape="rect" coords="404,2,505,27" href="#!affiliates/affiliates.contract" alt="Click here for detailed contract" title="click here for detailed contract">
+		<area shape="rect" coords="181,0,371,26" href="/category/affiliates.program-details" alt="Click here for program details" title="click here for program details">
+		<area shape="rect" coords="404,2,505,27" href="/category/affiliates.contract" alt="Click here for detailed contract" title="click here for detailed contract">
 	</map>
 
 		</td>
@@ -711,7 +711,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 <!-- used to display a category within a 'list', usually in the body of a category or the homepage. -->
 <ul>
 <li id="categoryListTemplate">
-	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href';" class='blockLink'>
+    <a data-tlc="bind $var '.'; store_routing#seoanchor --type='category'; apply --attrib='href';" class='blockLink'>
 		<div class="thumbContainer"><img data-tlc="bind $var '.%meta.CAT_THUMB'; if (is $var --notblank;) {{ apply --img --media=$var --width=229 --height=171 --bgcolor='#ffffff' --replace;}};" src="img/blank-229x171.gif" class="catThumb" alt="" height="171" width="229"></div>
 		<div class="catName white2LGray"><span data-tlc="bind $var '.pretty'; quickstart#cattext  --legacy;"></span></div>
 	</a>
@@ -726,7 +726,7 @@ don't modify the 'data-templateid' unless you are changing template names and up
 </li>
 
 <li id="categoryListTemplateRootSubCats" class="subCatName" data-tlc="bind $pretty '.pretty'; if(is $pretty --null;) {{apply --hide;}};">
-	<a class='blockLink' data-tlc="bind $var '.'; store_routing#seoanchor --type='category' --seo; apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy; " data-app-click="tikimaster|hideDropDownOnSelect"></a>
+	<a class='blockLink' data-tlc="bind $var '.'; store_routing#seoanchor --type='category' apply --attrib='href'; bind $pretty '.pretty'; quickstart#cattext  --legacy; " data-app-click="tikimaster|hideDropDownOnSelect"></a>
 </li>
 
 </ul>
@@ -1581,10 +1581,10 @@ So the cart template should contain these two elements and the extension should 
 		</div>
 		<div class="ui-state-default cartButtons stdPadding clearfix" data-app-role='cartButtonsContainer'>
 			<!-- spans are set around the buttons so each element has one consitent tag type around it -->
-			<span class="continueShoppingSpan thisButton"><button class="applyButton continueShoppingButton" data-app-click="quickstart|dialogCloseExec">Continue Shopping</button></span>
+			<!--<span class="continueShoppingSpan thisButton"><button class="applyButton continueShoppingButton" data-app-click="quickstart|dialogCloseExec">Continue Shopping</button></span>-->
 	
 			<span id="inStoreCheckoutButton" class='thisButton' title="proceed to secure checkout">
-				<a class="applyButton ui-state-highlight checkoutButton" href='#!checkout' onmouseout="myApp.ext.tikimaster.u.checkoutButtonMouseout($(this))" onmouseover="myApp.ext.tikimaster.u.checkoutButtonMouseover($(this))">Store Checkout</a>
+				<a class="applyButton ui-state-highlight checkoutButton" href='/checkout' onmouseout="myApp.ext.tikimaster.u.checkoutButtonMouseout($(this))" onmouseover="myApp.ext.tikimaster.u.checkoutButtonMouseover($(this))">Store Checkout</a>
 			</span>
 	
 			<span data-tlc="bind $var '.cart.cartid'; cco#paypalecbutton  --legacy;" id="paypalecbutton" class="thisButton"></span>

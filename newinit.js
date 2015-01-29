@@ -473,7 +473,7 @@ _app.couple('quickstart','addPageHandler',{
 	
 _app.couple('quickstart','addPageHandler',{
 	"pageType" : "category",
-	"require" : ['store_navcats','store_prodlist','prodlist_infinite','templates.html','store_routing'],
+	"require" : ['store_navcats','store_prodlist','prodlist_infinite','templates.html','store_routing','tikimaster'],
 	"handler" : function($container, infoObj, require){
 		infoObj.deferred = $.Deferred();
 		infoObj.defPipeline.addDeferred(infoObj.deferred);
