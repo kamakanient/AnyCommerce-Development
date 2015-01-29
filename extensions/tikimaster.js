@@ -32,6 +32,13 @@
 //    !!! ->   TODO: replace 'username' in the line below with the merchants username.     <- !!!
 var tikimaster = function(_app) {
 	var r = {
+		catTemplates : {
+			'.affiliates' : 'categoryTemplateAffiliates',
+			'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
+			'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
+			'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
+			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
+		},
 
 ////////////////////////////////////   CALLBACKS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		callbacks : {
@@ -511,7 +518,21 @@ var tikimaster = function(_app) {
 					num = matches[1]-1;
 					$list.children('li:gt('+num+')').remove();
 				}
-			}
+			},
+			fetchTemplateForPage : function(navcat){
+				var r = false;
+				if(_app.ext.tikimaster.catTemplates[navcat]){
+					r = _app.ext.tikimaster.catTemplates[navcat];
+					}
+				else if((/\.mlb\.[^.]+\.[^.]+/).test(navcat)){
+					r = 'categoryTemplatePlayer';
+					}
+				else if(navcat.indexOf('.aa.')==0){
+					r = 'categoryTemplateHTML';
+					}
+				
+				return r;
+				},
 		}, //u [utilities]
 
 ////////////////////////////////////   EVENTS [e]    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

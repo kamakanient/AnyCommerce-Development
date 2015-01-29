@@ -852,6 +852,30 @@ an + b - a - size of loop, b - offset
   padding:2px 0 0 5px;
 }
 
+.affMap{
+	bottom: 10px;
+    height: 29px;
+    left: 10px;
+    position: absolute;
+    width: 507px;
+}
+.affMap a{
+	float: left;
+}
+.affMap a:nth-of-type(1) {
+	height: 29px;
+    width: 140px;
+}
+.affMap a:nth-of-type(2) {
+	height: 29px;
+    margin-left: 44px;
+    width: 185px;
+}
+.affMap a:nth-of-type(3) {
+	height: 29px;
+    margin-left: 35px;
+    width: 100px;
+}
 
   /************* END Category page layout *****************/
 

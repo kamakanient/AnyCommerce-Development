@@ -485,11 +485,13 @@ _app.couple('quickstart','addPageHandler',{
 			}
 		_app.require(require,function(){
 			if(infoObj.templateID){}
+			else if(infoObj.templateID = _app.ext.tikimaster.u.fetchTemplateForPage(infoObj.navcat)){dump("Alternate template used : "+ infoObj.templateID);}
 			else{infoObj.templateID = 'categoryTemplate';}
-			if(infoObj.templateID = 'categoryTemplate'){
-				infoObj.prodRenderedDeferred = $.Deferred();
-				infoObj.defPipeline.addDeferred(infoObj.prodRenderedDeferred);
-				}
+			
+			//currently this is expected to be resolved by the prodlist_infinite tlc format.  Probably a bad idea.
+			infoObj.prodRenderedDeferred = $.Deferred();
+			infoObj.defPipeline.addDeferred(infoObj.prodRenderedDeferred);
+
 			_app.ext.store_navcats.u.showPage($container, infoObj);
 			});
 						
@@ -830,13 +832,14 @@ myApp.router.addAlias('customCategoryTemplate',function(routeObj){
 		if(routeObj.params.navcat.charAt(0) != '.')	{
 			routeObj.params.navcat = '.'+routeObj.params.navcat;
 			}
-		var pageTemplates = {
+		/*var pageTemplates = {
 			'.affiliates' : 'categoryTemplateAffiliates',
 			'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
 			'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
 			'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
 			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
 			}
+			*/
 		if(pageTemplates[routeObj.params.navcat])	{
 			routeObj.params.templateID = pageTemplates[routeObj.params.navcat];
 			}
@@ -845,6 +848,7 @@ myApp.router.addAlias('customCategoryTemplate',function(routeObj){
 	showContent('category',	routeObj.params);
 	});
 
+/*
 myApp.router.appendHash({'type':'match','route':'affiliates/{{navcat}}*','callback':'customCategoryTemplate'}); //this'll handle any hard coded links.
 //these will handle any links auto-generated, such as breadcrumb or subcat lists.
 myApp.router.prependHash({'type':'exact','route':'category/.affiliates','callback':'customCategoryTemplate'});
@@ -852,6 +856,7 @@ myApp.router.prependHash({'type':'exact','route':'category/.affiliates.1','callb
 myApp.router.prependHash({'type':'exact','route':'category/.affiliates.4','callback':'customCategoryTemplate'});
 myApp.router.prependHash({'type':'exact','route':'category/.affiliates.contract','callback':'customCategoryTemplate'});
 myApp.router.prependHash({'type':'exact','route':'category/.affiliates.program-details','callback':'customCategoryTemplate'});
+*/
 
 
 myApp.router.addAlias('videos',function(routeObj){
