@@ -323,14 +323,14 @@ var tikimaster = function(_app) {
 		//END FILTERED SEARCH STUFFS
 		
 			prepareRootNavCats : function(){
-				$("#leftNav ul li").unbind()
+				$(".leftNav ul li").unbind()
 					 .mouseover(function() { _app.ext.tikimaster.a.showDropDown($(this)); })
 					 .mouseout(function() { _app.ext.tikimaster.a.hideDropDown($(this)); });
-				$("#leftNav").on('click','span',function() { document.location.hash = "#!category/"+$(this).parent().attr('data-catsafeid') });
+				//$(".leftNav").on('click','span',function() { document.location.hash = "#!category/"+$(this).parent().attr('data-catsafeid') });
 				
-				$("#leftNav").on('click',' ul li > ul li',function() {
-					document.location.hash = "#!category/"+$(this).attr('data-catsafeid')
-					});
+				//$(".leftNav").on('click',' ul li > ul li',function() {
+					//document.location.hash = "#!category/"+$(this).attr('data-catsafeid')
+					//});
 				},
 				
 
