@@ -1133,11 +1133,9 @@ if you change these, you should move them above this comment so that when you (o
 
 <!-- .textContentArea is used as a selector in quickstart.js because article tag type isn't ie8 friendly -->
 <div id="aboutUsTemplate" class="textContentArea article">
-	<span class="displayNone" data-seo-title-about="Contact Us Tiki Master | TikiMaster.com"></span>
-	<span class="displayNone" data-seo-desc-about="Contact TikiMaster.com"></span>
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
         <h1>About Us</h1>
         <div>
     
@@ -1159,10 +1157,10 @@ if you change these, you should move them above this comment so that when you (o
 </div>
     
     
-<div id="contactUsTemplate" class="displayNone textContentArea">
+<div id="contactUsTemplate" class=" textContentArea article">
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
 
         <h1>Contact Information</h1>
         <div class="companyAddress">
@@ -1193,10 +1191,10 @@ if you change these, you should move them above this comment so that when you (o
     
     
             <!-- faq are generated through the faq manager in the admin UI. do not add content in the faqContent area -->
-<div id="faqTemplate" class="displayNone textContentArea">
+<div id="faqTemplate" class=" textContentArea article">
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
         <h1>Frequently Asked Questions</h1>
         <div id="faqContent" class=" ui-accordion ui-widget ui-helper-reset ui-accordion-icons appAccordianesque"></div>
     </div>
@@ -1204,10 +1202,10 @@ if you change these, you should move them above this comment so that when you (o
     
     
     
-<div class="displayNone textContentArea" id="paymentTemplate">
+<div class=" textContentArea article" id="paymentTemplate">
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
         <h1>Payment Policy</h1>
         <div>
         <p>Aloha e Komo Mai to Tikimaster.com!<br/>
@@ -1217,10 +1215,10 @@ if you change these, you should move them above this comment so that when you (o
 </div>
     
     
-<div class="displayNone textContentArea" id="privacyTemplate">
+<div class=" textContentArea article" id="privacyTemplate">
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
         <h1>Privacy Statement</h1>
         <h4>About this Privacy Policy:</h4>
         <p>The entire site, or at least specific portions of this site are assisted by Zoovy technology. Zoovy has created this privacy policy as a template for customers who are using Zoovy technology with their websites. Zoovy in no way takes responsibility for the accuracy or enforcement of this policy. For a copy of Zoovy's privacy policy (which does not necessarily apply to the customers of its customers) visit http://www.zoovy.com/legal</p>
@@ -1265,10 +1263,10 @@ if you change these, you should move them above this comment so that when you (o
     
     
     
-<div class="displayNone textContentArea" id="returnTemplate">
+<div class=" textContentArea article" id="returnTemplate">
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
         <h1>Return Policy</h1>
         <div>
     
@@ -1297,10 +1295,10 @@ if you change these, you should move them above this comment so that when you (o
 
 
 
-<div class="displayNone textContentArea" id="shippingTemplate">
+<div class=" textContentArea article" id="shippingTemplate">
     <div class="sideline center arial hidePhone showTabletBlock" data-tlc="transmogrify --templateid='companySidelineTemplate'; apply --append;"></div>
 
-    <div class="mainColumn">
+    <div class="companyMainColumn">
         <h1>Shipping Information</h1>
         <div>
             <p>WE SHIP EVERYDAY!!! Tikimaster ships all over the world! The published shipping cost is for the USA. If you live outside the USA, simply email us and we will gladly give you a quote based on your location.</p>
@@ -1314,124 +1312,133 @@ if you change these, you should move them above this comment so that when you (o
 
 
 
-
-
-	<div class="sideline">
+<div id="customerSidelineTemplate" class="clearfix smallButton">
 	<nav id="customerNav">
-	<ul class="listStyleNone noPadOrMargin">
-		<li><a href='#!customer/subscriberLists'>Newsletter Subscription</a></li>
-		<li><a href="#!customer/myaccount">My Account</a></li>
-		<li><a href="#!customer/changepassword">Change Password</a></li>
-		<li><a href="#!customer/orders">Order History</a></li>
-		<li><a href="#!customer/lists">Manage Lists</a></li>
-		<li class="hideIfLoggedOut"><a href="#!customer/logout">Log Out</a></li>
-	</ul>
+        <ul class="listStyleNone noPadOrMargin">
+        	<!--<li><a rel="nofollow" href='/subscribe/'>Newsletter Subscription</a></li>-->
+            <li><a rel="nofollow" href="/my_account/">My Account</a></li>
+            <li><a rel="nofollow" href="/change_password/">Change Password</a></li>
+            <li><a rel="nofollow" href="/my_order_history/">Order History</a></li>
+            <li><a rel="nofollow" href="/my_wishlist/">Manage Lists</a></li>
+            <!--<li class="hideIfLoggedOut"><a href="/customer/logout">Log Out</a></li>-->
+        </ul>
 	</nav>
-	</div>
+</div>
 
-	<div class="mainColumn">
 <!-- .textContentArea is used as a selector because IE8 doesn't play well  with tag type article as a selector -->
 
 <!--
 newsletterArticle is intended for buyers who are not logged in or do not have an account.
 -->
-		<div id="newsletterArticle" class="displayNone textContentArea">
-			<h1>Subscribe to our Newsletter and Save!</h1>
-			<form action="#" name="subscribeFrm" data-app-submit="quickstart|subscribeSubmit" class='alignedForm'>
-				<fieldset class="userInfo borderNone">
-					<label>
-					<input placeholder="email address" maxlength="50" size="30" required name="email" value="" type="email" data-tlc="bind $var '.customer.login'; if(is $var --notblank;) {{apply --select=$var;}};">
-					</label>
-				</fieldset>
-				
-				<fieldset data-tlc="apply --empty; bind $var '.@lists'; controller#loop --templateid='subscriberListItemTemplate'; apply --append;" class="borderNone subscriberLists"></fieldset>
-			
-				<input class="applyButton" value="Subscribe" type="submit">
-			
-			</form>
-		</div>
+<div id="newsletterTemplate" class=" textContentArea article">
+    <div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>Subscribe to our Newsletter and Save!</h1>
+        <form action="#" name="subscribeFrm" data-app-submit="quickstart|subscribeSubmit" class='alignedForm'>
+            <fieldset class="userInfo borderNone">
+                <label>
+                <input placeholder="email address" maxlength="50" size="30" required name="email" value="" type="email" data-tlc="bind $var '.customer.login'; if(is $var --notblank;) {{apply --select=$var;}};">
+                </label>
+            </fieldset>
+            
+            <fieldset data-tlc="apply --empty; bind $var '.@lists'; controller#loop --templateid='subscriberListItemTemplate'; apply --append;" class="borderNone subscriberLists"></fieldset>
+        
+            <input class="applyButton" value="Subscribe" type="submit">
+        
+        </form>
+    </div>
+</div>
 <!--
 subscribeListsArticle is used for authenticated buyers.
 -->
-		<div id="subscriberListsArticle" class="displayNone textContentArea">
-			<h1>Manage your Subscriptions</h1>
-
-			<form action="#" name="subscribeFrm" data-app-submit="store_crm|buyerUpdate" class='alignedForm' onSubmit="return false">
-				<!-- buyer is logged in. Don't need email/name inputs -->
-				<fieldset data-update-verb='tags' data-tlc="apply --empty; bind $tags '.%info.@tags'; bind $var '.@lists'; controller#loop --templateid='subscriberListItemTemplate'; apply --append;" class="borderNone subscriberLists"></fieldset>
-				<input class="applyButton" value="Subscribe" type="submit">
-			</form>
-
-		</div>
-
-		<div id="myaccountArticle" class="displayNone textContentArea">
-			<h1>My Account</h1>
-
-			<section>
-
-<div class="billAddressContainer" data-app-role="addressContainer" data-app-addresstype="bill">
-	<div class="marginBottom">
-		<button class="floatRight applyButton" data-icon-primary="ui-icon-plus" data-app-click="quickstart|showBuyerAddressAdd">New Billing Address</button>
-		<h2>Billing Address(es)</h2>
-	</div>
-	<div data-tlc="bind $var '.@bill'; controller#loop --templateid='billAddressTemplate'; if (is $var --notblank;) {{apply --empty; apply --append;}};" class="billAddresses"></div>
+<div id="subscribeTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>Manage your Subscriptions</h1>
+    
+        <form action="#" name="subscribeFrm" data-app-submit="store_crm|buyerUpdate" class='alignedForm' onSubmit="return false">
+            <!-- buyer is logged in. Don't need email/name inputs -->
+            <fieldset data-update-verb='tags' data-tlc="apply --empty; bind $tags '.%info.@tags'; bind $var '.@lists'; controller#loop --templateid='subscriberListItemTemplate'; apply --append;" class="borderNone subscriberLists"></fieldset>
+            <input class="applyButton" value="Subscribe" type="submit">
+        </form>
+    </div>
 </div>
 
-<div class="shipAddressContainer" data-app-role="addressContainer" data-app-addresstype="ship">
-	<div class="marginBottom">
-		<button class="floatRight applyButton" data-icon-primary="ui-icon-plus" data-app-click="quickstart|showBuyerAddressAdd">New Shipping Address</button>
-		<h2>Shipping Address(es)</h2>
-	</div>
-	<div data-tlc="bind $var '.@ship'; controller#loop --templateid='shipAddressTemplate'; if (is $var --notblank;) {{apply --empty; apply --append;}};" class="billAddresses"></div>
+<div id="myAccountTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>My Account</h1>
+        <section>
+            <div class="billAddressContainer" data-app-role="addressContainer" data-app-addresstype="bill">
+                <div class="marginBottom">
+                    <button class="floatRight applyButton" data-icon-primary="ui-icon-plus" data-app-click="quickstart|showBuyerAddressAdd">New Billing Address</button>
+                    <h2>Billing Address(es)</h2>
+                </div>
+                <div data-tlc="bind $var '.@bill'; controller#loop --templateid='billAddressTemplate'; if (is $var --notblank;) {{apply --empty; apply --append;}};" class="billAddresses"></div>
+            </div>
+            <div class="shipAddressContainer" data-app-role="addressContainer" data-app-addresstype="ship">
+                <div class="marginBottom">
+                    <button class="floatRight applyButton" data-icon-primary="ui-icon-plus" data-app-click="quickstart|showBuyerAddressAdd">New Shipping Address</button>
+                    <h2>Shipping Address(es)</h2>
+                </div>
+                <div data-tlc="bind $var '.@ship'; controller#loop --templateid='shipAddressTemplate'; if (is $var --notblank;) {{apply --empty; apply --append;}};" class="billAddresses"></div>
+            </div>
+        </section>
+    </div>
 </div>
 
 
-			</section>
-
-
-		</div>
-
-
-		<div id="ordersArticle" class="displayNone textContentArea">
-			<h1>Order History</h1>
-			<div data-tlc="bind $var '.@orders'; controller#loop --templateid='orderLineItemTemplate'; if (is $var --notblank;) {{apply --append;}};" data-app-role="orderList" class="ui-accordion ui-widget ui-helper-reset ui-accordion-icons "></div>
-		</div>
-
-
-		<div id="invoiceArticle" class="displayNone textContentArea">
-			<div data-tlc="bind $var '.'; transmogrify --dataset=$var --templateid='invoiceTemplate'; apply --append;" data-bind="format:loadsTemplate; loadsTemplate: invoiceTemplate; useParentData:true;"></div>
-		</div>
-
-
-
-		<div id="changepasswordArticle" class="displayNone textContentArea">
-			<h1>Change Password</h1>
-			<form action="#" name="changePasswordForm" data-app-submit="quickstart|passwordChangeSubmit" class='alignedForm'>
-			<fieldset class="borderNone">
-			<p>For passwords, we recommend using mixed case, at least one number and one special character.</p>
-			<div class="messaging"></div>
-			<label><span class="prompt">Password</span><input name="password" size="35" required type="password" data-minlength='8'></label>
-			<label><span class="prompt">Confirm Password</span><input name="password2" required size="35" type="password" data-minlength='8'></label>
-			<div class='alignCenter'><input value="Change Password" class="loadingButton applyButton" type="submit"></div>
-			</fieldset>
-			</form>
-		</div>
-
-		<div id="listsArticle" class="displayNone textContentArea">
-			<h1>List Manager</h1>
-
-			<div class='applyAccordion' data-tlc="apply --empty; bind $var '.@lists'; controller#loop --templateid='buyerListTemplate'; apply --append; bind $content '.@lists'; controller#loop --templateid='buyerListProdlistContainerTemplate'; apply --append;"></div>
-
-		</div>
-
-		<div id="forgetmeArticle" class="displayNone textContentArea">
-			<h1>Your 'Forget Me' list</h1>
-			<p>Items on this list will not show up anywhere on the site. Use it for items you never want to see again. If you add an item to the list by mistake, use this page to remove it from the list and it will start re-appearing during your shopping experience.</p>
-			<ul id="forgetmeContainer" class="prodlist ">
-			</ul>
-		</div>
-
+<div id="orderHistoryTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>Order History</h1>
+        <div data-tlc="bind $var '.@orders'; controller#loop --templateid='orderLineItemTemplate'; if (is $var --notblank;) {{apply --append;}};" data-app-role="orderList" class="ui-accordion ui-widget ui-helper-reset ui-accordion-icons "></div>
 	</div>
+</div>
+
+
+<div id="invoiceTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <div data-tlc="bind $var '.'; transmogrify --dataset=$var --templateid='invoiceTemplate'; apply --append;" data-bind="format:loadsTemplate; loadsTemplate: invoiceTemplate; useParentData:true;"></div>
+	</div>
+</div>
+
+
+
+<div id="changePasswordTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>Change Password</h1>
+        <form action="#" name="changePasswordForm" data-app-submit="quickstart|passwordChangeSubmit" class='alignedForm'>
+            <fieldset class="borderNone">
+                <p>For passwords, we recommend using mixed case, at least one number and one special character.</p>
+                <div class="messaging"></div>
+                <label><span class="prompt">Password</span><input name="password" size="35" required type="password" data-minlength='8'></label>
+                <label><span class="prompt">Confirm Password</span><input name="password2" required size="35" type="password" data-minlength='8'></label>
+                <div class='alignCenter'><input value="Change Password" class="loadingButton applyButton" type="submit"></div>
+            </fieldset>
+        </form>
+	</div>
+</div>
+
+<div id="customerListsTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>List Manager</h1>
+        <div class='applyAccordion' data-tlc="apply --empty; bind $var '.@lists'; controller#loop --templateid='buyerListTemplate'; apply --append; bind $content '.@lists'; controller#loop --templateid='buyerListProdlistContainerTemplate'; apply --append;"></div>
+	</div>
+</div>
+
+<div id="forgetmeTemplate" class=" textContentArea article">
+	<div class="sideline" data-tlc="transmogrify --templateid='customerSidelineTemplate'; apply --append;"></div>
+    <div class="customerMainColumn">
+        <h1>Your 'Forget Me' list</h1>
+        <p>Items on this list will not show up anywhere on the site. Use it for items you never want to see again. If you add an item to the list by mistake, use this page to remove it from the list and it will start re-appearing during your shopping experience.</p>
+        <ul id="forgetmeContainer" class="prodlist "></ul>
+    </div>
+</div>
+
 
 </div>
 

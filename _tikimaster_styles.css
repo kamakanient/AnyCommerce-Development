@@ -1124,6 +1124,40 @@ li:not(.loadingBG) div.prodThumbContainer.w312h234 { width:312px; height:234px; 
   padding: 10px;
   border:1px solid #4F493C;
 }
+.companyMainColumn{
+  background:#F9F4D9;
+  filter: alpha(opacity=85);
+  -moz-opacity: .85;
+  opacity: .85;
+  padding: 10px;
+  border:1px solid #4F493C;
+  width: 75%;
+  min-height: 210px;
+}
+.customerMainColumn{
+	background:#F9F4D9;
+  filter: alpha(opacity=85);
+  -moz-opacity: .85;
+  opacity: .85;
+  padding: 10px;
+  border:1px solid #4F493C;
+  width: 75%;
+  min-height: 210px;
+}
+.article div.sideline {
+	background:#F9F4D9;
+  filter: alpha(opacity=85);
+  -moz-opacity: .85;
+  opacity: .85;
+  padding: 10px;
+  border:1px solid #4F493C;
+}
+.article div.sideline a{
+	text-decoration:underline;
+}
+.article div.sideline a:hover{
+	color:#7e6139;
+}
 
 #mainContentArea_company .mainColumn, #mainContentArea_customer .mainColumn { min-height:400px; }
 
