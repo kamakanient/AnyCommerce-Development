@@ -857,7 +857,7 @@ SANITY -> if you change the height and width of this image, change the .minimalM
 </li>
 
 <li id="productListTemplateResultsNoPreview" class="loadingBG searchResultsProduct ">
-	<a data-tlc="bind $pid '.pid'; bind $seo '.prod_name'; bind $href ''; store_routing#productlink --pid=$pid --seo=$seo; apply --attrib='href';" class='blockLink'>
+	<a data-tlc="bind $var '.'; store_routing#seoanchor --type='product' --seo; apply --attrib='href';" class="pointe blockLinkr">
 		<div class="prodThumbContainer w120h120">
 		<img data-tlc="bind $var '.images.0'; apply --imageurl --media=$var --width=120 --height=120 --bgcolor='#ffffff' --attrib='src';" src="blank.gif" class="prodThumb" alt="" height="120" width="120">
 		</div>
@@ -1476,7 +1476,7 @@ subscribeListsArticle is used for authenticated buyers.
 
 	<div class="previewListContainer">
 		<!-- productListTemplateResults gets loaded into here -->
-		<ul id="resultsProductListContainer" class="listStyleNone fluidList noPadOrMargin productList"></ul>
+        <ul data-app-role="resultsContainer" class="listStyleNone fluidList noPadOrMargin productList"></ul>
 	</div>
 
 </div>
