@@ -134,7 +134,7 @@ optional params:
 				if(path.charAt(0) == '.'){
 					path = path.substr(1);
 					}
-				return "/category/"+path+"/"+((seo) ? _app.ext.store_routing.u.cleanURIComponent(seo) : '');
+					return "/category/"+path+"/"+((seo) ? _app.ext.store_routing.u.cleanURIComponent(seo) : '');
 				},
 			searchAnchor : function(type,value)	{
 				var r;
