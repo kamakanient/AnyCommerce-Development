@@ -512,7 +512,7 @@ _app.couple('store_search','addUniversalFilter',{
 				
 _app.couple('quickstart','addPageHandler',{
 	"pageType" : "search",
-	"require" : ['store_search','templates.html','store_routing'],
+	"require" : ['store_search','templates.html','store_routing',"prodlist_infinite"],
 	"handler" : function($container, infoObj, require){
 		infoObj.deferred = $.Deferred();
 		infoObj.defPipeline.addDeferred(infoObj.deferred);
