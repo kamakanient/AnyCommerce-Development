@@ -134,7 +134,13 @@ optional params:
 				if(path.charAt(0) == '.'){
 					path = path.substr(1);
 					}
-					return "/category/"+path+"/"+((seo) ? _app.ext.store_routing.u.cleanURIComponent(seo) : '');
+/*Tikimaster*/		if((path == "/home") || (path == "home") || (path == "#!home") || (path == "/") || (path == "")){
+/*Tikimaster*/			path = "/";
+/*Tikimaster*/			return path;
+/*Tikimaster*/		}
+/*Tikimaster*/		else{
+						return "/category/"+path+"/"+((seo) ? _app.ext.store_routing.u.cleanURIComponent(seo) : '');
+/*Tikimaster*/		}
 				},
 			searchAnchor : function(type,value)	{
 				var r;
