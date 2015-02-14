@@ -791,6 +791,13 @@ _app.u.bindTemplateEvent('homepageTemplate', 'complete.pageinit',function(event,
 			}
 		});
 	});
+	
+_app.u.bindTemplateEvent('categoryTemplateVideos', 'complete.pageinit',function(event,$context,infoObj){
+	$(".videoTemplateContainer",$context).html('<iframe width="560" height="315" src="https://www.youtube.com/embed/aWefjlhkqVI" frameborder="0" allowfullscreen></iframe>'
+	+ '<iframe width="560" height="315" src="https://www.youtube.com/embed/lpzLFs9F05E" frameborder="0" allowfullscreen></iframe>'
+	+ '<iframe width="560" height="315" src="https://www.youtube.com/embed/A1F0qpDSZJc" frameborder="0" allowfullscreen></iframe>'
+	);
+});
 					
 
 

@@ -37,7 +37,8 @@ var tikimaster = function(_app) {
 			'.affiliates.1' : 'categoryTemplateAffiliatesSignUp',
 			'.affiliates.4' : 'categoryTemplateAffiliatesLinkExchange',
 			'.affiliates.contract' : 'categoryTemplateAffiliatesContract',
-			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails'
+			'.affiliates.program-details' : 'categoryTemplateAffiliatesProgramDetails',
+			'.videos':'categoryTemplateVideos'
 		},
 
 ////////////////////////////////////   CALLBACKS    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
