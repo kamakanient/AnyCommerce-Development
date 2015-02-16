@@ -513,7 +513,7 @@ var _robots = {
 		<div id="gotAccount" class='gotAccount logContainer'> 
 			<div class="logTitle arial">SIGN IN</div>
 			<!-- Third parameter is id of message destination -->
-			<form action='#' data-app-submit='quickstart|accountLoginSubmit' id=''>
+			<form action='#' data-app-submit='quickstart|accountLoginSubmit'>
 				<input type='hidden' name='method' value='unsecure'>
 				<input type='hidden' name='loginCallback' id='' value='' /><!-- used to save a callback action in -->
 				<input type='email' class='zform_textbox zform_email' name='login' required="required" id='' value='' size='20' placeholder='E-mail address' />
@@ -546,7 +546,7 @@ var _robots = {
 			</p>
 			<form action='#' class='inputsAsBreaks'  onSubmit="myApp.ext.store_account_creation.u.handleAppLoginCreate($(this)); return false;">
 				<!-- <form action="#" submit="return false;" class="inputsAsBreaks">  For testing form to prevent reload -->
-				<input type="hidden" name="_script" value="chess"/>
+				<input type="hidden" name="_script" value="tiki"/>
 				<input type="hidden" name="form" value="wholesale" />
 				<input name="firstname" type="text" size="30" placeholder="First Name" required="required" class="zform_textbox" />
 				<input name="lastname" type="text" size="30" placeholder="Last Name" required="required" class="zform_textbox"/>
