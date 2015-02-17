@@ -467,7 +467,12 @@ document.write = function(v){
 				$('#loginFormContainer').hide(); //contains actual form.
 				$('#recoverPasswordContainer').hide(); //contains password recovery form.
 				_app.ext.quickstart.u.handleLoginActions();
-				}
+				},
+			onError : function(tagObj)	{
+				dump("tagObj = ");
+				dump(tagObj);
+				dump("authenticateBuyer onError start");
+			}
 			} //authenticateBuyer
 
 		}, //callbacks
